@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="renderer" content="ie-stand">
+<title>无生大事 - 会同县无生中学</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: "宋体", "SimSun", serif, "PingFang SC", "Hiragino Sans GB", "Heiti SC", sans-serif;
+  background: #f5f5f0;
+  color: #333;
+  font-size: 12px;
+  line-height: 1.5;
+}
+/* ========== 地址栏 ========== */
+/* ========== 顶部栏 ========== */
+.top-bar {
+  background: linear-gradient(to bottom, #3a5a4a, #2d4838);
+  color: #fff; display: flex; align-items: center;
+  padding: 8px 16px; position: relative;
+  border-bottom: 3px solid #edc75a;
+}
+.school-brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.school-logo {
+  width: 48px; height: 48px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  border: 2px solid #edc75a;
+  overflow: hidden; background: #fff; flex-shrink: 0;
+}
+.school-logo .logo-img { width: 100%; height: 100%; object-fit: cover; }
+.school-name { display: flex; flex-direction: column; }
+.school-name .cn { font-family: "华文行楷", "STXingkai", "楷体", "KaiTi", "SimSun", serif; font-size: 26px; font-weight: bold; letter-spacing: 2px; color: #fff; }
+.school-name .en { font-size: 10px; color: #a8c4b8; letter-spacing: 0px; margin-top: 2px; font-family: "Times New Roman", serif; }
+.top-right { display: flex; align-items: center; gap: 8px; margin-left: auto; padding-right: 8px; flex-shrink: 0; }
+.search-box { display: flex; align-items: center; background: #fff; border: 1px inset #808080; padding: 2px; }
+.search-box input { border: none; outline: none; padding: 1px 4px; font-size: 11px; width: 100px; font-family: "宋体", "SimSun", serif; }
+.search-box button {
+  background: none; border: none; cursor: pointer;
+  font-size: 13px; padding: 0 4px; color: #333;
+  display: flex; align-items: center; justify-content: center;
+}
+.hamburger { position: relative; cursor: pointer; padding: 4px; }
+.hamburger .bar { width: 18px; height: 2px; background: #fff; margin: 2px 0; }
+.hamburger-dropdown {
+  display: none; position: absolute; top: 100%; right: 0; background: #fff;
+  border: 2px outset #c0c0c0; min-width: 140px; z-index: 999;
+  box-shadow: 2px 2px 4px rgba(0,0,0,.3);
+}
+.hamburger-dropdown a {
+  display: block; padding: 6px 12px; color: #333; text-decoration: none;
+  font-size: 12px; border-bottom: 1px solid #ddd; font-family: "宋体", "SimSun", sans-serif;
+}
+.hamburger-dropdown a:last-child { border-bottom: none; }
+.hamburger-dropdown a:hover { background: #3a5a4a; color: #fff; }
+.hamburger.active .hamburger-dropdown { display: block; }
+/* ========== 主导航 ========== */
+.nav-bar {
+  background: linear-gradient(to bottom, #2d4838, #3a5a4a);
+  border-bottom: 2px solid #edc75a;
+  padding: 0;
+}
+.nav-inner { display: flex; align-items: center; }
+.nav-inner a {
+  color: #fff; text-decoration: none; padding: 8px 14px;
+  display: flex; align-items: center; font-size: 13px;
+  border-right: 1px solid #3a5a4a;
+  white-space: nowrap; font-family: "黑体", "SimHei", sans-serif;
+  cursor: pointer;
+}
+.nav-inner a:first-child { border-left: none; }
+.nav-inner a:hover { background: #edc75a; color: #000; text-decoration: none; }
+.nav-inner a.active { background: #edc75a; color: #000; font-weight: bold; }
+/* ========== 面包屑 ========== */
+.breadcrumb {
+  background: #d4d4d4; border: 1px solid #999; padding: 6px 16px;
+  font-size: 11px; margin: 8px 8px; color: #555;
+  font-family: "宋体", "SimSun", serif;
+}
+.breadcrumb a { color: #3a5a4a; text-decoration: none; }
+.breadcrumb a:hover { color: #c93a3a; text-decoration: underline; }
+/* ========== 主内容区 ========== */
+.main-wrap {
+  margin: 8px;
+  background: #fff;
+  border: 2px outset #c0c0c0;
+  padding: 20px;
+  min-height: calc(100vh - 280px);
+}
+.section-title {
+  font-size: 18px; font-family: "黑体","SimHei",sans-serif;
+  color: #3a5a4a; border-bottom: 2px solid #edc75a;
+  padding-bottom: 8px; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-title .icon { color: #edc75a; font-size: 16px; }
+
+/* ========== 大事记时间线 ========== */
+.timeline { position: relative; padding-left: 28px; }
+.timeline:before {
+  content: ''; position: absolute; left: 10px; top: 0; bottom: 0;
+  width: 3px; background: linear-gradient(to bottom, #edc75a, #3a5a4a);
+}
+.timeline-item {
+  position: relative; margin-bottom: 24px;
+  padding: 14px 16px;
+  background: #fafbfd;
+  border: 1px solid #ddd;
+  border-left: 3px solid #edc75a;
+  transition: all 0.2s;
+}
+.timeline-item.clickable { cursor: pointer; }
+.timeline-item.clickable:hover { background: #eef3ea; border-left-color: #3a5a4a; }
+.timeline-item:before {
+  content: ''; position: absolute; left: -24px; top: 16px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #edc75a; border: 2px solid #fff;
+  box-shadow: 0 0 0 1px #edc75a;
+}
+.timeline-date {
+  font-size: 11px; color: #999; font-family: "Arial", sans-serif;
+  margin-bottom: 4px;
+}
+.timeline-title {
+  font-size: 14px; font-weight: bold; color: #3a5a4a;
+  font-family: "黑体","SimHei",sans-serif;
+  margin-bottom: 6px;
+}
+.timeline-item.clickable .timeline-title:hover { color: #3a5a4a; text-decoration: underline; }
+.timeline-desc {
+  font-size: 12px; color: #555; line-height: 1.8;
+  display: none;
+}
+.timeline-item.expanded .timeline-desc { display: block; margin-top: 8px; }
+
+/* ========== 详情浮层 ========== */
+.modal-overlay {
+  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5); z-index: 9999;
+  justify-content: center; align-items: center;
+}
+.modal-overlay.active { display: flex; }
+.modal-box {
+  background: #fff; width: 680px; max-height: 80vh; overflow-y: auto;
+  border: 2px outset #c0c0c0; box-shadow: 4px 4px 12px rgba(0,0,0,0.4);
+}
+.modal-header {
+  background: #3a5a4a; color: #fff; padding: 10px 16px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: "黑体","SimHei",sans-serif; font-size: 14px;
+  border-bottom: 2px solid #edc75a;
+}
+.modal-header .close-btn {
+  background: #edc75a; border: 1px outset #edc75a; color: #fff;
+  padding: 2px 8px; cursor: pointer; font-size: 12px; font-family: "黑体", "SimHei", sans-serif;
+}
+.modal-header .close-btn:active { border-style: inset; }
+.modal-meta {
+  background: #f5f5f5; padding: 8px 16px; font-size: 11px;
+  color: #666; border-bottom: 1px solid #ddd;
+  display: flex; gap: 16px;
+}
+.modal-body { padding: 16px 20px; font-size: 13px; line-height: 2; text-align: justify; }
+.modal-body p { text-indent: 2em; margin-bottom: 8px; }
+.modal-body p:last-child { margin-bottom: 0; }
+
+/* ========== 页脚 ========== */
+.footer {
+  background: #2d4838 url('data:image/gif;base64,R0lGODlhCAAIAPABAAAAAP///yH5BAAAAAAALAAAAAAIAAgAAAIRjI+py+0Po5y02ouz3pxAADs=') repeat-x;
+  color: #cfe3d8; padding: 20px 16px; margin-top: 24px; border-top: 3px solid #edc75a;
+}
+.footer-inner { width: 100%; padding: 0 16px; display: flex; align-items: center; gap: 20px; }
+.footer-brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.footer-logo {
+  width: 42px; height: 42px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  border: 2px solid #fff; overflow: hidden; background: #fff;
+}
+.footer-logo .logo-img { width: 100%; height: 100%; object-fit: cover; }
+.footer-name .cn { font-size: 14px; color: #fff; font-weight: bold; }
+.footer-name .en { font-size: 9px; color: #9bbfae; font-family: "Arial", sans-serif; }
+.footer-info { margin-left: auto; font-size: 12px; line-height: 1.8; text-align: right; font-family: "黑体", "SimHei", sans-serif; }
+.footer-info a { color: #9bbfae; text-decoration: none; }
+.footer-info a:hover { color: #fff; text-decoration: underline; }
+/* ========== 滚动条 ========== */
+::-webkit-scrollbar { width: 16px; }
+::-webkit-scrollbar-track { background: #f0f0f0; border: 1px solid #ccc; }
+::-webkit-scrollbar-thumb { background: #c0c0c0; border: 1px outset #c0c0c0; }
+
+/* ========== 底部免责/版权灰框 ========== */
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #ededed; color: #555; text-align: center; padding: 14px 16px 12px; font-family: "宋体", "SimSun", serif; border-top: 1px solid #ddd; }
+.disclaimer .dis-text { font-size: 11px; letter-spacing: .5px; color: #999; }
+.disclaimer .copy { margin-top: 7px; font-size: 11px; color: #999; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .5px; }
+
+body { max-width: 1200px; margin-left: auto; margin-right: auto; }
+</style>
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+
+<!-- ========== 地址栏 ========== -->
+
+</div>
+
+<!-- ========== 顶部栏 ========== -->
+<div class="top-bar">
+  <div class="school-brand">
+    <div class="school-logo">
+      <img class="logo-img" id="logo1" alt="校徽">
+    </div>
+    <div class="school-name">
+      <div class="cn">会同县无生中学</div>
+      <div class="en">HuiTong County WuSheng Middle School</div>
+    </div>
+  </div>
+  <div class="top-right">
+    <div class="search-box">
+      <input type="text" placeholder="搜索...">
+      <button aria-label="搜索">🔍</button>
+    </div>
+    <div class="hamburger">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="hamburger-dropdown">
+        <a href="page9-xuesheng.html">学生天地</a>
+        <a href="page10-zhaosheng.html">招聘招生</a>
+        <a href="page11-luntan.html">校园论坛</a>
+        <a href="page12-guanyu.html">关于我们</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 主导航 ========== -->
+<div class="nav-bar">
+  <div class="nav-inner">
+    <a href="page1.html">首页</a>
+    <a href="page2-about.html">学校概况</a>
+    <a href="page3-notice.html">通知公告</a>
+    <a href="page4-events.html" class="active">无生大事</a>
+    <a href="page5-jiaoyu.html">教育教学</a>
+    <a href="page6-mingshi.html">名师风采</a>
+    <a href="page7-xiaoyou.html">校友聚集</a>
+    <a href="page8-dangjian.html">党建园地</a>
+  </div>
+</div>
+
+<!-- ========== 面包屑 ========== -->
+<div class="breadcrumb">
+  <a href="page1.html">首页</a> &gt; 无生大事
+</div>
+
+<!-- ========== 主内容区（通栏） ========== -->
+<div class="main-wrap">
+  <div class="section-title">
+    <span class="icon">■</span> 无生大事
+  </div>
+
+  <div class="timeline">
+    <!-- 大事1：建校 ★解密线索：创始年份与贾一方年龄 -->
+    <div class="timeline-item clickable" onclick="openModal(1)">
+      <div class="timeline-date">[1976年09月]</div>
+      <div class="timeline-title">无生中学创办</div>
+      <div class="timeline-desc">贾一方先生于1976年9月创办无生中学，初为简易中学，设2个教学班，教师5人，学生80余人。校址位于会同县老城区，占地不足10亩。</div>
+    </div>
+
+    <!-- 大事2：第一次扩建 -->
+    <div class="timeline-item">
+      <div class="timeline-date">[1985年08月]</div>
+      <div class="timeline-title">第一次校园扩建工程竣工</div>
+      <div class="timeline-desc">经县教育局批准，学校进行首次扩建，新增教学楼一栋（三层，12间教室），学生规模扩大至400人。旧教学楼即本次扩建前的主楼。</div>
+    </div>
+
+    <!-- 大事12：省级示范校评定 -->
+    <div class="timeline-item">
+      <div class="timeline-date">[2001年11月]</div>
+      <div class="timeline-title">获评"湖南省示范性普通高级中学"</div>
+      <div class="timeline-desc">学校通过湖南省教育厅评估，获评"湖南省示范性普通高级中学"，成为会同县唯一一所省级示范中学。</div>
+    </div>
+
+    <!-- 大事5：旧教学楼附楼建设 -->
+    <div class="timeline-item">
+      <div class="timeline-date">[2006年03月]</div>
+      <div class="timeline-title">旧教学楼东侧附楼建成投入使用</div>
+      <div class="timeline-desc">为缓解教室不足问题，学校在旧教学楼东侧增建三层附楼，新增教室9间、实验室2间。附楼通过二楼连廊与主楼相连。</div>
+    </div>
+
+    <!-- 大事4：升格完全中学 -->
+    <div class="timeline-item">
+      <div class="timeline-date">[2008年06月]</div>
+      <div class="timeline-title">学校升格为完全中学</div>
+      <div class="timeline-desc">经怀化市教育局批准，无生中学由初级中学升格为完全中学，开始招收高中学生。首届高中部设2个教学班，学生96人。</div>
+    </div>
+
+    <!-- 大事10：封闭管理实施 -->
+    <div class="timeline-item">
+      <div class="timeline-date">[2012年09月]</div>
+      <div class="timeline-title">全校实行全封闭寄宿制管理</div>
+      <div class="timeline-desc">自2012年秋季学期起，学校实行全封闭寄宿制管理，周一至周五学生统一住校，周末方可离校。配备专职生活老师24小时值班。</div>
+    </div>
+
+    <!-- 大事7：新同善楼奠基 ★解密线索：地下室档案室 -->
+    <div class="timeline-item clickable" onclick="openModal(7)">
+      <div class="timeline-date">[2014年03月]</div>
+      <div class="timeline-title">新同善楼奠基开工</div>
+      <div class="timeline-desc">新同善楼于2014年3月奠基开工，由湖南省建筑设计院设计，建筑面积约8000平方米，地上五层，设地下室一层。地下室规划为档案室及设备间。</div>
+    </div>
+
+    <!-- 大事14：校园网络升级 -->
+    <div class="timeline-item">
+      <div class="timeline-date">[2015年01月]</div>
+      <div class="timeline-title">校园网络全面升级</div>
+      <div class="timeline-desc">校园主干带宽从100M提升至500M，新增WiFi热点20个，覆盖教学楼、图书馆、宿舍楼，部署校园网络安全防护系统。</div>
+    </div>
+
+    <!-- 大事15：高考成绩突破 -->
+    <div class="timeline-item">
+      <div class="timeline-date">[2015年06月]</div>
+      <div class="timeline-title">2015届高考成绩创新高</div>
+      <div class="timeline-desc">2015届高考参考156人，一本上线28人，二本上线67人，本科上线率61%，创学校历史新高。</div>
+    </div>
+
+    <!-- 大事13：旧教学楼天台异常 ★解密线索：何宏宇+四楼封闭 -->
+    <div class="timeline-item clickable" onclick="openModal(13)">
+      <div class="timeline-date">[2015年07月]</div>
+      <div class="timeline-title">旧教学楼天台封闭及异常声响报告</div>
+      <div class="timeline-desc">2015年7月，有师生反映旧教学楼天台靠近楼梯间区域偶尔听到异常声响。政教处排查后初步判断为管道老化及风压变化所致，该区域随即封闭，直至新同善楼启用。</div>
+    </div>
+
+    <!-- 大事11：档案室搬迁 ★解密线索：早期档案破损缺失 -->
+    <div class="timeline-item clickable" onclick="openModal(11)">
+      <div class="timeline-date">[2015年08月]</div>
+      <div class="timeline-title">档案室搬迁至新同善楼地下室</div>
+      <div class="timeline-desc">档案室于2015年8月8日从旧教学楼搬迁至新同善楼地下室。搬迁过程中，部分早期档案（1976-1990年）因纸质老化出现破损及缺失，目前正逐一登记修复。</div>
+    </div>
+
+    <!-- 大事8：新同善楼落成 -->
+    <div class="timeline-item clickable" onclick="openModal(8)">
+      <div class="timeline-date">[2015年08月]</div>
+      <div class="timeline-title">新同善楼落成启用</div>
+      <div class="timeline-desc">新同善楼于2015年8月14日竣工验收，8月21日正式投入使用。地下室档案室同步启用，存放学校历年重要档案。旧教学楼（即旧同善楼）于同期开始封闭、封存待拆。</div>
+    </div>
+
+    <!-- 大事9：宿舍楼建成 -->
+    <div class="timeline-item">
+      <div class="timeline-date">[2015年08月]</div>
+      <div class="timeline-title">学生公寓（宿舍楼）建成投入使用</div>
+      <div class="timeline-desc">新宿舍楼于2015年8月建成，六层，建筑面积约6000平方米，可容纳1200名学生住宿。配备空调、独立卫生间、24小时热水系统。</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========== 详情浮层 ========== -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span id="modalTitle">大事标题</span>
+      <button class="close-btn" onclick="closeModal()">关闭 ✕</button>
+    </div>
+    <div class="modal-meta" id="modalMeta"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ========== 页脚 ========== -->
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <img class="logo-img" id="logo2" alt="校徽">
+      </div>
+      <div class="footer-name">
+        <div class="cn">会同县无生中学</div>
+        <div class="en">HuiTong County WuSheng Middle School</div>
+      </div>
+    </div>
+    <div class="footer-info">
+      邮编: 418300 | 电话: 0745-1234567<br>
+      邮箱: wusheng@edu.cn | 地址: 湖南省怀化市会同县
+    </div>
+  </div>
+</div>
+
+<script>
+// ========== 大事记数据 ==========
+var eventData = {
+  1: {
+    title: "无生中学创办",
+    date: "1976年09月",
+    dept: "校务档案",
+    content: "<p>1976年9月，贾一方先生以私人出资方式创办无生中学。初创时期条件极为简陋，借用会同县一处旧院落作为校舍，设2个初中教学班，教师5人，学生80余人。</p><p>贾一方先生1951年生，创办学校时年仅25岁，怀揣\"教育改变命运\"的理想，白手起家，逐步将学校发展壮大。校名\"无生\"取自\"无中生有、生生不息\"之意，寓意在艰苦条件下创造出不凡的教育事业。</p><p>建校初期，学校占地不足10亩，仅有砖木结构平房6间。经过近四十年的发展，如今的校园面积已达120余亩，建筑面积近5万平方米，在校生2000余人。</p>"
+  },
+  2: {
+    title: "第一次校园扩建工程竣工",
+    date: "1985年08月",
+    dept: "总务档案",
+    content: "<p>经会同县教育局批准，无生中学于1985年3月启动首次扩建工程，同年8月竣工。新增三层教学楼一栋，设12间标准教室，建筑面积约1500平方米。</p><p>扩建后，学校办学规模扩大至8个教学班，在校学生400余人。此次扩建为学校后续发展奠定了基础，也标志着无生中学从简易中学向正规化学校迈进。</p><p>此次扩建中建成的教学楼，即后来所称的\"旧教学楼\"主楼，2015年新同善楼启用后进行了整体封闭、封存待拆。</p>"
+  },
+  4: {
+    title: "学校升格为完全中学",
+    date: "2008年06月",
+    dept: "校务档案",
+    content: "<p>经怀化市教育局批准，无生中学于2008年6月由初级中学升格为完全中学，自2008年秋季学期起开始招收高中学生。</p><p>首届高中部设2个教学班，学生96人。高中部的开设标志着学校办学层次迈上新台阶，形成了初中、高中一体化办学格局。</p><p>为配合高中办学，学校同期配备了理化生实验室、计算机房、图书馆等教学设施，并面向全省招聘了一批高中骨干教师。</p>"
+  },
+  5: {
+    title: "旧教学楼东侧附楼建成投入使用",
+    date: "2006年03月",
+    dept: "总务档案",
+    content: "<p>为缓解教室不足问题，学校于2005年10月启动旧教学楼东侧附楼建设工程，2006年3月竣工投入使用。</p><p>附楼为三层建筑，新增教室9间、理化生实验室各1间。附楼通过二楼连廊与旧教学楼主楼相连，形成\"L\"形布局。一楼设档案室一间（2015年档案室搬迁前即位于此处）。</p><p>附楼于2015年8月新同善楼启用后停用，部分区域因管道老化出现声响问题，2015年寒假期间与旧教学楼主楼同步进行了拆除施工。</p>"
+  },
+  7: {
+    title: "新同善楼奠基开工",
+    date: "2014年03月",
+    dept: "校务档案",
+    content: "<p>新同善楼于2014年3月5日举行奠基仪式，由湖南省建筑设计院设计，怀化市第一建筑工程有限公司承建。</p><p>新同善楼建筑面积约8000平方米，地上五层，设标准教室36间、阶梯教室1间、理化生实验室各2间、教师办公室8间。地下室一层，规划为档案室及设备间，面积约800平方米。</p><p>地下室档案室设计标准为恒温恒湿，配备防火、防水、防虫、防盗四防系统。<strong>未经许可，任何人不得擅自进入地下室档案室。</strong>档案室钥匙由校务办公室统一保管。</p>"
+  },
+  8: {
+    title: "新同善楼落成启用",
+    date: "2015年08月",
+    dept: "校务档案",
+    content: "<p>新同善楼于2015年8月14日通过竣工验收，8月21日正式投入使用。校务会议决定，新同善楼命名为\"同善楼\"，取校训\"同善共进\"之意。</p><p>新同善楼投入使用后，旧教学楼（旧同善楼）于2015年8月22日起开始封闭、封存待拆。待拆期间，旧教学楼天台及以上区域暂不开放。地下室档案室自8月8日起正式启用，存放学校历年重要档案资料。</p><p>新旧教学楼之间以连廊相接，形成\"品\"字形校园格局。新同善楼的启用极大改善了办学条件，为学校未来发展奠定了坚实基础。</p>"
+  },
+  9: {
+    title: "学生公寓（宿舍楼）建成投入使用",
+    date: "2015年08月",
+    dept: "总务档案",
+    content: "<p>学生公寓（宿舍楼）于2015年8月建成，8月25日正式投入使用，是全校最新的建筑之一。公寓楼共六层，建筑面积约6000平方米，可容纳1200名学生住宿。</p><p>每层设24间宿舍，每间住6人，配有独立卫生间、洗漱台、储物柜和空调。每层走廊两端各设一间公共洗浴室和开水间，24小时供应热水。</p><p>宿舍楼实行封闭式管理，一楼设值班室，由专职生活老师24小时轮班值守。学生出入需刷卡登记，外来人员未经许可不得进入。</p>"
+  },
+  10: {
+    title: "全校实行全封闭寄宿制管理",
+    date: "2012年09月",
+    dept: "政教处",
+    content: "<p>自2012年秋季学期起，学校实行全封闭寄宿制管理。周一至周五学生统一住校，周末（周五下午放学后至周日晚自习前）方可离校。</p><p>封闭管理模式要求所有学生在校期间统一着装、统一作息、统一就餐。食堂提供一日三餐，菜谱由营养师制定，确保学生饮食健康。</p><p>该模式的实施有效保障了学生的学习时间，培养了学生的独立生活能力和自我管理能力，也得到了大部分家长的支持与配合。</p>"
+  },
+  11: {
+    title: "档案室搬迁至新同善楼地下室",
+    date: "2015年08月",
+    dept: "教务处",
+    content: "<p>因新同善楼投入使用，学校档案室于2015年8月8日完成搬迁工作，从旧教学楼东侧附楼一楼搬迁至新同善楼（同善楼）地下室。</p><p>搬迁过程中，<strong>部分早期荣誉证书及建校初期档案（1976-1990年）因纸质老化、虫蛀及受潮，出现破损及缺失情况</strong>。目前档案室工作人员正在逐一登记造册，尽力修复。</p><p>如需查阅早期档案，请先至教务处登记，由专人陪同进入地下室档案室。查阅期间请严格遵守档案管理制度，不得拍照、复印或带离。</p>"
+  },
+  12: {
+    title: "获评\"湖南省示范性普通高级中学\"",
+    date: "2001年11月",
+    dept: "校务档案",
+    content: "<p>学校于2001年10月通过湖南省教育厅评估验收，11月正式获评\"湖南省示范性普通高级中学\"，成为会同县唯一一所省级示范中学。</p><p>评估专家组对学校的办学理念、师资队伍、教学设施、管理水平等方面给予了高度评价。此次获评是学校发展史上的重要里程碑。</p><p>获评示范校后，学校在招生政策、师资培训、经费投入等方面获得了更多支持，进一步推动了办学质量的提升。</p>"
+  },
+  13: {
+    title: "旧教学楼天台封闭及异常声响报告",
+    date: "2015年07月",
+    dept: "政教处",
+    content: "<p>2015年7月中旬，有师生反映，在旧教学楼天台靠近楼梯间区域偶尔听到异常声响。政教处接到报告后，先后三次安排人员排查。</p><p>第一次排查（7月12日）：检查了四楼所有教室及走廊，未发现异常，初步判断为管道内水流声及风压变化所致。第二次排查（7月15日）：邀请县建筑安全检测站专业人员检测，确认建筑结构安全无问题。</p><p>第三次排查（7月18日）：因声响持续，学校决定对四楼靠近楼梯间的两间教室进行封闭处理，张贴\"施工中，禁止入内\"警示标志。该区域封闭后声响报告停止。新同善楼启用后，旧教学楼整体封闭、封存待拆，四楼区域于2015年寒假期间完成封闭、不再使用。</p>"
+  },
+  14: {
+    title: "校园网络全面升级",
+    date: "2015年01月",
+    dept: "总务处",
+    content: "<p>为提升校园信息化水平，学校于2015年1月12日至1月16日进行校园网络升级工程。主干带宽从100M提升至500M，新增WiFi热点20个，覆盖教学楼、图书馆、宿舍楼。</p><p>升级后部署了校园网络安全防护系统，实现了上网行为管理和内容过滤。师生可使用校园账号登录WiFi，账号为工号/学号，初始密码为身份证后六位。</p><p>网络升级为学校信息化教学提供了有力支撑，多媒体教室、电子白板等设备的联网使用更加流畅。</p>"
+  },
+  15: {
+    title: "2015届高考成绩创新高",
+    date: "2015年06月",
+    dept: "教务处",
+    content: "<p>2015届高考成绩揭晓，我校再创佳绩。参考人数156人，一本上线28人，二本上线67人，本科上线率61%，创学校历史新高。</p><p>理科最高分632分（高三3班张同学），文科最高分598分（高三1班李同学）。一本上线人数较2014年增加5人，二本上线人数较2014年增加12人。</p><p>成绩的取得离不开全体高三教师的辛勤付出和同学们的刻苦努力。学校将在教师节庆祝大会上对2015届高三优秀教师团队进行表彰。</p>"
+  }
+};
+
+function openModal(id) {
+  var data = eventData[id];
+  if (!data) return;
+  document.getElementById('modalTitle').textContent = data.title;
+  document.getElementById('modalMeta').innerHTML =
+    '<span>时间：' + data.date + '</span>' +
+    '<span>来源：' + data.dept + '</span>' +
+    '<span>浏览次数：' + (Math.floor(Math.random() * 200) + 50) + '</span>';
+  document.getElementById('modalBody').innerHTML = data.content;
+  document.getElementById('modalOverlay').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+}
+
+// ESC 关闭
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
+
+// 汉堡菜单
+document.querySelector('.hamburger').addEventListener('click', function(e) {
+  e.stopPropagation();
+  this.classList.toggle('active');
+});
+
+document.addEventListener('click', function() {
+  document.querySelector('.hamburger').classList.remove('active');
+});
+</script>
+<script src="logo-data.js"></script>
+<script>
+document.getElementById('logo1').src = LOGO_B64;
+document.getElementById('logo2').src = LOGO_B64;
+</script>
+
+<script src="fragment.js"></script>
+  <script src="search.js"></script>
+<script src="clue.js"></script>
+<script src="phase.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

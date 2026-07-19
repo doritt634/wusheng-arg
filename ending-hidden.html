@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>隐藏结局 · 天台边缘 - 会同县无生中学</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    font-family: "Songti SC", "宋体", "SimSun", "Noto Serif SC", serif;
+    background:
+      radial-gradient(ellipse at 50% 32%, #1a0a08 0%, #0a0404 55%, #000 100%);
+    color: #bfaaa0;
+    font-size: 17px;
+    line-height: 2.05;
+    min-height: 100%;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: hidden;
+  }
+  body::after {
+    content: "";
+    position: fixed; inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at 50% 45%, transparent 50%, rgba(40,0,0,.5) 100%);
+      z-index: 5;
+    }
+
+    /* 隐藏 logo-data.js 对 .stage 内容区自动注入的校徽 */
+    .stage > img.site-emblem-auto, .stage > img.logo-img { display: none !important; }
+    .stage {
+      position: relative;
+    z-index: 2;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 40px 28px 140px;
+    opacity: 0;
+    animation: fadein 2.6s ease forwards;
+  }
+  @keyframes fadein { to { opacity: 1; } }
+
+  .ending-tag {
+    text-align: center;
+    font-size: 12px;
+    letter-spacing: 10px;
+    color: #8b5044;
+    margin-bottom: 6px;
+    text-indent: 10px;
+  }
+  .rule {
+    width: 54px; height: 1px;
+    background: #6b3a2e;
+    margin: 0 auto 38px;
+    opacity: .7;
+  }
+  .title {
+    text-align: center;
+    font-size: 26px;
+    font-family: "黑体","SimHei",sans-serif;
+    letter-spacing: 8px;
+    color: #c46044;
+    margin-bottom: 12px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: #6b3a2e;
+    margin-bottom: 40px;
+  }
+  .story p { margin-bottom: 22px; text-align: justify; }
+  .story .blood {
+    color: #d47050;
+  }
+  .story .cold {
+    color: #908078;
+  }
+  /* 真相段落——更窄的行宽，像审讯记录 */
+  .truth-block {
+    margin: 28px 0;
+    padding: 20px 24px;
+    border-left: 3px solid #5a2a1e;
+    background: rgba(60,20,15,.12);
+    font-size: 16px;
+    line-height: 2;
+  }
+  .truth-block p { margin-bottom: 14px; }
+  .truth-block p:last-child { margin-bottom: 0; }
+  /* 低语——像从天台风里传来的 */
+  .whisper {
+    color: #a08070;
+    font-style: italic;
+    letter-spacing: .5px;
+    text-shadow: 0 0 18px rgba(160,128,112,.25);
+    border-left: 2px solid #4a2820;
+    padding-left: 18px;
+    margin: 28px 0;
+  }
+  .whisper q { quotes: """ """"; }
+  /* 隐藏结局：血字「对不起，宏宇」浮现 + 颤抖（无闪烁、无手） */
+  #apologyLine {
+    color: #8b0000;
+    font-family: "楷体","KaiTi",serif;
+    font-style: normal;
+    letter-spacing: 3px;
+    text-shadow: 0 0 8px rgba(139,0,0,.5);
+    border-left: none;
+    padding-left: 0;
+    opacity: 0;
+    animation: apologyIn 2s ease forwards, apologyTremble .34s infinite 2s;
+  }
+  @keyframes apologyIn { to { opacity: 1; } }
+  @keyframes apologyTremble {
+    0%,100% { transform: translate(0,0); }
+    25% { transform: translate(-1px,1px); }
+    50% { transform: translate(1px,-1px); }
+    75% { transform: translate(-1px,-1px); }
+  }
+  .divider {
+    text-align: center;
+    color: #3a2018;
+    font-size: 18px;
+    letter-spacing: 14px;
+    margin: 36px 0;
+  }
+  /* 天台场景——居中、窄栏、像电影字幕 */
+  .rooftop {
+    margin-top: 40px;
+    padding: 28px 30px;
+    border: 1px solid #3a2018;
+    background: linear-gradient(180deg, rgba(30,10,8,.2) 0%, rgba(15,5,4,.35) 100%);
+    text-align: center;
+    font-size: 15.5px;
+    letter-spacing: 1.5px;
+    line-height: 2.2;
+    color: #a08878;
+  }
+  .rooftop .rt-label {
+    font-size: 11px;
+    letter-spacing: 6px;
+    color: #6b4032;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+  }
+  .fin {
+    margin-top: 44px;
+    padding: 20px 24px;
+    border: 1px solid #3a2018;
+    background: rgba(45,18,12,.18);
+    text-align: center;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #9a7868;
+    line-height: 2;
+  }
+  .fin b { color: #c46a48; font-weight: normal; }
+
+  .back {
+    position: fixed;
+    left: 26px;
+    bottom: 26px;
+    z-index: 10;
+    font-family: "黑体", "SimHei", sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: #8a6858;
+    text-decoration: none;
+    padding: 8px 14px;
+    border: 1px solid rgba(138,104,88,.25);
+    background: rgba(8,4,2,.5);
+    transition: color .35s, border-color .35s;
+  }
+  .back:hover {
+    color: #c48868;
+    border-color: rgba(196,136,104,.45);
+  }
+
+  /* 脉冲红光——微妙的呼吸效果 */
+  @keyframes pulse-red {
+    0%,100% { box-shadow: inset 0 0 40px rgba(120,30,20,0); }
+    50%     { box-shadow: inset 0 0 60px rgba(120,30,20,.06); }
+  }
+  .stage { animation: fadein 2.6s ease forwards, pulse-red 8s ease-in-out infinite; }
+
+  @media (max-width: 540px) {
+    body { font-size: 15.5px; line-height: 1.95; }
+    .stage { padding: 40px 20px 130px; }
+    .title { font-size: 22px; letter-spacing: 5px; }
+    .truth-block { padding: 16px 18px; font-size: 15px; }
+    .rooftop { padding: 22px 18px; font-size: 14.5px; }
+  }
+
+/* ========== 底部免责/版权灰框 ========== */
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #1a1a1a; color: #6b6b6b; text-align: center; padding: 6px 16px 5px; font-family: "宋体", "SimSun", serif; }
+.disclaimer .dis-text { font-size: 10px; letter-spacing: .3px; color: #555; }
+.disclaimer .copy { margin-top: 3px; font-size: 10px; color: #555; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .3px; }
+</style>
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+  <main class="stage">
+    <div class="ending-tag">隐 藏 结 局</div>
+    <div class="rule"></div>
+
+    <div class="title">天 台 边 缘</div>
+    <div class="subtitle">· 真 相 ·</div>
+
+    <div class="story">
+      <p>贾义正发完那段话后，对话框自动跳转了。屏幕上只剩下一行小字：<span class="whisper"><q>加载中…</q></span></p>
+
+      <p>然后页面变了。不是招生咨询页。是一个我从未见过的界面——纯黑的背景，中央只有一行字：</p>
+
+      <div class="truth-block">
+        <p><span class="blood">「你现在已经知道你是谁了。」</span></p>
+        <p>那行字停留了大约五秒钟，然后一行接一行地浮现出来。不是打字机效果，是整段整段地出现，像有人在你眼前展开了一封藏了九年的信。</p>
+      </div>
+
+      <p>我读完了所有内容。</p>
+
+      <p>黄靖川。山沟沟里长大的穷孩子。他想要我的身世，想要和我换，于是他设了一个套，故意激我，故意在我面前把话说得轻飘飘的、像是看不起我似的，好让我那个少爷的傲慢自己跳进去。而我真的跳了。<span class="blood">我太自信，太傲慢，觉得自己怎么都不会输，觉得天下没有我摆不平的事。</span>那一刻，我以为那不过是一次游戏。</p>
+
+      <p>扶乩的盘子转起来的时候，我和他都不知道会落到谁头上。——不。他知道的。从头到尾，他都知道会是我。</p>
+
+      <p>我被抽中了。然后我们换了。我的名字、我家里那扇雕花的大门、那辆每天来接我的车、那张写着"少爷"的床，全都到了他身上。而他那个山沟沟里漏雨的屋子、那双磨破底的解放鞋、那碗永远掺着沙子的苞谷饭，到了我身上。<span class="blood">换的那一刻，我的记忆被抽走了。</span>我不记得自己曾是有钱人家的少爷了。不记得那扇门，不记得那辆车，不记得母亲喊我"少爷"的声音。我以为自己生来就是现在这副样子——穷、无名、可以被任何人忽略。</p>
+
+      <div class="truth-block">
+        <p>何宏宇的坠楼，是另一回事。那是全班三十颗心，一起往一个人身上压的恶念——而我，是第一个把那只手按下去的人，是把那股恶念推到台面上的推手。</p>
+        <p>黄靖川知道一切。从头到尾，他都知道。他明明知道，却一个字也没有说出口。他站在所有人的前面，演着最正直、最干净、最该被信任的好学生......可正是这份"好"！让他成了比谁都更深的那一种坏。明面上的恶有人防，暗地里的恶没人防。</p>
+        <p>何宏宇，是被全班推下去的；而黄靖川，是踩着我的命，站到了我本来该站的地方。</p>
+      </div>
+
+      <p>可黄靖川记得。他住进了我的房子，坐上了我的位子，用着我的名字，却还披着那层"好人"的皮。他知道我是谁，知道他偷走了什么，可他一个字都不会告诉我。</p>
+
+      <p>所以我现在才叫"二狗"。所以我才对一道又酸又甜的绿菜有执念，却怎么也想不起为什么。所以我才会以陌生人的身份，回到这所学校，重新拼凑一段本属于我的、却被我亲手交出去的过去。</p>
+
+      <p><span class="whisper"><q>你不是失去了记忆。你把自己的命，赌给了另一个想当你的坏人。</q></span></p>
+
+      <div class="divider">✦ ✦ ✦</div>
+
+      <div class="rooftop">
+        <div class="rt-label">— 旧同善楼 · 天台 —</div>
+        <p>我不知道自己在那个页面上坐了多久。</p>
+        <p>当我终于关掉浏览器站起身的时候，窗外已经是凌晨三点。</p>
+        <p>我没有开灯。出租屋里的月光从窗帘缝隙里漏进来，在地上画了一条细细的白线。</p>
+        <p>我忽然很想看看那张照片，那张我失忆后第一次回到天台时拍的照片。翻出手机找到它的时候，我的手在抖。不是因为害怕。是因为一种奇怪的、近乎释然的感觉。</p>
+        <p>照片里除了那串网址之外，门的右下角还有一样我之前从未注意到的东西：</p>
+        <p><span class="blood">一行用指甲刻出来的字，很浅，几乎看不清。</span></p>
+        <p>我把照片放大到最大，凑近屏幕辨认。</p>
+        <p>上面写着：</p>
+        <p><span class="whisper" id="apologyLine"><q>对不起，宏宇。</q></span></p>
+        <p>是我的笔迹。</p>
+        <p>是纪佑泽的笔迹。</p>
+        <br>
+        <p>我走到窗边，推开了窗户。</p>
+        <p>北京的风灌进来，带着汽车尾气和深夜便利店关东煮的味道。二十六楼的风很大，吹得窗帘猎猎作响。</p>
+        <p>我双手撑着窗台，往下看了一眼。城市的灯光铺成一片橘红色的海，车流像发光的血细胞在血管里缓慢移动。</p>
+        <p>我想起了何宏宇。</p>
+        <p>不知道他在最后那一刻想的是什么。是解脱？是恐惧？还是和我此刻一样，站在某个边缘，看着下面，心里空荡荡的什么都装不下？</p>
+        <p>我没有跳下去。</p>
+        <p>我只是站在那里，让风吹了很久。</p>
+        <p><span class="cold">很久。</span></p>
+      </div>
+    </div>
+
+    <div class="fin">
+      · 隐藏 结局 · 天 台 边 缘 ·<br>
+      <b>你触碰到了最深的真相。</b><br>
+      何宏宇坠于全班的恶念，你是把那恶念推到台前的手。<br>
+      黄靖川于暗处笑着，用一次扶乩换走了你的人生。<br>
+      你忘了自己曾是有钱人家的少爷；<br>
+      他住进你的名字，记得一切，<br>
+      却演了一辈子好人。
+    </div>
+  </main>
+
+  <a class="back" href="page1.html">← 返回首页</a>
+  <script src="phase.js"></script>
+  <script src="logo-data.js"></script>
+  <script src="fragment.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>校友聚集 - 会同县无生中学</title>
+<script src="logo-data.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"宋体","SimSun",serif;font-size:12px;background: #f5f5f0;color:#333}
+a{color:#333;text-decoration:none}
+a:hover{color:#c93a3a;text-decoration:underline}
+
+/* 地址栏 */
+/* 顶部 */
+.top-bar{background:linear-gradient(to bottom,#3a5a4a,#2d4838);border-bottom:3px solid #edc75a;padding:8px 16px;display:flex;align-items:center;gap:12px}
+.school-logo{width:48px;height:48px;border-radius:50%;border:2px solid #edc75a;overflow:hidden;background:#fff;flex-shrink:0}
+.school-logo img{width:100%;height:100%;object-fit:contain}
+.school-name{color:#fff}
+.school-name .cn { font-family: "华文行楷", "STXingkai", "楷体", "KaiTi", "SimSun", serif; font-size: 26px; font-weight: bold; letter-spacing: 2px; color: #fff; }
+.school-name .en { font-size: 10px; color: #a8c4b8; letter-spacing: 0px; margin-top: 2px; font-family: "Times New Roman", serif; }
+
+/* 导航 */
+.nav-bar{background:linear-gradient(to bottom,#2d4838,#3a5a4a);border-bottom:2px solid #edc75a;padding:0}
+.nav-inner{display:flex;align-items:center}
+.nav-item{padding:8px 14px;color:#fff;font-size:13px;font-family:"黑体","SimHei",sans-serif;cursor:pointer;border-right:1px solid #3a5a4a;white-space:nowrap}
+.nav-item:hover{background:#edc75a;color:#000}
+.nav-item.active{background:#edc75a;color:#000}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;padding-right:8px}
+.search-box{display:flex;align-items:center;background:#fff;border:1px inset #808080;padding:2px}
+.search-box input{border:none;outline:none;font-size:11px;width:100px;padding:1px 4px;font-family:"宋体"}
+.search-btn{background:none;border:none;cursor:pointer;font-size:13px;padding:0 4px;color:#333}
+.hamburger{position:relative;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:18px;height:2px;background:#fff;margin:2px 0}
+.hamburger-menu{display:none;position:absolute;top:100%;right:0;background:#fff;border:2px outset #c0c0c0;min-width:140px;z-index:999;box-shadow:2px 2px 4px rgba(0,0,0,.3)}
+.hamburger-menu a{display:block;padding:6px 12px;font-size:12px;border-bottom:1px solid #ddd;color:#333}
+.hamburger-menu a:hover{background:#3a5a4a;color:#fff}
+.hamburger:hover .hamburger-menu{display:block}
+
+/* 面包屑 */
+.breadcrumb{background:#d4d4d4;border:1px solid #999;padding:6px 16px;font-size:11px;margin:8px 8px;color:#555;font-family:"宋体","SimSun",serif}
+.breadcrumb a{color:#3a5a4a;text-decoration:none}
+.breadcrumb a:hover{color:#c93a3a;text-decoration:underline}
+
+/* 主内容 */
+.main-wrap{display:block;margin:8px}
+.content-box{background:#fff;border:2px outset #c0c0c0;padding:20px}
+
+/* 板块 */
+.section-title{font-size:18px;font-family:"黑体","SimHei",sans-serif;color:#3a5a4a;border-bottom:2px solid #edc75a;padding-bottom:6px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-title .icon{color:#edc75a;font-size:16px}
+.intro-text p{text-indent:2em;line-height:2;margin-bottom:10px;text-align:justify}
+
+/* 列表 */
+.list-line{list-style:none;margin:12px 0}
+.list-line li{padding:9px 12px;border-bottom:1px dashed #ccc;display:flex;gap:10px;line-height:1.7}
+.list-line li:before{content:"■";color:#c93a3a;font-size:10px;flex-shrink:0;margin-top:4px}
+.list-year{color:#3a5a4a;font-weight:bold;min-width:90px;flex-shrink:0}
+.list-year.red{color:#c93a3a}
+.list-line li.li-link{cursor:pointer}
+.list-line li.li-link:hover{background:#f5f5f5}
+.list-line li.li-link:hover .list-year.red{text-decoration:underline}
+
+/* 说明框 */
+.note-box{margin-top:20px;border:1px solid #edc75a;background:#faf5eb;padding:14px 18px;font-size:12px;color:#333;line-height:2}
+.note-box .note-title{font-weight:bold;font-family:"黑体","SimHei",sans-serif;color:#3a5a4a;margin-bottom:6px}
+
+/* 页脚 */
+.footer{background:linear-gradient(to bottom,#3a5a4a,#2d4838);border-top:3px solid #edc75a;padding:16px;color:#cfe3d8;font-size:11px;margin-top:8px}
+.footer-inner{display:flex;align-items:center;gap:16px;padding:0 16px}
+.footer-logo{width:40px;height:40px;border-radius:50%;border:1px solid #edc75a;overflow:hidden;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.footer-logo img{width:90%;height:90%;object-fit:contain}
+.footer-info{flex:1}
+.footer-info .cn{font-size:14px;font-weight:bold;color:#fff;font-family:"黑体","SimHei",sans-serif}
+.footer-info .en{font-size:9px;color:#9bbfae;margin-top:2px}
+.footer-links{text-align:right;line-height:1.8}
+.footer-links a{color:#cfe3d8}
+
+/* ========== 底部免责/版权灰框 ========== */
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #ededed; color: #555; text-align: center; padding: 14px 16px 12px; font-family: "宋体", "SimSun", serif; border-top: 1px solid #ddd; }
+.disclaimer .dis-text { font-size: 11px; letter-spacing: .5px; color: #999; }
+.disclaimer .copy { margin-top: 7px; font-size: 11px; color: #999; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .5px; }
+
+body { max-width: 1200px; margin-left: auto; margin-right: auto; }
+</style>
+<link rel="stylesheet" href="reveal.css?v=4">
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+
+
+
+<!-- 顶部 -->
+<div class="top-bar">
+  <div class="school-logo" id="logo1"></div>
+  <div class="school-name">
+    <div class="cn">会同县无生中学</div>
+    <div class="en">HuiTong County WuSheng Middle School</div>
+  </div>
+  <div class="nav-right">
+    <div class="search-box">
+      <input type="text" placeholder="搜索...">
+      <button class="search-btn">🔍</button>
+    </div>
+    <div class="hamburger">
+      <span></span><span></span><span></span>
+      <div class="hamburger-menu">
+        <a href="page9-xuesheng.html">学生天地</a>
+        <a href="page10-zhaosheng.html">招聘招生</a>
+        <a href="page11-luntan.html">校园论坛</a>
+        <a href="page12-guanyu.html">关于我们</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 主导航 -->
+<div class="nav-bar">
+  <div class="nav-inner">
+    <div class="nav-item" onclick="location.href='page1.html'">首页</div>
+    <div class="nav-item" onclick="location.href='page2-about.html'">学校概况</div>
+    <div class="nav-item" onclick="location.href='page3-notice.html'">通知公告</div>
+    <div class="nav-item" onclick="location.href='page4-events.html'">无生大事</div>
+    <div class="nav-item" onclick="location.href='page5-jiaoyu.html'">教育教学</div>
+    <div class="nav-item" onclick="location.href='page6-mingshi.html'">名师风采</div>
+    <div class="nav-item active">校友聚集</div>
+    <div class="nav-item" onclick="location.href='page8-dangjian.html'">党建园地</div>
+  </div>
+</div>
+
+<!-- 面包屑 -->
+<div class="breadcrumb">
+  <a href="page1.html">首页</a> &gt; 校友聚集
+</div>
+
+<!-- 主内容 -->
+<div class="main-wrap">
+  <div class="content-box">
+    <div class="section-title"><span class="icon">■</span> 校友聚集</div>
+    <div class="intro-text">
+      <p>自建校以来，无生中学培养了数以万计的优秀毕业生，他们遍布各行各业，在祖国建设的各条战线上发光发热。学校校友会定期组织校友联络、返校交流与捐资助学活动，搭建母校与校友之间的桥梁。</p>
+    </div>
+
+    <div class="section-title" style="margin-top:24px"><span class="icon">■</span> 校友分会</div>
+    <ul class="list-line">
+      <li><span class="list-year">1986届</span><span>最早成立的地方校友联络组之一，主要联络早期毕业校友，近年以线上联络为主。</span></li>
+      <li><span class="list-year">1990届</span><span>拟于校庆日举行毕业聚会，目前正在联络同届校友；其中2位校友联系方式暂未能核实，相关信息待补充。</span></li>
+      <li><span class="list-year">1995届</span><span>校友分会稳定运转，常年组织返乡交流与捐资助学活动。</span></li>
+      <li><span class="list-year">2000届</span><span>校友分会活跃，定期举办行业分享会与返校座谈。</span></li>
+      <li><span class="list-year">2003届</span><span>校友分会以同城联络为主，协助母校开展招聘与实习对接。</span></li>
+      <li><span class="list-year">2005届</span><span>校友分会活跃，常年组织返乡支教与校园开放日志愿服务。</span></li>
+      <li><span class="list-year">2008届</span><span>校友分会以长三角地区校友为骨干，定期组织返校活动。</span></li>
+      <li><span class="list-year">2010届</span><span>校友分会以线上联络为主，搭建校友互助与信息共享平台。</span></li>
+      <li><span class="list-year">2012届</span><span>校友分会联络顺畅，定期向母校通报升学与就业情况。</span></li>
+      <li><span class="list-year">2015届</span><span>校友分会成立时间最短，以线上联络为主，定期向母校通报升学与就业情况。</span></li>
+      <li class="li-link" data-phase="3" onclick="location.href='jiukan.html'"><span class="list-year red">2006届</span><span>校友旧刊存档，点击查阅 2006 届《无生校友通讯》留存期刊。<span style="color:#c93a3a">（点击进入）</span></span></li>
+    </ul>
+
+    <div class="section-title" style="margin-top:24px"><span class="icon">■</span> 知名校友</div>
+    <ul class="list-line">
+      <li><span class="list-year">杨建斌</span><span>1988届。县人民医院主任医师，长期从事临床医疗工作。</span></li>
+      <li><span class="list-year">何秀珍</span><span>1992届。某高校副教授，研究方向为应用数学。</span></li>
+      <li><span class="list-year">陈卫东</span><span>1995届。高级工程师，参与多项市政工程设计。</span></li>
+      <li><span class="list-year">刘海燕</span><span>1998届。中学语文教师，曾获市级教学能手称号。</span></li>
+      <li><span class="list-year">周国强</span><span>2001届。基层公务员，现服务于家乡所在县直机关。</span></li>
+      <li><span class="list-year">吴　婷</span><span>2005届。企业人力资源主管，热心校友联络工作。</span></li>
+      <li><span class="list-year">何宏宇</span><span>2006届（理科）。在校期间曾获全国中学生生物竞赛省级一等奖，<span class="anomaly" data-group="he" data-id="he3">后于外地求学工作</span>。本人申请联系方式暂不予公开。</span></li>
+      <li><span class="list-year">陈鑫垚</span><span>2006届（理科）。在校时便颇有人气；大学毕业后投身人力资源领域，凭出众的沟通与凝聚能力，一路晋升至企业人力资源副总裁（HRVP）。</span></li>
+      <li><span class="list-year">罗　静</span><span>2009届（理科）。财务工作者，在校期间获省高中数学联赛市级二等奖。</span></li>
+      <li><span class="list-year">邓　超</span><span>2011届。地质队员，在校期间获省中学生地理竞赛市级二等奖。</span></li>
+      <li><span class="list-year">谢　芳</span><span>2011届。出版社编辑，在校期间获县语文知识竞赛一等奖。</span></li>
+      <li><span class="list-year">彭　丽</span><span>2012届（理科）。三甲医院医师，在校期间获省中学生生物竞赛市级一等奖。</span></li>
+      <li><span class="list-year">张　明</span><span>2012届（理科）。全国高中数学联赛省级二等奖获得者，现从事工程技术工作。</span></li>
+      <li><span class="list-year">袁　野</span><span>2013届（理科）。化工行业技术人员，在校期间获全国中学生化学竞赛省级三等奖。</span></li>
+      <li><span class="list-year">田　甜</span><span>2013届。新闻媒体记者，在校期间获市中学生作文竞赛一等奖。</span></li>
+      <li><span class="list-year">范　斌</span><span>2014届（理科）。物理相关领域研究人员，在校期间获省中学生物理竞赛二等奖。</span></li>
+      <li><span class="list-year">李　华</span><span>2014届（理科）。全国青少年科技创新大赛市级一等奖获得者，现就读相关领域研究生。</span></li>
+      <li><span class="list-year">石　磊</span><span>2015届（理科）。计算机行业从业者，在校期间获省高中数学联赛市级一等奖。</span></li>
+      <li><span class="list-year">潘　雨</span><span>2015届。设计行业从业者，在校期间获全国中小学电脑制作活动省级二等奖。</span></li>
+    </ul>
+
+    <div class="note-box">
+      <div class="note-title">▌校友名录说明</div>
+      <p style="text-indent:2em">1976—1990年早期校友名录，因2015年档案室搬迁，部分纸质底册受潮、虫蛀，姓名信息暂有缺失，校校友会正联合校务办公室逐一补录。2008年以后各届校友名册完整，校友返校可至校务办公室申请查阅。</p>
+      <p style="text-indent:2em;margin-top:6px">1990届校友曾向母校捐赠校史陈列柜一组，现陈列于校史馆入口处，用于展示早期校史实物，欢迎校友返校观展。</p>
+    </div>
+  </div>
+</div>
+
+<!-- 页脚 -->
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-logo" id="logo2"></div>
+    <div class="footer-info">
+      <div class="cn">会同县无生中学</div>
+      <div class="en">HuiTong County WuSheng Middle School</div>
+    </div>
+    <div class="footer-links">
+      邮编: 418300 | 电话: 0745-1234567<br>
+      邮箱: wusheng@edu.cn | 地址: 湖南省怀化市会同县
+    </div>
+  </div>
+</div>
+
+<script>
+function loadLogo(){
+  if(typeof LOGO_B64 !== 'undefined'){
+    var els = document.querySelectorAll('#logo1,#logo2');
+    els.forEach(function(el){
+      el.innerHTML = '<img src="'+LOGO_B64+'" alt="校徽">';
+    });
+  }
+}
+loadLogo();
+document.querySelector('.hamburger').addEventListener('click', function(e){
+  e.stopPropagation();
+  this.classList.toggle('active');
+});
+document.addEventListener('click', function(){
+  document.querySelector('.hamburger').classList.remove('active');
+});
+</script>
+<script src="fragment.js"></script>
+  <script src="search.js"></script>
+<script src="clue.js"></script>
+<script src="reveal.js?v=4"></script>
+  <script src="phase.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>菜品分享 - 会同县无生中学</title>
+<script src="logo-data.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"宋体","SimSun",serif;font-size:12px;background: #f5f5f0;color:#333}
+a{color:#3a5a4a;text-decoration:none}
+a:hover{color:#c93a3a;text-decoration:underline}
+
+/* ========== 顶部校徽与导航栏 (经典深蓝条) ========== */
+.top-bar {
+  background: linear-gradient(to bottom, #3a5a4a, #2d4838);
+  color: #fff; display: flex; align-items: center;
+  padding: 8px 16px; position: relative;
+  border-bottom: 3px solid #edc75a;
+}
+.school-brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.school-logo {
+  width: 48px; height: 48px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  border: 2px solid #edc75a;
+  overflow: hidden; background: #fff; flex-shrink: 0;
+}
+.school-logo .logo-img { width: 100%; height: 100%; object-fit: cover; }
+.school-name { display: flex; flex-direction: column; }
+.school-name .cn { font-family: "华文行楷", "STXingkai", "楷体", "KaiTi", "SimSun", serif; font-size: 26px; font-weight: bold; letter-spacing: 2px; color: #fff; }
+.school-name .en { font-size: 10px; color: #a8c4b8; letter-spacing: 0px; margin-top: 2px; font-family: "Times New Roman", serif; }
+
+.main-nav { display: flex; margin-left: auto; align-items: center; }
+.main-nav a {
+  color: #fff; text-decoration: none; padding: 8px 14px;
+  display: flex; align-items: center; font-size: 13px;
+  border-right: 1px solid #3a5a4a;
+  white-space: nowrap; font-family: "黑体", "SimHei", sans-serif;
+  cursor: pointer; background: transparent;
+}
+.main-nav a:first-child { border-left: none; }
+.main-nav a:hover { background: #edc75a; color: #000; text-decoration: none; }
+.main-nav a.active { background: #edc75a; color: #000; font-weight: bold; }
+
+.top-right { display: flex; align-items: center; gap: 10px; margin-left: 16px; flex-shrink: 0; }
+.search-box { display: flex; align-items: center; background: #fff; border: 1px inset #808080; padding: 2px; }
+.search-box input { border: none; outline: none; padding: 1px 4px; font-size: 11px; width: 100px; font-family: "宋体", "SimSun", serif; }
+.search-box button {
+  background: none; border: none; cursor: pointer;
+  font-size: 13px; padding: 0 4px; color: #333;
+  display: flex; align-items: center; justify-content: center;
+}
+.hamburger { position: relative; cursor: pointer; padding: 4px; }
+.hamburger .bar { width: 18px; height: 2px; background: #fff; margin: 2px 0; }
+.hamburger-dropdown {
+  display: none; position: absolute; top: 100%; right: 0; background: #fff;
+  border: 2px outset #c0c0c0; min-width: 140px; z-index: 999;
+  box-shadow: 2px 2px 4px rgba(0,0,0,.3);
+}
+.hamburger-dropdown a {
+  display: block; padding: 6px 12px; color: #333; text-decoration: none;
+  font-size: 12px; border-bottom: 1px solid #ddd; font-family: "宋体", "SimSun", sans-serif;
+}
+
+/* 面包屑 */
+.breadcrumb{background:#d4d4d4;border:1px solid #999;padding:6px 16px;font-size:11px;margin:8px 8px;color:#555}
+.breadcrumb a{color:#3a5a4a;text-decoration:none}
+
+/* 主内容 */
+.main-wrap{margin:8px 12px;min-height:calc(100vh - 260px)}
+.page-title{font-size:20px;font-family:"黑体","SimHei",sans-serif;color:#3a5a4a;border-bottom:3px solid #edc75a;padding-bottom:8px;margin-bottom:18px}
+
+/* 菜品展示区 */
+.food-section{margin-bottom:24px}
+.section-head{font-size:15px;font-family:"黑体","SimHei",sans-serif;color:#fff;background:linear-gradient(to right,#c93a3a,#cc1f1f);padding:8px 14px;border-left:5px solid #f39c12;margin-bottom:10px}
+.section-head.green{background:linear-gradient(to right,#2e8b6a,#25a233)}
+.section-head.blue{background:linear-gradient(to right,#2980b9,#2471a3)}
+
+/* 菜品卡片网格 */
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:16px}
+.dish-card{background:#fff;border:1px solid #e0e0e0;border-radius:6px;overflow:hidden;transition:transform .15s, box-shadow .15s}
+.dish-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.1)}
+.dish-img{aspect-ratio:4 / 3;background:linear-gradient(135deg,#fef5e7,#fad7a0);display:flex;align-items:center;justify-content:center;font-size:36px;color:#c93a3a;border-bottom:1px solid #f0e0d0}
+.dish-img img{width:100%;height:100%;object-fit:cover;display:block}
+.dish-body{padding:10px 12px}
+.dish-name{font-size:14px;font-weight:bold;color:#333}
+.dish-desc{font-size:11px;color:#777;margin-top:3px;line-height:1.6}
+.dish-tag{display:inline-block;margin-top:6px;padding:1px 8px;border-radius:10px;font-size:10px}
+.tag-hot{background:#ffd6d6;color:#c93a3a}
+.tag-rec{background:#d8f5dc;color:#2e8b6a}
+.tag-new{background:#e3f2fd;color:#2980b9}
+
+/* ===== 配对游戏 ===== */
+.match-game{margin:6px 0 24px}
+.name-card.matched{border-color:#2e8b6a;box-shadow:0 0 0 2px #2e8b6a inset}
+.name-card.dragover{border-color:#3a5a4a;box-shadow:0 0 0 2px #3a5a4a inset}
+.name-card .dish-img img{cursor:grab;touch-action:none;user-select:none;-webkit-user-drag:none;animation:pop .3s}
+.name-card .dish-img img.dragging{cursor:grabbing;opacity:.92;box-shadow:0 10px 24px rgba(0,0,0,.45)}
+@keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+/* 隐藏彩蛋：糖醋排骨（特色菜介绍） */
+.hidden-dish{display:none;margin-top:22px}
+.hidden-dish.show{display:block;animation:fadeIn .8s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+
+/* 营养提示条 */
+.nutrition-tip{padding:12px 16px;background:#fffbf0;border:1px solid #f0e0a0;border-radius:4px;font-size:11px;color:#666;line-height:1.9;margin-top:18px}
+.nutrition-tip strong{color:#c93a3a}
+
+/* 投票区 */
+.vote-box{padding:14px 16px;background:#f0f8ff;border:1px solid #cfe3d8;border-radius:4px;margin-top:18px}
+.vote-box h3{font-size:13px;font-family:"黑体","SimHei",sans-serif;color:#3a5a4a;margin-bottom:8px}
+.vote-option{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px dashed #ddd;cursor:pointer}
+.vote-option:hover{background:#eef3ea}
+.vote-option input{accent-color:#3a5a4a}
+.vote-label{font-size:12px;color:#444}
+.vote-pct{font-size:10px;color:#888;margin-left:auto}
+
+/* 页脚 */
+.site-footer{background:linear-gradient(to bottom,#3a5a4a,#2d4838);color:#c2d6cc;padding:14px 20px;margin-top:24px;text-align:center;font-size:11px;border-top:3px solid #edc75a}
+
+/* ========== 底部免责/版权灰框 ========== */
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #ededed; color: #555; text-align: center; padding: 14px 16px 12px; font-family: "宋体", "SimSun", serif; border-top: 1px solid #ddd; }
+.disclaimer .dis-text { font-size: 11px; letter-spacing: .5px; color: #999; }
+.disclaimer .copy { margin-top: 7px; font-size: 11px; color: #999; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .5px; }
+
+body { max-width: 1200px; margin-left: auto; margin-right: auto; }
+</style>
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+
+
+<!-- ========== 顶部校徽与导航栏 ========== -->
+<div class="top-bar">
+  <div class="school-brand">
+    <div class="school-logo"></div>
+    <div class="school-name">
+      <div class="cn">会同县无生中学</div>
+      <div class="en">HuiTong County Wusheng Middle School</div>
+    </div>
+  </div>
+  <nav class="main-nav">
+    <a href="page1.html">首页</a>
+    <a href="page2-about.html">学校概况</a>
+    <a href="page3-notice.html">通知公告</a>
+    <a href="page4-events.html">无生大事</a>
+    <a href="page5-jiaoyu.html">教育教学</a>
+    <a href="page6-mingshi.html">名师风采</a>
+    <a href="page7-xiaoyou.html">校友聚集</a>
+    <a href="page8-dangjian.html">党建园地</a>
+  </nav>
+  <div class="top-right">
+    <div class="search-box">
+      <input type="text" id="siteSearch" placeholder="搜索..." onkeydown="if(event.key==='Enter')doSiteSearch(document.getElementById('siteSearch').value)">
+      <button aria-label="搜索" onclick="doSiteSearch(document.getElementById('siteSearch').value)">🔍</button>
+    </div>
+    <div class="hamburger" onclick="this.classList.toggle('active')">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="hamburger-dropdown">
+        <a href="page9-xuesheng.html">学生天地</a>
+        <a href="page10-zhaosheng.html">招聘招生</a>
+        <a href="page11-luntan.html">校园论坛</a>
+        <a href="page12-guanyu.html">关于我们</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 面包屑 -->
+<div class="breadcrumb">
+  <a href="page1.html">首页</a> &gt; <span>菜品分享</span>
+</div>
+
+<!-- 主内容 -->
+<div class="main-wrap">
+  <h1 class="page-title"><span style="color:#edc75a;">&#9632;</span> 食堂菜品展示与分享</h1>
+  <p style="color:#666;font-size:12px;margin-bottom:18px;">学校食堂坚持"安全第一、营养均衡、品种丰富"的原则，每日为全校师生提供三餐服务。以下是本周推荐菜品。</p>
+
+  <!-- 配对游戏（按周一~周五分类） -->
+  <div class="match-game" id="matchGame">
+
+    <div class="hidden-dish" id="hiddenDish" data-phase="3">
+      <div class="menu-grid" style="grid-template-columns:minmax(220px,320px)">
+        <div class="dish-card">
+          <div class="dish-img"><img src="tangcupaigu.png" alt="糖醋排骨"></div>
+          <div class="dish-body">
+            <div class="dish-name">糖醋排骨</div>
+            <div class="dish-desc"><b>【味道】</b>表面裹着晶亮的糖醋汁，闻着是熟悉的酸甜，外酥里嫩，是一道让人一口接一口的下饭好菜。<br><b>【做法】</b>猪肋排先用蔬菜汁腌制入味，焯水后裹淀粉炸至微焦；调汁以米醋、白糖为底，酸甜晶亮，在灯下泛着油亮的光。</div>
+          </div>
+        </div>
+      </div>
+      <!-- 记忆碎片：f1（第一章），点击进入日记 -->
+      <div class="frag-trigger" data-frag="f1" id="frag1"><span class="ft-mark"></span>记忆碎片 · 一本旧日记的扉页</div>
+    </div>
+  </div>
+
+  <!-- 营养提示 -->
+  <div class="nutrition-tip">
+    <strong>膳食营养小贴士：</strong><br>
+    - 每日建议摄入：谷薯类 250–400g、蔬菜 300–500g、水果 200–350g、肉蛋水产 120–200g。<br>
+    - 食堂坚持"减油、减盐、减糖"，每周菜谱由校医室审核通过后方可执行。<br>
+    - 如有特殊饮食需求（过敏/清真等），请提前向食堂管理员登记。<br>
+    - 欢迎师生在意见箱或公众号留言提出建议，我们持续改进！
+  </div>
+
+  <!-- 投票区：你最喜欢的菜品？ -->
+  <div class="vote-box">
+    <h3>&#9632; 本周投票：你最期待下周复推的菜品是？</h3>
+    <label class="vote-option"><input type="radio" name="vote" value="hongshaorou"><span class="vote-label">A. 红烧肉</span><span class="vote-pct">32% (156 票)</span></label>
+    <label class="vote-option"><input type="radio" name="vote" value="tangcupaigu"><span class="vote-label">B. 糖醋排骨</span><span class="vote-pct">28% (137 票)</span></label>
+    <label class="vote-option"><input type="radio" name="value" value="suancaiyu"><span class="vote-label">C. 酸菜鱼</span><span class="vote-pct">22% (108 票)</span></label>
+    <label class="vote-option"><input type="radio" name="vote" value="other"><span class="vote-label">D. 其他（留言板补充）</span><span class="vote-pct">18% (87 票)</span></label>
+  </div>
+</div>
+
+<!-- 页脚 -->
+<div class="site-footer">
+  版权所有 &copy; 2015 会同县无生中学 &nbsp;|&nbsp; 地址：湖南省怀化市会同县 &nbsp;|&nbsp;
+  邮箱：wusheng@edu.cn &nbsp;|&nbsp; 电话：0745-1234567
+</div>
+
+<script>
+function loadLogo(){
+  var svg=document.getElementById('foodLogoSvg');
+  if(window.LOGO_DATA && LOGO_DATA.svg){ svg.innerHTML=LOGO_DATA.svg; svg.style.width='48px'; svg.style.height='48px'; }
+}
+loadLogo();
+</script>
+<script>
+(function(){
+  const DISHES=[
+    {dish:'红烧肉',img:'hongshaorou.png',desc:'精选五花肉，慢火炖煮，肥而不腻，色泽红亮。'},
+    {dish:'清炒时蔬',img:'qingchaoshishu.png',desc:'当日新鲜蔬菜，少油轻盐，保留原味清香。'},
+    {dish:'番茄鸡蛋汤',img:'fanqiejidantang.png',desc:'酸甜开胃，蛋花嫩滑，老少皆宜。'},
+    {dish:'香煎鸡排',img:'xiangjianjipai.png',desc:'外酥里嫩，配黑胡椒酱汁。蛋白质充足。'},
+    {dish:'辣椒炒肉',img:'lajiaochaorou.png',desc:'香辣下饭，肉嫩椒脆，是食堂里的下饭神器。'},
+    {dish:'麻婆豆腐',img:'mapodoufu.png',desc:'川式经典，麻辣鲜香，下饭神器。'},
+    {dish:'紫菜虾皮汤',img:'zicaixiapitang.png',desc:'补钙佳选，清淡鲜美，适合晚餐搭配。'},
+    {dish:'土豆炖牛腩',img:'tudoudunniunan.png',desc:'牛肉软烂入味，土豆绵糯，暖身暖心。'},
+    {dish:'宫保鸡丁',img:'gongbaojiding.png',desc:'花生脆嫩鸡肉滑嫩，微辣回甘。'},
+    {dish:'蒜蓉西兰花',img:'suanrongxilanhua.png',desc:'翠绿爽口，富含维生素与膳食纤维。'},
+    {dish:'酸菜鱼',img:'suancaiyu.png',desc:'鱼片嫩滑无刺，酸辣开胃，米饭杀手。'},
+    {dish:'蒸蛋羹',img:'zhengdangeng.png',desc:'嫩滑如布丁，淋上酱油香油，简单美味。'}
+  ];
+  const WEEK=[
+    {day:'周一', items:['红烧肉','清炒时蔬']},
+    {day:'周二', items:['辣椒炒肉','香煎鸡排']},
+    {day:'周三', items:['麻婆豆腐','蒜蓉西兰花','蒸蛋羹']},
+    {day:'周四', items:['土豆炖牛腩','酸菜鱼']},
+    {day:'周五', items:['宫保鸡丁','番茄鸡蛋汤','紫菜虾皮汤']}
+  ];
+
+  const matchGame=document.getElementById('matchGame');
+  const hiddenDish=document.getElementById('hiddenDish');
+  if(!matchGame)return;
+
+  // 按周几分组：把可拖菜卡分类放进各星期菜谱里（玩法不变）
+  const cards=[];
+  WEEK.forEach(w=>{
+    const sec=document.createElement('div'); sec.className='food-section';
+    const head=document.createElement('div');
+    head.className='section-head'+(w.day==='周二'||w.day==='周五'?' green':(w.day==='周三'?' blue':''));
+    head.textContent='本周食谱 · '+w.day;
+    sec.appendChild(head);
+    const grid=document.createElement('div'); grid.className='menu-grid';
+    sec.appendChild(grid);
+    matchGame.insertBefore(sec, hiddenDish);
+    w.items.forEach(name=>{
+      const d=DISHES.find(x=>x.dish===name);
+      if(d) cards.push({d:d, grid:grid});
+    });
+  });
+
+  // 全局错排：每卡初始图片 ≠ 自己菜名（跨星期打乱，玩家自行发现并拖动交换）
+  const keys=cards.map(c=>DISHES.indexOf(c.d));
+  const perm=[...keys];
+  do{
+    for(let i=perm.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[perm[i],perm[j]]=[perm[j],perm[i]];}
+  }while(perm.some((v,i)=>v===keys[i]));
+
+  cards.forEach((c,idx)=>{
+    const card=document.createElement('div');
+    card.className='dish-card name-card'; card.dataset.dish=c.d.dish;
+    const pic=DISHES[perm[idx]];
+    card.innerHTML='<div class="dish-img"><img src="'+pic.img+'" alt="" data-dish="'+pic.dish+'"></div>'+
+      '<div class="dish-body"><div class="dish-name">'+c.d.dish+'</div>'+
+      '<div class="dish-desc">'+c.d.desc+'</div></div>';
+    c.grid.appendChild(card);
+    card.querySelector('.dish-img img').addEventListener('pointerdown',onDown);
+    evalCard(card);
+  });
+
+  function evalCard(card){
+    const img=card.querySelector('.dish-img img');
+    card.classList.toggle('matched', !!(img&&img.dataset.dish===card.dataset.dish));
+  }
+
+  let drag=null,srcCard=null,offX=0,offY=0;
+  function onDown(e){
+    if(drag)return;
+    drag=e.currentTarget; srcCard=drag.closest('.name-card');
+    const r=drag.getBoundingClientRect();
+    offX=e.clientX-r.left; offY=e.clientY-r.top;
+    drag.classList.add('dragging');
+    drag.style.position='fixed';
+    drag.style.width=r.width+'px'; drag.style.height=r.height+'px';
+    drag.style.left=r.left+'px'; drag.style.top=r.top+'px';
+    drag.style.pointerEvents='none';
+    e.preventDefault();
+  }
+  function onMove(e){
+    if(!drag)return;
+    drag.style.left=(e.clientX-offX)+'px';
+    drag.style.top=(e.clientY-offY)+'px';
+    const el=document.elementFromPoint(e.clientX,e.clientY);
+    const card=el?el.closest('.name-card'):null;
+    document.querySelectorAll('.name-card.dragover').forEach(c=>{ if(c!==card) c.classList.remove('dragover'); });
+    if(card&&card!==srcCard) card.classList.add('dragover');
+  }
+  function onUp(e){
+    if(!drag)return;
+    const el=document.elementFromPoint(e.clientX,e.clientY);
+    const target=el?el.closest('.name-card'):null;
+    drag.classList.remove('dragging');
+    drag.style.position='';drag.style.width='';drag.style.height='';
+    drag.style.left='';drag.style.top='';drag.style.pointerEvents='';
+    document.querySelectorAll('.name-card.dragover').forEach(c=>c.classList.remove('dragover'));
+    if(target&&target!==srcCard){
+      const sImg=srcCard.querySelector('.dish-img img');
+      const tImg=target.querySelector('.dish-img img');
+      if(sImg&&tImg){
+        const ts=sImg.src, td=sImg.dataset.dish;
+        sImg.src=tImg.src; sImg.dataset.dish=tImg.dataset.dish;
+        tImg.src=ts; tImg.dataset.dish=td;
+        evalCard(srcCard); evalCard(target);
+        if(document.querySelectorAll('.name-card.matched').length===12) win();
+      }
+    }
+    drag=null; srcCard=null;
+  }
+  document.addEventListener('pointermove',onMove);
+  document.addEventListener('pointerup',onUp);
+
+  function win(){
+    if(window.showUnlock) window.showUnlock();
+  }
+})();
+</script>
+<script src="search.js"></script>
+<script src="fragment.js"></script>
+<script>
+// 解锁绿色糖醋排骨 = 确认「你是纪佑泽」身份，并开放第一章记忆碎片
+function showUnlock(){
+  var rm = document.getElementById('revealMsg');
+  if(rm) rm.style.display = 'block';
+  var hd = document.getElementById('hiddenDish');
+  if(hd) hd.classList.add('show');
+  try{ localStorage.setItem('wbs_foodpuzzle_solved_v1','1'); }catch(e){}
+  // 身份确认门控：原「站长密信」已删除，确认时机改为解锁糖醋排骨
+  if(window.FRAG && FRAG.setKnown) FRAG.setKnown();
+  // fragment.js 在 known=false 时会把所有 .frag-trigger 隐藏，此处重新显现第一章碎片
+  var f1 = document.getElementById('frag1');
+  if(f1) f1.style.display = '';
+}
+// 已解锁过：进入即恢复解锁状态（须在 fragment.js 之后执行，否则碎片会被再次隐藏）
+(function(){
+  try{ if(localStorage.getItem('wbs_foodpuzzle_solved_v1')==='1'){ showUnlock(); } }catch(e){}
+})();
+</script>
+<script>
+// 糖醋排骨处的记忆碎片 f1：经 fragment.js 收集后进入日记并解锁第一章
+(function(){
+  var f1el = document.getElementById('frag1');
+  if(!f1el) return;
+  f1el.addEventListener('click', function(){
+    if(!(window.FRAG && FRAG.known && FRAG.known())) return; // 未确认身份前不显示，也不收集
+    var cur = (window.FRAG.getCollected ? FRAG.getCollected() : []).slice();
+    if(cur.indexOf('f1') < 0) cur.push('f1');
+    var q = '?frag=' + cur.join(',');
+    if(FRAG.known()) q += '&known=1';
+    location.href = 'page13-riji.html' + q;
+  });
+})();
+</script>
+<script src="clue.js"></script>
+<script src="phase.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

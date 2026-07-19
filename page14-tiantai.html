@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="renderer" content="ie-stand">
+<title>旧同善楼顶楼 · 储藏室 - 会同县无生中学</title>
+<link rel="stylesheet" href="clue.css">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:"宋体","SimSun",serif; font-size:13px; background: #f5f5f0; color:#333; }
+.banner { background:linear-gradient(90deg,#c93a3a,#c93a3a); color:#fff; padding:18px 20px; }
+.banner h1 { font-family:"黑体","SimHei",sans-serif; font-size:20px; }
+.banner .sub { font-size:12px; opacity:.85; margin-top:4px; }
+.wrap { max-width:840px; margin:18px auto; padding:0 20px 60px; }
+.panel { background:#fff; border:1px solid #d8e0ea; border-left:4px solid #edc75a; border-radius:4px; padding:16px 18px; margin-bottom:16px; }
+.panel h2 { font-family:"黑体","SimHei",sans-serif; font-size:15px; margin-bottom:8px; color:#3a5a4a; }
+.note { font-size:12px; color:#888; margin-top:6px; line-height:1.6; }
+input[type=text],input[type=password] { padding:5px 8px; border:1px solid #bcc6d2; font-size:13px; font-family:inherit; border-radius:2px; }
+.btn { padding:5px 14px; border:none; background:#c93a3a; color:#fff; cursor:pointer; font-size:13px; border-radius:3px; margin-left:6px; }
+.btn:hover { background:#c93a3a; }
+.msg { font-size:12px; margin-top:6px; min-height:16px; }
+.ok { color:#2e8b6a; } .err { color:#c93a3a; }
+.hidden { display:none; }
+.truth { background:#2d4838; color:#f3e6bf; border:1px solid #edc75a; border-radius:4px; padding:12px 14px; margin-top:10px; font-size:13px; line-height:1.9; }
+.truth b { color:#fff; }
+.truth a { color:#f3e6bf; }
+/* 档案柜解锁：屏幕剧烈抖动 + 真相从柜中爬出 */
+@keyframes cabShake {
+  0%,100% { transform: translate(0,0); }
+  10%,30%,50%,70%,90% { transform: translate(-6px,-4px); }
+  20%,40%,60%,80% { transform: translate(6px,4px); }
+}
+.cab-shake { animation: cabShake .5s; }
+@keyframes cabCrawl { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.cab-truth-in { animation: cabCrawl .6s ease both; }
+
+/* ========== 底部免责/版权灰框 ========== */
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #ededed; color: #555; text-align: center; padding: 14px 16px 12px; font-family: "宋体", "SimSun", serif; border-top: 1px solid #ddd; }
+.disclaimer .dis-text { font-size: 11px; letter-spacing: .5px; color: #999; }
+.disclaimer .copy { margin-top: 7px; font-size: 11px; color: #999; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .5px; }
+
+/* 桌面端版权栏贴近屏幕底部（与移动端一致，不依赖 mobile.css 的媒体查询） */
+body.page-tiantai .disclaimer { position: fixed; bottom: 0; left: 0; right: 0; max-width: 1200px; margin: 0 auto; z-index: 50; }
+body.page-tiantai .wrap { padding-bottom: 64px; }
+
+body { max-width: 1200px; margin-left: auto; margin-right: auto; }
+</style>
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body class="page-tiantai">
+<!-- 顶部校徽与导航栏（与其他页面一致） -->
+<div class="top-bar">
+  <div class="school-logo" id="logo1"></div>
+  <div class="school-name">
+    <div class="cn">会同县无生中学</div>
+    <div class="en">HuiTong County WuSheng Middle School</div>
+  </div>
+  <div class="nav-right">
+    <div class="search-box">
+      <input type="text" id="siteSearch" placeholder="搜索..." onkeydown="if(event.key==='Enter')doSiteSearch(document.getElementById('siteSearch').value)">
+      <button class="search-btn" type="button" aria-label="搜索" onclick="doSiteSearch(document.getElementById('siteSearch').value)">🔍</button>
+    </div>
+    <div class="hamburger">
+      <span></span><span></span><span></span>
+      <div class="hamburger-menu">
+        <a href="page9-xuesheng.html">学生天地</a>
+        <a href="page10-zhaosheng.html">招聘招生</a>
+        <a href="page11-luntan.html">校园论坛</a>
+        <a href="page12-guanyu.html">关于我们</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="nav-bar">
+  <div class="nav-inner">
+    <div class="nav-item" onclick="location.href='page1.html'">首页</div>
+    <div class="nav-item" onclick="location.href='page2-about.html'">学校概况</div>
+    <div class="nav-item" onclick="location.href='page3-notice.html'">通知公告</div>
+    <div class="nav-item" onclick="location.href='page4-events.html'">无生大事</div>
+    <div class="nav-item" onclick="location.href='page5-jiaoyu.html'">教育教学</div>
+    <div class="nav-item" onclick="location.href='page6-mingshi.html'">名师风采</div>
+    <div class="nav-item" onclick="location.href='page7-xiaoyou.html'">校友聚集</div>
+    <div class="nav-item" onclick="location.href='page8-dangjian.html'">党建园地</div>
+  </div>
+</div>
+<div class="breadcrumb">
+  <a href="page1.html">首页</a> &gt; 旧同善楼顶楼 · 储藏室
+</div>
+<div class="banner">
+  <h1>旧同善楼顶楼 · 储藏室</h1>
+  <div class="sub">两道密码锁和一把铁锁，拴住了2005 到 2006 年的全部</div>
+</div>
+
+<div class="wrap">
+
+  <!-- #1 第一道密码 -->
+  <div class="panel">
+    <h2>第一道密码</h2>
+    <p>秘密基地所示的红色标记。</p>
+    <div style="margin-top:10px;">
+      <input type="text" id="doorKey" placeholder="输入密码" onkeydown="if(event.key==='Enter')openDoor()">
+      <button class="btn" onclick="openDoor()">解锁</button>
+    </div>
+    <div class="msg" id="doorMsg"></div>
+  </div>
+
+  <!-- 室内（第一道解开后显示） -->
+  <div class="hidden" id="room">
+    <!-- 信息 + 记忆碎片 -->
+    <div class="panel">
+      <p>同生、同伴、同吃、同睡、<b>同学</b>、<b>同姓</b>、<b>同性</b>。20050930。</p>
+      <div class="frag-trigger" data-frag="f2" id="frag2"><span class="ft-mark"></span>记忆碎片 · 一页被涂抹的笔记</div>
+    </div>
+
+    <!-- #2 第二道密码（档案柜） -->
+    <div class="panel">
+      <h2>第二道密码</h2>
+      <p>名师风采处好像藏着什么</p>
+      <div style="margin-top:10px;">
+        <input type="password" id="cabKey" placeholder="密码" onkeydown="if(event.key==='Enter')openCabinet()">
+        <button class="btn" onclick="openCabinet()">解锁</button>
+      </div>
+      <div class="msg" id="cabMsg"></div>
+      <div class="truth hidden" id="truthEnd"></div>
+    </div>
+
+    <!-- #3 最后一把钥匙：钥匙到手后显示，采集 f5 解锁日记第五章 -->
+    <div class="panel hidden" id="keySpot">
+      <h2>最后一把钥匙</h2>
+      <p>铁闸后那间一直锁着的屋子，如今钥匙在手。推门进去，最后一段记忆就在那里。</p>
+      <div class="frag-trigger" data-frag="f5" id="frag5"><span class="ft-mark"></span>记忆碎片 · 最后的记忆</div>
+    </div>
+  </div>
+
+</div>
+
+<script src="logo-data.js"></script>
+<script src="fragment.js"></script>
+<script src="search.js"></script>
+<script src="clue.js"></script>
+<script>
+function openDoor(){
+  var k = document.getElementById('doorKey').value.trim().toLowerCase();
+  var m = document.getElementById('doorMsg');
+  if(k === '天台见' || k === '同'){
+    document.getElementById('room').classList.remove('hidden');
+    m.textContent = '第一道密码解开了。';
+    m.className = 'msg ok';
+    syncFrag2(); // 第一道密码解开后，立即显示可采集的记忆碎片（不受"已知身份"门控影响）
+    try { localStorage.setItem('wbs_tiantai_door_v1', '1'); } catch(e){} // 持久化：第一道密码已解开
+  } else {
+    m.textContent = '密码不对。';
+    m.className = 'msg err';
+  }
+}
+// 显示/刷新"记忆碎片·f2"：第一道密码解开后即可采集，用于解锁日记第二章
+function syncFrag2(){
+  var f = document.getElementById('frag2');
+  if(!f) return;
+  var have = (window.FRAG && FRAG.getCollected) ? FRAG.getCollected() : [];
+  if(have.indexOf('f2') >= 0){
+    f.classList.add('collected');
+    f.innerHTML = '<span class="ft-mark"></span>已收入记忆碎片';
+  } else {
+    f.classList.remove('collected');
+    f.innerHTML = '<span class="ft-mark"></span>记忆碎片 · 一页被涂抹的笔记';
+  }
+  f.style.display = '';
+}
+function openCabinet(){
+  var k = document.getElementById('cabKey').value.trim();
+  var m = document.getElementById('cabMsg');
+  if(k === '39'){
+    var b = document.getElementById('truthEnd');
+    b.classList.remove('hidden');
+    void b.offsetWidth;            // 强制重排以重启动画
+    b.classList.add('cab-truth-in');
+    document.body.classList.add('cab-shake');
+    setTimeout(function(){ document.body.classList.remove('cab-shake'); }, 500);
+    if(lastKeyFound()){
+      b.innerHTML = '最后一把钥匙已到手。铁闸后的屋里，最后一段记忆正等着你。';
+      revealKeySpot();
+    } else {
+      b.innerHTML = '你需要找到最后一把钥匙。';
+    }
+    m.textContent = '第二道密码已解开。'; m.className = 'msg ok';
+    try { localStorage.setItem('wbs_tiantai_cab_v1', '1'); } catch(e){} // 持久化：第二道密码已解开
+  } else {
+    m.textContent = '密码不对。';
+    m.className = 'msg err';
+  }
+}
+// 是否已拿到最后一把钥匙（在「联系我们」页社区阅览室开 3 号柜时置位）
+function lastKeyFound(){
+  try { return localStorage.getItem('wbs_key_found_v1') === '1'; } catch(e){ return false; }
+}
+// 显示「最后一把钥匙」采集位（最后一段记忆 f5）
+function revealKeySpot(){
+  var ks = document.getElementById('keySpot');
+  if(ks) ks.classList.remove('hidden');
+  syncFrag5();
+}
+// 显示/刷新"记忆碎片·f5"：最后一把钥匙到手后即可采集，用于解锁日记第五章
+function syncFrag5(){
+  var f = document.getElementById('frag5');
+  if(!f) return;
+  var have = (window.FRAG && FRAG.getCollected) ? FRAG.getCollected() : [];
+  if(have.indexOf('f5') >= 0){
+    f.classList.add('collected');
+    f.innerHTML = '<span class="ft-mark"></span>已收入记忆碎片';
+  } else {
+    f.classList.remove('collected');
+    f.innerHTML = '<span class="ft-mark"></span>记忆碎片 · 最后的记忆';
+  }
+  f.style.display = ''; // 强制显示，绕过 fragment.js 的「未确认身份」隐藏
+}
+// 记忆碎片 f2：第一道密码解开后即可采集，采集后进入日记解锁第二章
+(function(){
+  var f = document.getElementById('frag2');
+  if(!f) return;
+  f.addEventListener('click', function(){
+    // 不要求先确认身份——第一道密码解开后这份笔记就能带走
+    var cur = (window.FRAG && window.FRAG.getCollected ? FRAG.getCollected() : []).slice();
+    if(cur.indexOf('f2') < 0) cur.push('f2');
+    // 立即持久化到 localStorage（不依赖 fragment.js 是否缓存/执行），确保重进日记页保持已解锁
+    try {
+      var LS_KEY = 'wbs_frag_v1';
+      var saved = [];
+      try { saved = JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch(e){ saved = []; }
+      if(!Array.isArray(saved)) saved = [];
+      cur.forEach(function(x){ if(saved.indexOf(x) < 0) saved.push(x); });
+      localStorage.setItem(LS_KEY, JSON.stringify(saved));
+    } catch(e){}
+    var q = '?frag=' + cur.join(',');
+    if(window.FRAG && FRAG.known && FRAG.known()) q += '&known=1';
+    location.href = 'page13-riji.html' + q;
+  });
+})();
+// 记忆碎片 f5：最后一把钥匙到手后即可采集，采集后进入日记解锁第五章
+(function(){
+  var f = document.getElementById('frag5');
+  if(!f) return;
+  f.addEventListener('click', function(){
+    // 不要求先确认身份——拿到最后一把钥匙即可带走这段最后的记忆
+    var cur = (window.FRAG && window.FRAG.getCollected ? FRAG.getCollected() : []).slice();
+    if(cur.indexOf('f5') < 0) cur.push('f5');
+    // 立即持久化到 localStorage（不依赖 fragment.js 是否缓存/执行），确保重进日记页保持已解锁
+    try {
+      var LS_KEY = 'wbs_frag_v1';
+      var saved = [];
+      try { saved = JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch(e){ saved = []; }
+      if(!Array.isArray(saved)) saved = [];
+      cur.forEach(function(x){ if(saved.indexOf(x) < 0) saved.push(x); });
+      localStorage.setItem(LS_KEY, JSON.stringify(saved));
+    } catch(e){}
+    var q = '?frag=' + cur.join(',');
+    if(window.FRAG && FRAG.known && FRAG.known()) q += '&known=1';
+    location.href = 'page13-riji.html' + q;
+  });
+})();
+// 持久化：每道密钥解开后都要保存，重新进入页面保持已解锁状态（阶段进度整体也由 phase.js 持久化）
+(function restoreTiantai(){
+  try {
+    if(localStorage.getItem('wbs_tiantai_door_v1') === '1'){
+      var room = document.getElementById('room');
+      if(room) room.classList.remove('hidden');
+      var dm = document.getElementById('doorMsg');
+      if(dm){ dm.textContent = '第一道密码已解开。'; dm.className = 'msg ok'; }
+      syncFrag2(); // 室内与 f2 触发器一并恢复
+    }
+    if(localStorage.getItem('wbs_tiantai_cab_v1') === '1'){
+      var b = document.getElementById('truthEnd');
+      if(b){ b.classList.remove('hidden'); b.innerHTML = lastKeyFound() ? '最后一把钥匙已到手。铁闸后的屋里，最后一段记忆正等着你。' : '你需要找到最后一把钥匙。'; }
+      var cm = document.getElementById('cabMsg');
+      if(cm){ cm.textContent = '第二道密码已解开。'; cm.className = 'msg ok'; }
+      if(lastKeyFound()) revealKeySpot();
+    }
+  } catch(e){}
+})();
+</script>
+<script src="phase.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

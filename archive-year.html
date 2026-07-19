@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>电子档案馆 · 毕业生档案</title>
+  <link rel="stylesheet" href="archive.css">
+<style>
+/* ========== 底部免责/版权灰框 ========== */
+  body { display: flex; flex-direction: column; }
+  .arch-wrap { flex: 1 0 auto; }
+  .disclaimer { width: 100%; max-width: none; margin: 0; background: #260808; color: #e9d9c4; text-align: center; padding: 14px 16px 12px; font-family: "宋体", "SimSun", serif; border-top: 1px solid #5a1414; }
+  .disclaimer .dis-text { font-size: 11px; letter-spacing: .5px; color: #c9a24a; }
+  .disclaimer .copy { margin-top: 7px; font-size: 11px; color: #b89a82; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .5px; }
+</style>
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+  <div class="arch-wrap">
+    <div class="arch-head">
+      <div class="arch-seal">档</div>
+      <div class="arch-title">电子档案馆</div>
+      <div class="arch-sub">毕业生档案库 · 历届名录</div>
+    </div>
+
+    <div class="arch-note">
+      本校历届毕业生的学籍、去向与花名册，按毕业年份封存于此。
+      多数年份的卷宗尚在封存期，唯有标注「可查阅」者，方能调阅。
+    </div>
+
+    <div class="arch-grid" id="yearGrid"></div>
+
+    <div class="arch-foot">
+      <a class="arch-back" id="backLink" href="page1.html">离开档案馆 · 返回学校网站</a>
+    </div>
+  </div>
+
+  <div class="arch-toast" id="toast"></div>
+
+  <script>
+    function carry(u) {
+      var p = new URLSearchParams(location.search);
+      var f = p.get("frag"), k = p.get("known");
+      var add = [];
+      if (f) add.push("frag=" + encodeURIComponent(f));
+      if (k === "1") add.push("known=1");
+      if (!add.length) return u;
+      return u + (u.indexOf("?") > -1 ? "&" : "?") + add.join("&");
+    }
+    document.getElementById("backLink").href = carry("page1.html");
+
+    var YEARS = [
+      { y: "2003", open: false },
+      { y: "2004", open: false },
+      { y: "2005", open: false },
+      { y: "2006", open: true },
+      { y: "2007", open: false },
+      { y: "2008", open: false }
+    ];
+
+    function toast(msg) {
+      var t = document.getElementById("toast");
+      t.textContent = msg; t.classList.add("show");
+      clearTimeout(t._t); t._t = setTimeout(function () { t.classList.remove("show"); }, 1600);
+    }
+
+    var grid = document.getElementById("yearGrid");
+    YEARS.forEach(function (it) {
+      var d = document.createElement("div");
+      d.className = "drawer" + (it.open ? "" : " locked");
+      d.innerHTML =
+        '<div class="handle"></div>' +
+        '<div class="yr">' + it.y + '</div>' +
+        '<div class="label">届毕业生</div>' +
+        (it.open ? '' : '<div class="lock"><svg width="11" height="11" viewBox="0 0 11 11" shape-rendering="crispEdges" fill="#b58a6a"><rect x="2" y="5" width="7" height="5" fill="none" stroke="#b58a6a" stroke-width="1"/><rect x="4" y="2" width="3" height="3" fill="none" stroke="#b58a6a" stroke-width="1"/><rect x="5" y="3" width="1" height="2" fill="#b58a6a"/></svg>封存</div>');
+      d.addEventListener("click", function () {
+        if (it.open) location.href = carry("archive-class.html");
+        else toast("该年份档案尚未解密");
+      });
+      grid.appendChild(d);
+    });
+  </script>
+
+  <script src="phase.js"></script>
+  <script src="logo-data.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

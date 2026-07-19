@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>2006届毕业班聊天室 - 会同县无生中学</title>
+<link rel="stylesheet" href="reveal.css?v=4">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"宋体","SimSun",serif;font-size:12px;background: #f5f5f0;color:#333}
+a{color:#c93a3a;text-decoration:none}
+a:hover{color:#c93a3a;text-decoration:underline}
+.px{shape-rendering:crispEdges;display:inline-block;vertical-align:middle}
+.breadcrumb{background:#d4d4d4;border-bottom:1px solid #999;padding:6px 16px;font-size:11px;color:#555}
+.breadcrumb a{color:#c93a3a}
+.breadcrumb a:hover{color:#c93a3a}
+.chat-page{max-width:640px;margin:18px auto;padding:0 12px}
+.chat-page #chatWrap{}
+.cr-box{border:3px solid #edc75a;box-shadow:4px 4px 12px rgba(0,0,0,.15);background:#fff;border-radius:4px;overflow:hidden}
+.cr-head{background:linear-gradient(to bottom,#c93a3a,#c93a3a);color:#fff;padding:10px 16px;font-size:15px;font-family:"黑体","SimHei",sans-serif;display:flex;align-items:center;gap:6px}
+.cr-head .px{width:16px;height:16px;margin-right:6px;vertical-align:-3px}
+.cr-head .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#2e8b6a;margin:0 4px;animation:blink 1.2s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.cr-members{font-size:11px;color:#888;padding:8px 14px;border-bottom:1px solid #eee}
+.cr-decrypt{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:6px 14px;background:#f3f8ff;border-bottom:1px solid #dce6f2;font-size:11px;color:#2f5040}
+.cr-decrypt .px{width:14px;height:14px;margin-right:2px}
+.cr-decrypt input{width:90px;padding:2px 6px;border:1px solid #cfe3d8;font-size:11px}
+.cr-decrypt button{padding:2px 10px;border:none;background:#c93a3a;color:#fff;cursor:pointer;font-size:11px}
+.cr-decrypt .hint{font-size:11px;color:#bcd0c6}
+.cr-hist-bar{padding:6px 14px;background:#eef3fb;border-bottom:1px solid #dce6f2}
+.cr-hist-btn{font-size:11px;color:#2f5040;background:#fff;border:1px solid #cfe3d8;padding:3px 10px;cursor:pointer;font-family:"宋体","SimSun",serif}
+.cr-hist-btn:hover{background:#f3f8ff}
+.cr-history{display:none;max-height:230px;overflow:auto;padding:8px 14px;background:#fafbfd;border-bottom:1px solid #eee}
+.cr-divider{text-align:center;color:#bcd0c6;font-size:11px;margin:6px 0 10px;font-family:"宋体","SimSun",serif}
+.cr-date{font-size:10px;color:#8a8a8a;margin-bottom:2px;letter-spacing:.5px}
+.cr-log{flex:1;overflow-y:auto;padding:14px;background:#eef3ea;min-height:280px;max-height:56vh}
+.cr-row{display:flex;margin-bottom:10px;align-items:flex-end;gap:8px}
+.cr-row .cav{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-family:"黑体","SimHei",sans-serif;flex-shrink:0;color:#fff;background:#555}
+.cr-row.me{flex-direction:row-reverse}
+.cr-row.me .cav{background:#edc75a;color:#000}
+.cr-row.teacher .cav{background:#c93a3a}
+.cr-bubble{width:fit-content;width:-moz-fit-content;min-width:48px;max-width:76%;padding:8px 11px;border-radius:10px;font-size:13px;line-height:1.8;text-align:left;font-family:"宋体","SimSun",serif;background:#fff;border:1px solid #eef3ea}
+.cr-row.me .cr-bubble{background:#1e90ff;color:#fff;border:none;margin-left:auto}
+.cr-name{font-size:10px;color:#777;margin:0 4px 2px}
+.cr-row.me .cr-name{text-align:right;color:#1e90ff}
+.cr-locked{color:#c93a3a;font-style:italic}
+/* 旧消息存档：三个口令输入框（每框旁带小锁） */
+.cr-lock-hint{font-size:11px;color:#bcd0c6;text-align:center;margin:4px 0 2px;font-family:"宋体","SimSun",serif}
+.cr-lock-rows{padding:4px 2px}
+.cr-lock-row{display:flex;align-items:center;gap:6px;margin:9px 0;font-size:11px;color:#2f5040}
+.cr-lock-row .px{width:15px;height:15px;flex-shrink:0}
+.cr-lock-row input{flex:1;border:1px inset #808080;padding:6px 8px;font-size:12px;font-family:"宋体","SimSun",serif}
+.cr-lock-inputs{display:flex;gap:6px;flex:1;min-width:0}
+.cr-lock-inputs input{flex:1;min-width:0}
+.cr-lock-row button{padding:5px 12px;border:none;background:#edc75a;color:#000;cursor:pointer;font-size:11px;font-family:"宋体","SimSun",serif}
+.cr-lock-row button:hover{background:#a8861f;color:#fff}
+.cr-lock-row .cr-lock-msg{font-size:11px;color:#c93a3a;min-width:56px;flex-shrink:0}
+.cr-lock-row-hint{font-size:10px;color:#bcd0c6;margin:-3px 0 9px 21px;font-family:"宋体","SimSun",serif}
+.cr-row.hist:not(.me) .cr-bubble{background:#eef3ea}
+.cr-bubble.white-bubble{background:#fff !important;color:#333 !important;border:1px solid #d8ded3 !important;}
+/* 解锁聊天中的照片卡片 */
+.cr-photo{width:fit-content;width:-moz-fit-content;max-width:60%;margin:2px 4px 4px;background:#fff;border:1px solid #eef3ea;border-radius:6px;overflow:hidden}
+.cr-photo .ph-img{width:200px;height:150px;object-fit:cover;display:block;border:0;-webkit-touch-callout:default;-webkit-user-drag:auto;pointer-events:auto}
+.cr-photo .ph-save{display:none;color:#c93a3a;text-decoration:underline;font-size:10px}  /* 仅移动端显示，桌面端靠右键另存 */
+.cr-photo .ph-save:hover{text-decoration:none}
+/* 口令4 独立聊天框（区别于普通口令输入框，插入在口令3与口令5之间） */
+.cr4-box{margin:14px 0;padding:10px 12px;border:1px solid #cfd9ea;border-radius:10px;background:#eef3ea;box-shadow:0 1px 3px rgba(60,90,140,.08)}
+.cr4-title{font-size:12px;font-weight:bold;color:#2f5040;padding:2px 4px 8px;font-family:"黑体","SimHei",sans-serif;border-bottom:1px dashed #cfd9ea;margin-bottom:8px}
+.cr-photo .ph-cap{font-size:10px;color:#888;padding:4px 8px;border-top:1px solid #eef3ea;font-family:"宋体","SimSun",serif}
+.cr-input{display:flex;gap:8px;padding:10px 12px;border-top:1px solid #eee;background:#fff}
+.cr-input input{flex:1;border:1px inset #808080;padding:7px 8px;font-size:13px;font-family:"宋体"}
+.cr-input button{background:#c93a3a;color:#fff;border:none;padding:0 18px;cursor:pointer;font-family:"黑体","SimHei",sans-serif;font-size:13px}
+.cr-input button:hover{background:#c93a3a}
+/* 电子结婚请帖卡片 */
+.cr-invite{margin:10px 6px;padding:16px 18px 15px;border-radius:8px;
+  background:linear-gradient(160deg,#fff4ef 0%,#ffe9df 55%,#fdd9c8 100%);
+  border:1px solid #d4a24a;box-shadow:0 2px 10px rgba(160,40,30,.14);position:relative;overflow:hidden}
+.cr-invite::before{content:"囍";position:absolute;right:-6px;bottom:-14px;font-size:74px;
+  color:rgba(197,32,26,.10);font-family:"宋体","SimSun",serif;line-height:1}
+.cr-invite .iv-top{font-size:11px;color:#b07a2e;letter-spacing:3px;text-align:center;margin-bottom:6px;font-family:"宋体","SimSun",serif}
+.cr-invite .iv-xi{text-align:center;font-size:26px;color:#c5201a;font-weight:700;line-height:1;margin:2px 0 8px;font-family:"宋体","SimSun",serif}
+.cr-invite .iv-names{text-align:center;font-size:17px;color:#a11812;font-weight:700;letter-spacing:2px;margin-bottom:8px}
+.cr-invite .iv-names small{font-size:12px;color:#c07a3a;font-weight:400;margin:0 6px}
+.cr-invite .iv-body{font-size:12px;color:#7a4a2e;line-height:1.9;text-align:center;font-family:"宋体","SimSun",serif;position:relative;z-index:1}
+.cr-invite .iv-meta{margin-top:9px;padding-top:9px;border-top:1px dashed #e0b483;font-size:11.5px;color:#8a5a34;text-align:center;line-height:1.8}
+.cr-invite .iv-meta b{color:#a11812;font-weight:700}
+.locked{background:#f5f0e0;border:1px dashed #edc75a;padding:22px 18px;font-size:13px;color:#8a6d3b;text-align:center;margin:18px auto;max-width:640px;line-height:1.9}
+.locked .px{width:16px;height:16px;vertical-align:-3px;margin-right:4px}
+.locked a{color:#c93a3a;font-weight:bold}
+.cr-foot{text-align:center;color:#bcd0c6;font-size:11px;padding:10px 0 4px;font-family:"宋体","SimSun",serif}
+.cr-foot a{color:#bcd0c6}
+
+/* 解密后：旧纸张底色 + 逐条浮现（关键人名不颤抖） */
+#crHistory.cr-oldpaper{background:#f3ead6}
+#crHistory.cr-oldpaper .cr-bubble{background:#fffdf5}
+@keyframes crRowIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+
+/* ========== 底部免责/版权灰框 ========== */
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #ededed; color: #555; text-align: center; padding: 14px 16px 12px; font-family: "宋体", "SimSun", serif; border-top: 1px solid #ddd; }
+.disclaimer .dis-text { font-size: 11px; letter-spacing: .5px; color: #999; }
+.disclaimer .copy { margin-top: 7px; font-size: 11px; color: #999; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .5px; }
+</style>
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+
+<!-- 像素图标精灵 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="ic-chat" viewBox="0 0 16 16">
+      <path d="M2 3 H14 V11 H6 L3 14 V11 H2 Z" fill="#c93a3a"/>
+      <rect x="4" y="5" width="8" height="1" fill="#fff"/>
+      <rect x="4" y="7" width="6" height="1" fill="#fff"/>
+    </symbol>
+    <symbol id="ic-warn" viewBox="0 0 16 16">
+      <path d="M8 2 L15 14 H1 Z" fill="#e0a000"/>
+      <rect x="7" y="6" width="2" height="5" fill="#6b531a"/>
+      <rect x="7" y="12" width="2" height="2" fill="#6b531a"/>
+    </symbol>
+    <symbol id="ic-book" viewBox="0 0 16 16">
+      <path d="M1 3 H8 V13 H1 Z" fill="#c93a3a"/>
+      <path d="M15 3 H8 V13 H15 Z" fill="#c93a3a"/>
+      <rect x="2" y="4" width="5" height="1" fill="#fff"/>
+      <rect x="2" y="6" width="5" height="1" fill="#fff"/>
+      <rect x="2" y="8" width="5" height="1" fill="#fff"/>
+      <rect x="9" y="4" width="5" height="1" fill="#fff"/>
+      <rect x="9" y="6" width="5" height="1" fill="#fff"/>
+      <rect x="9" y="8" width="5" height="1" fill="#fff"/>
+    </symbol>
+    <symbol id="ic-lock" viewBox="0 0 16 16">
+      <rect x="3" y="7" width="10" height="7" rx="1" fill="#edc75a"/>
+      <path d="M5 7 V5 a3 3 0 0 1 6 0 V7" fill="none" stroke="#edc75a" stroke-width="1.5"/>
+      <circle cx="8" cy="10.5" r="1" fill="#6b531a"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- 面包屑 -->
+  <div class="breadcrumb">
+    <a href="page1.html">首页</a> &gt; <a href="page11-luntan.html?from=forum">校园论坛</a> &gt; 2006届毕业班聊天室
+  </div>
+
+<!-- 聊天室主体 -->
+<div class="chat-page" id="chatWrap">
+  <div class="cr-box">
+    <div class="cr-head">
+      <svg class="px"><use href="#ic-chat"/></svg> 2006届毕业班聊天室 <span class="dot"></span> 在线 6
+    </div>
+    <div class="cr-members">在线成员：杜兴 · 刘佳欣 · 张涛 · 林夕 · <span class="anomaly" data-group="yu" data-id="yu2">俞丽（班主任）</span> · 你(jiyouze)</div>
+    <div class="cr-hist-bar"><button type="button" class="cr-hist-btn" onclick="toggleCrHistory()">查看旧消息存档（2005–2006 · 需口令）</button></div>
+    <div class="cr-history" id="crHistory"></div>
+    <div class="cr-log" id="crLog"></div>
+    <div class="cr-input">
+      <input id="crText" placeholder="在 2006届毕业班聊天室 说点什么…" onkeydown="if(event.key==='Enter')sendCr()">
+      <button onclick="sendCr()">发送</button>
+    </div>
+  </div>
+  <div class="cr-foot">2006届毕业班聊天室 · 仅校友可见 · <a href="page11-luntan.html?from=forum">返回论坛</a></div>
+</div>
+
+<!-- 未登录提示 -->
+<div id="lockPanel" class="locked" style="display:none">
+  <svg class="px"><use href="#ic-warn"/></svg> 聊天室仅向已登录的校友开放。<br>
+  请先 <a href="page11-luntan.html">登录校园论坛</a> 后，从「进入聊天室」进入本页。
+</div>
+
+<script src="reveal.js?v=4"></script>
+<script>
+(function(){
+  "use strict";
+  // 与校园论坛（page11）登录态同步：登录后写入 localStorage，或经由 ?from=forum 进入
+  var allowed = false;
+  try { if (localStorage.getItem('wusheng_forum_login') === '1') allowed = true; } catch(e){}
+  if (!allowed && /[?&]from=forum\b/.test(location.search)) allowed = true;
+
+  if (!allowed) {
+    var wrap = document.getElementById('chatWrap');
+    if (wrap) wrap.style.display = 'none';
+    var lock = document.getElementById('lockPanel');
+    if (lock) lock.style.display = 'block';
+    return;
+  }
+
+  function refreshReveal(){ try{ document.dispatchEvent(new Event('reveal:refresh')); }catch(e){} }
+
+  var crSeed = [
+    {type:'invite', groom:'林正元', bride:'王妙涵',
+     date:'2015 年 11 月 15 日 中午 12:18', place:'会同县 · 粟裕大酒店 三楼宴会厅',
+     words:'<strong>相恋于 2005 年 11 月 25 日</strong>。<br>谨订于金秋良辰，与相识十载的老同学结为连理。<br>当年七班的你们，是我们青春里最好的见证——<br>敬备喜筵，恭候各位同窗拨冗光临。'},
+    {who:'林正元', text:'老同学们！我和妙涵定下来了，电子请帖发群里，到时候一定来喝喜酒🍷', locked:false},
+    {who:'王妙涵', text:'嘿嘿，没想到吧～当年的开心果要嫁给咱班的“厂长”啦，等你们哦！', locked:false},
+    {who:'杜兴', text:'恭喜恭喜！好家伙，班对修成正果，必须到场！', locked:false},
+    {who:'刘佳欣', text:'太好了呜呜，班里终于有大喜事了，我提前把红包备上！', locked:false},
+    {who:'张涛', text:'恭喜二位新婚快乐～趁这机会，咱七班也好久没聚齐了。', locked:false},
+    {who:'林夕', text:'提前恭喜啦！妙涵嫁人可得挑最美的日子，正元你可得对人家好一辈子。到时候我一定到场！', locked:false}
+  ];
+
+  /* 2005–2006 在校期间的旧消息存档已移除，改为口令输入框（见 toggleCrHistory） */
+
+  function crRow(role, name, text, locked, date, target, gid, id){
+    var log = document.getElementById(target || 'crLog');
+    var row = document.createElement('div'); row.className = 'cr-row' + (role==='me'?' me':'') + (role==='teacher'?' teacher':'') + (target==='crHistory'?' hist':'');
+    var av = document.createElement('div'); av.className = 'cav'; av.textContent = name.charAt(0);
+    var wrap = document.createElement('div'); wrap.style.flex = '1';
+    if(date){
+      var dt = document.createElement('div'); dt.className = 'cr-date'; dt.textContent = date;
+      wrap.appendChild(dt);
+    }
+    var nm = document.createElement('div'); nm.className = 'cr-name'; nm.textContent = name;
+    var b = document.createElement('div'); b.className = 'cr-bubble';
+    if(gid && id){
+      var anom = document.createElement('span');
+      anom.className = 'anomaly';
+      anom.setAttribute('data-group', gid);
+      anom.setAttribute('data-id', id);
+      anom.textContent = text;
+      b.appendChild(anom);
+    } else {
+      b.textContent = text;
+    }
+    wrap.appendChild(nm); wrap.appendChild(b);
+    row.appendChild(av); row.appendChild(wrap); log.appendChild(row);
+    log.scrollTop = log.scrollHeight;
+  }
+  function crInvite(s, target){
+    var log = document.getElementById(target || 'crLog');
+    var card = document.createElement('div');
+    card.className = 'cr-invite';
+    card.innerHTML =
+      '<div class="iv-top">电 子 喜 帖</div>' +
+      '<div class="iv-xi">囍</div>' +
+      '<div class="iv-names">' + s.groom + '<small>&amp;</small>' + s.bride + '</div>' +
+      '<div class="iv-body">' + s.words + '</div>' +
+      '<div class="iv-meta">🗓 <b>' + s.date + '</b><br>📍 ' + s.place + '</div>';
+    log.appendChild(card);
+    log.scrollTop = log.scrollHeight;
+  }
+  function loadCrPreset(){
+    crSeed.forEach(function(s){
+      if(s.type === 'invite'){ crInvite(s, 'crLog'); return; }
+      crRow(s.role||'peer', s.who, s.text, s.locked, null, 'crLog', s.gid, s.id);
+    });
+    refreshReveal();
+  }
+
+  var crHistoryLoaded = false;
+  var lockRows = [];
+  // 口令配置：parts = 该口令的输入框数量；answer = 各框去非数字后拼接的正确答案（null 表示暂未配置）
+  var PW = [
+    { parts: 2, answer: '1988021820060609' },  // 口令1：人物生日 + 事件时间
+    { parts: 3, answer: 'chenxinyaochenrui20051008' }, // 口令2：人物姓名 + 人物姓名 + 事件时间
+    { parts: 1, answer: '20051125' },          // 口令3：事件时间
+    { parts: 1, answer: '20051129' },          // 口令4：20051129
+    { parts: 2, answer: '1987053020060523' }   // 口令5：人物生日 + 事件时间
+  ];
+  function toggleCrHistory(){
+    var p = document.getElementById('crHistory');
+    if(p.style.display === 'none' || !p.style.display){
+      p.style.display = 'block';
+      if(!crHistoryLoaded){
+        crHistoryLoaded = true;
+        var div = document.createElement('div');
+        div.className = 'cr-divider';
+        div.textContent = '— 2005–2006 在校期间的旧消息存档（已加密） —';
+        p.appendChild(div);
+        var hint = document.createElement('div');
+        hint.className = 'cr-lock-hint';
+        hint.textContent = '※ 旧消息已加密，请输入五道对应口令查看';
+        p.appendChild(hint);
+        var wrap = document.createElement('div');
+        wrap.className = 'cr-lock-rows';
+        var HINTS = { 0: '人物生日+事件时间', 1: '人物姓名+人物姓名+事件时间', 2: '事件时间', 4: '人物生日+事件时间' };
+        for(var i = 0; i < PW.length; i++){
+          (function(idx){
+            if(idx === 3){
+              // 口令4：无输入框渠道，由热帖回复 20051129 跳转 ?unlock=4 激活；
+              // 解锁后以「独立聊天框」展示，插入在陈静发照片（口令3 解锁内容）之后
+              if(getCrUnlocked().indexOf(idx) >= 0){
+                var _a = getCr3Anchor();
+                var _box = buildCr4Box();
+                if(_a && _a.parentNode) _a.parentNode.insertBefore(_box, _a.nextSibling);
+                else wrap.appendChild(_box);
+              }
+              return;
+            }
+            var parts = PW[idx].parts || 1;
+            var row = document.createElement('div');
+            row.className = 'cr-lock-row';
+            row.setAttribute('data-idx', idx);
+            var inputsHtml = '';
+            for(var k = 0; k < parts; k++){
+              inputsHtml += '<input type="password" class="cr-lock-input" placeholder="口令…">';
+            }
+            row.innerHTML =
+              '<svg class="px"><use href="#ic-lock"/></svg>' +
+              '<span class="cr-lock-inputs">' + inputsHtml + '</span>' +
+              '<button type="button">解锁</button>' +
+              '<span class="cr-lock-msg"></span>';
+            row.querySelector('button').addEventListener('click', function(){ doUnlock(idx, row); });
+            wrap.appendChild(row);
+            if(HINTS[idx]){
+              var sh = document.createElement('div');
+              sh.className = 'cr-lock-row-hint';
+              sh.textContent = '提示：' + HINTS[idx];
+              wrap.appendChild(sh);
+            }
+            lockRows[idx] = row;
+            if(idx === 2) row.id = 'cr3Row'; // 口令3 输入行锚点（口令4 框插入到其后）
+            // 若此前已解锁（持久化），重建时直接渲染对应聊天记录
+            if(getCrUnlocked().indexOf(idx) >= 0) unlockSuccess(idx, row);
+          })(i);
+        }
+        p.appendChild(wrap);
+      }
+    } else {
+      p.style.display = 'none';
+    }
+  }
+  function renderUnlockConversation(row){
+    var parent = row.parentNode;
+    var title = document.createElement('div');
+    title.className = 'cr-divider';
+    title.textContent = '— 已解锁：2005 年 11 月 29 日 聊天记录 —';
+    parent.insertBefore(title, row);
+    var lines = [
+      {who:'我', role:'me', text:'杜兴是你说的吧？'},
+      {who:'杜兴', text:'对不起纪哥，我真不是故意的......'},
+      {who:'我', role:'me', text:'你闯大祸了我告诉你，以后的局面会越发不可收拾，要是真出了什么事你就忏悔一辈子去吧！'},
+      {who:'黄靖川', text:'好了好了，别那么大火气。既然事情已经发生了，再说什么都没有意义了，再说了这件事即使杜兴不说，也保不准哪天别人也会发现。佑泽，我们别再参与了好吗？别让自己，也别让他人受伤了。'}
+    ];
+    lines.forEach(function(s){
+      var r = document.createElement('div');
+      r.className = 'cr-row' + (s.role === 'me' ? ' me' : '') + ' hist cr-reveal-row';
+      var av = document.createElement('div'); av.className = 'cav'; av.textContent = s.who.charAt(0);
+      var w = document.createElement('div'); w.style.flex = '1';
+      var nm = document.createElement('div'); nm.className = 'cr-name'; nm.textContent = s.who;
+      var b = document.createElement('div'); b.className = 'cr-bubble'; b.textContent = s.text;
+      w.appendChild(nm); w.appendChild(b);
+      r.appendChild(av); r.appendChild(w);
+      parent.insertBefore(r, row);
+    });
+    parent.removeChild(row);
+  }
+  function buildCr4Box(){
+    var box = document.createElement('div');
+    box.id = 'cr4Box';
+    box.className = 'cr4-box';
+    var g = document.createElement('div');
+    g.className = 'cr4-title';
+    g.textContent = '群：永远的611';
+    box.appendChild(g);
+    var title = document.createElement('div');
+    title.className = 'cr-divider';
+    title.textContent = '— 已解锁：2005 年 11 月 29 日 聊天记录 —';
+    box.appendChild(title);
+    var lines = [
+      {who:'我', role:'me', text:'杜兴是你说的吧？'},
+      {who:'杜兴', text:'对不起纪哥，我真不是故意的......'},
+      {who:'我', role:'me', text:'你闯大祸了我告诉你，以后的局面会越发不可收拾，要是真出了什么事你就忏悔一辈子去吧！'},
+      {who:'黄靖川', text:'好了好了，别那么大火气。既然事情已经发生了，再说什么都没有意义了，再说了这件事即使杜兴不说，也保不准哪天别人也会发现。佑泽，我们别再参与了好吗？别让自己，也别让他人受伤了。'}
+    ];
+    lines.forEach(function(s){
+      var r = document.createElement('div');
+      r.className = 'cr-row' + (s.role === 'me' ? ' me' : '') + ' hist cr-reveal-row';
+      var av = document.createElement('div'); av.className = 'cav'; av.textContent = s.who.charAt(0);
+      var w = document.createElement('div'); w.style.flex = '1';
+      var nm = document.createElement('div'); nm.className = 'cr-name'; nm.textContent = s.who;
+      var b = document.createElement('div');
+      b.className = 'cr-bubble' + ((s.who === '杜兴' || s.who === '黄靖川') ? ' white-bubble' : '');
+      b.textContent = s.text;
+      w.appendChild(nm); w.appendChild(b);
+      r.appendChild(av); r.appendChild(w);
+      box.appendChild(r);
+    });
+    animateCrReveal(box);
+    return box;
+  }
+  function renderUnlockConversation1(row){
+    var parent = row.parentNode;
+    var title = document.createElement('div');
+    title.className = 'cr-divider';
+    title.textContent = '— 已解锁：2005 年 09 月 05 日 聊天记录 —';
+    parent.insertBefore(title, row);
+    var lines = [
+      {who:'杜兴', text:'我靠，真的灵了！'},
+      {who:'陈嘉豪', text:'什么啊。'},
+      {who:'陈鑫垚', text:'？'},
+      {who:'杜兴', text:'何宏宇手机真被收了！'},
+      {who:'郭鑫', text:'啥啊，你们试了啊？'},
+      {who:'杜兴', text:'对啊，我们宿舍都试了！'},
+      {who:'孙悦', text:'真的假的，巧合吧。'},
+      {who:'张涛', text:'就是啊，突击检查被收不是很正常。'},
+      {who:'刘洋', text:'要说也是你们运气不好，要是让我们瑞哥来，他手上拿着手机老师都搜不到。'},
+      {who:'陈瑞', text:'害，没那么神，这玩意就是概率问题。不过昨晚检查倒是挺突然的，来这学校快三年了还没遇到过这个点检查的。'},
+      {who:'王磊', text:'瑞哥说的是，与其猜这猜那的，不如想想你们寝是不是有内鬼吧哈哈哈。'},
+      {who:'马超', text:'哈哈哈哈。'}
+    ];
+    lines.forEach(function(s){
+      var r = document.createElement('div');
+      r.className = 'cr-row' + (s.role === 'me' ? ' me' : '') + ' hist cr-reveal-row';
+      var av = document.createElement('div'); av.className = 'cav'; av.textContent = s.who.charAt(0);
+      var w = document.createElement('div'); w.style.flex = '1';
+      var nm = document.createElement('div'); nm.className = 'cr-name'; nm.textContent = s.who;
+      var b = document.createElement('div'); b.className = 'cr-bubble'; b.textContent = s.text;
+      w.appendChild(nm); w.appendChild(b);
+      r.appendChild(av); r.appendChild(w);
+      parent.insertBefore(r, row);
+    });
+    parent.removeChild(row);
+  }
+  function renderUnlockConversation2(row){
+    var parent = row.parentNode;
+    var title = document.createElement('div');
+    title.className = 'cr-divider';
+    title.textContent = '— 已解锁：2005 年 10 月 08 日 聊天记录 —';
+    parent.insertBefore(title, row);
+    var lines = [
+      {who:'林夕', text:'怎么回事？怎么120都来了？'},
+      {who:'周晓彤', text:'好像有人大课间下楼的时候被推下去了。'},
+      {who:'许洲', text:'下个楼有必要推人吗，是谁被推了啊？太可怜了吧。'},
+      {who:'吴桐', text:'好像是陈瑞。'},
+      {who:'杨雨彤', text:'我们班那个陈瑞啊？'},
+      {who:'李梦琪', text:'对啊就是他。'},
+      {who:'张子涵', text:'。。。。。。'},
+      {who:'许洲', text:'下楼自己也不长眼睛，不知道看着点抓好楼梯扶手，活该。'},
+      {who:'陈静', text:'别在群里提他名字了，晦气。'}
+    ];
+    lines.forEach(function(s){
+      var r = document.createElement('div');
+      r.className = 'cr-row' + (s.role === 'me' ? ' me' : '') + ' hist cr-reveal-row';
+      var av = document.createElement('div'); av.className = 'cav'; av.textContent = s.who.charAt(0);
+      var w = document.createElement('div'); w.style.flex = '1';
+      var nm = document.createElement('div'); nm.className = 'cr-name'; nm.textContent = s.who;
+      var b = document.createElement('div'); b.className = 'cr-bubble'; b.textContent = s.text;
+      w.appendChild(nm); w.appendChild(b);
+      r.appendChild(av); r.appendChild(w);
+      parent.insertBefore(r, row);
+    });
+    parent.removeChild(row);
+  }
+  function renderUnlockConversation5(row){
+    var parent = row.parentNode;
+    var title = document.createElement('div');
+    title.className = 'cr-divider';
+    title.textContent = '— 已解锁：2006 年 05 月 23 日 聊天记录 —';
+    parent.insertBefore(title, row);
+    var lines = [
+      {who:'吴桐', text:'我今天看到俞丽去找贾老师了，你们知道我听到什么了吗？'},
+      {who:'王妙涵', text:'快说快说，别卖关子了。'},
+      {who:'刘佳欣', text:'你听到什么了？'},
+      {who:'吴桐', text:'我听到她让贾老师别教我们那些了！'},
+      {who:'张涛', text:'她是怎么知道的？谁透露出去的？杜兴，是不是你！'},
+      {who:'杜兴', text:'哎呀我冤枉啊，我怎么可能把这个告诉她，告诉她对我没好处啊！'},
+      {who:'郭鑫', text:'谁知道你是不是怕了，没记错的话你也被抽到过吧，那次损失可不小噢~'},
+      {who:'张涛', text:'行了，不管怎么样我们做什么她管得着吗？真是闲的没事干了。'},
+      {who:'高峻豪', text:'早看她不顺眼了，上次把我的笔都收了，害我特地求贾老师再给了我一支。'},
+      {who:'赵磊', text:'要我说干脆把她弄走吧，反正这种事对我们来说不是so easy。'},
+      {who:'马超', text:'我觉得可以。'},
+      {who:'杨帆', text:'附议。'},
+      {who:'廉凡', text:'+1'},
+      {who:'胡斌', text:'+1'}
+    ];
+    lines.forEach(function(s){
+      var r = document.createElement('div');
+      r.className = 'cr-row' + (s.role === 'me' ? ' me' : '') + ' hist cr-reveal-row';
+      var av = document.createElement('div'); av.className = 'cav'; av.textContent = s.who.charAt(0);
+      var w = document.createElement('div'); w.style.flex = '1';
+      var nm = document.createElement('div'); nm.className = 'cr-name'; nm.textContent = s.who;
+      var b = document.createElement('div'); b.className = 'cr-bubble'; b.textContent = s.text;
+      w.appendChild(nm); w.appendChild(b);
+      r.appendChild(av); r.appendChild(w);
+      parent.insertBefore(r, row);
+    });
+    parent.removeChild(row);
+  }
+  function renderUnlockConversation3(row){
+    var parent = row.parentNode;
+    var title = document.createElement('div');
+    title.className = 'cr-divider';
+    title.textContent = '— 已解锁：2005 年 11 月 25 日 聊天记录 —';
+    parent.insertBefore(title, row);
+    // 陈静发送的照片卡片
+    var ph = document.createElement('div');
+    ph.className = 'cr-row hist cr-reveal-row';
+    var av = document.createElement('div'); av.className = 'cav'; av.textContent = '陈';
+    var pw = document.createElement('div'); pw.style.flex = '1';
+    var pnm = document.createElement('div'); pnm.className = 'cr-name'; pnm.textContent = '陈静';
+    var card = document.createElement('div'); card.className = 'cr-photo';
+    card.innerHTML = '<img class="ph-img" src="chenjing.png" alt="陈静 发送的照片">' +
+      '<div class="ph-cap">陈静 发送的照片 · <a class="ph-save" href="chenjing.png" target="_blank" download="陈静发送的照片.png">保存图片</a></div>';
+    pw.appendChild(pnm); pw.appendChild(card);
+    ph.appendChild(av); ph.appendChild(pw);
+    parent.insertBefore(ph, row);
+    // 陈静的发言
+    var r = document.createElement('div');
+    r.className = 'cr-row hist cr-reveal-row';
+    r.id = 'cr3End'; // 口令4 独立聊天框将插入到该节点之后
+    var av2 = document.createElement('div'); av2.className = 'cav'; av2.textContent = '陈';
+    var w = document.createElement('div'); w.style.flex = '1';
+    var nm = document.createElement('div'); nm.className = 'cr-name'; nm.textContent = '陈静';
+    var b = document.createElement('div'); b.className = 'cr-bubble'; b.textContent = '快看快看，芷蔓和林正元这对小情侣又腻歪在一起咯~';
+    w.appendChild(nm); w.appendChild(b);
+    r.appendChild(av2); r.appendChild(w);
+    parent.insertBefore(r, row);
+    parent.removeChild(row);
+  }
+  // 已解锁的口令索引持久化（localStorage），刷新/退出后重新进入仍保留记录
+  var CR_UNLOCK_STORE = 'wbs_cr_unlock_v1';
+  function getCrUnlocked(){
+    try { return JSON.parse(localStorage.getItem(CR_UNLOCK_STORE) || '[]'); } catch(e){ return []; }
+  }
+  function addCrUnlocked(idx){
+    var a = getCrUnlocked();
+    if(a.indexOf(idx) < 0) a.push(idx);
+    try { localStorage.setItem(CR_UNLOCK_STORE, JSON.stringify(a)); } catch(e){}
+  }
+  // 逐条浮现动画（解密后）
+  function animateCrReveal(root){
+    if(!root) return;
+    var rows = root.querySelectorAll('.cr-reveal-row');
+    for(var i=0;i<rows.length;i++){
+      rows[i].style.animation = 'crRowIn .5s ease both';
+      rows[i].style.animationDelay = (i * 0.16) + 's';
+      rows[i].classList.remove('cr-reveal-row');
+    }
+  }
+  function unlockSuccess(idx, row){
+    row.setAttribute('data-unlocked', '1');
+    addCrUnlocked(idx);
+    var hint = row.nextElementSibling; // 输入框下方那行提示，解锁后一并移除
+    if(idx === 0) renderUnlockConversation1(row);
+    else if(idx === 1) renderUnlockConversation2(row);
+    else if(idx === 2) renderUnlockConversation3(row);
+    else if(idx === 4) renderUnlockConversation5(row);
+    else renderUnlockConversation(row);
+    if(hint && hint.classList && hint.classList.contains('cr-lock-row-hint')) hint.parentNode.removeChild(hint);
+    // 解密后视觉（改动后）：旧纸张底色 + 逐条浮现（关键人名不颤抖）
+    var hist = document.getElementById('crHistory');
+    if(hist){ hist.classList.add('cr-oldpaper'); animateCrReveal(hist); }
+  }
+  function doUnlock(idx, row){
+    if(row.getAttribute('data-unlocked') === '1') return;
+    var cfg = PW[idx];
+    if(cfg && cfg.answer){
+      var inputs = row.querySelectorAll('.cr-lock-inputs input');
+      var vals = [];
+      for(var n = 0; n < inputs.length; n++){ vals.push(inputs[n].value.replace(/[^a-zA-Z0-9]/g, '')); }
+      var ok = false;
+      if(idx === 1){
+        // 口令2：前两个框答案可互换（人物姓名顺序不限），第三个固定为事件时间 20051008
+        var third = vals[2] || '';
+        var pair = [vals[0], vals[1]].sort().join('|');
+        var want = ['chenrui', 'chenxinyao'].sort().join('|');
+        if(third === '20051008' && pair === want) ok = true;
+      } else {
+        ok = vals.join('') === cfg.answer;
+      }
+      if(ok){
+        unlockSuccess(idx, row);
+        return;
+      }
+    }
+    var msg = row.querySelector('.cr-lock-msg');
+    if(msg){ msg.textContent = '口令错误'; msg.style.color = '#c93a3a'; }
+  }
+  // 口令4 独立聊天框应插入到「陈静发照片（口令3 解锁内容）」之后
+  function getCr3Anchor(){
+    var end = document.getElementById('cr3End');   // 口令3 已解锁：照片后陈静气泡
+    if(end) return end;
+    var row = document.getElementById('cr3Row');    // 口令3 未解锁：其输入行
+    return row || lockRows[4];
+  }
+  function autoUnlockFourth(){
+    var idx = 3;
+    if(getCrUnlocked().indexOf(idx) >= 0) return; // 已持久化解锁，loop 已渲染独立聊天框
+    addCrUnlocked(idx);
+    var wrap = document.querySelector('#crHistory .cr-lock-rows');
+    if(!wrap || document.getElementById('cr4Box')) return;
+    var box = buildCr4Box();
+    var a = getCr3Anchor();
+    if(a && a.parentNode) a.parentNode.insertBefore(box, a.nextSibling);
+    else wrap.appendChild(box);
+  }
+  function sendCr(){
+    var inp = document.getElementById('crText');
+    var t = inp.value.trim();
+    if(!t) return;
+    inp.value = '';
+    crRow('me', 'jiyouze', t, false);
+  }
+
+  // 暴露给 onclick
+  window.toggleCrHistory = toggleCrHistory;
+  window.sendCr = sendCr;
+
+  loadCrPreset();
+
+  // 来自帖子新消息弹窗的自动解锁（?unlock=4）：自动展开旧消息面板并解锁第四条口令
+  if(/[?&]unlock=4\b/.test(location.search)){
+    toggleCrHistory();
+    autoUnlockFourth();
+  }
+})();
+</script>
+<script src="phase.js"></script>
+  <script src="logo-data.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

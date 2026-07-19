@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>校友旧刊 - 会同县无生中学</title>
+<link rel="stylesheet" href="clue.css">
+<style>
+  .answer-box{display:inline-block;min-width:260px;min-height:40px;padding:8px 12px;border:2px dashed #3a5a4a;border-radius:6px;background:#fff;font-family:'Courier New',monospace;font-size:18px;letter-spacing:2px;color:#3a5a4a;margin:6px 0 14px;word-break:break-all}
+  .keyboard{display:flex;flex-wrap:wrap;gap:6px;max-width:480px;margin-bottom:14px}
+  .key{width:42px;height:42px;border:1px solid #b9c4d6;border-radius:6px;background:#eef3ea;font-size:16px;font-weight:bold;color:#3a5a4a;cursor:pointer}
+  .key:hover{background:#e3ebf6}
+  .key:active{background:#cdd9ea}
+  .caesar-actions{display:flex;gap:10px}
+  .btn.ghost{background:#eef1f6;border-color:#c2ccda;color:#33475f}
+  .lock-note{margin:14px 0;padding:14px 16px;border:1px dashed #edc75a;background:#fff8e6;color:#7a5a10;border-radius:6px;font-size:13px;line-height:1.8;font-family:'黑体','SimHei',sans-serif}
+  /* 记忆碎片收集点（第三章），解谜后浮现 */
+  .f3-trigger{display:inline-block;margin-top:14px;padding:8px 14px;border:1px solid #2e8b6a;border-radius:4px;background:#eafff0;color:#1a7a2e;cursor:pointer;font-family:'黑体','SimHei',sans-serif;font-size:13px}
+  .f3-trigger.collected{background:#e8f5e9;color:#888;border-color:#bbb;cursor:default}
+
+/* ========== 底部免责/版权灰框 ========== */
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #ededed; color: #555; text-align: center; padding: 14px 16px 12px; font-family: "宋体", "SimSun", serif; border-top: 1px solid #ddd; }
+.disclaimer .dis-text { font-size: 11px; letter-spacing: .5px; color: #999; }
+.disclaimer .copy { margin-top: 7px; font-size: 11px; color: #999; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .5px; }
+
+body { max-width: 1200px; margin-left: auto; margin-right: auto; }
+</style>
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+
+
+<!-- 顶部 -->
+<div class="top-bar">
+  <div class="school-logo" id="logo1"></div>
+  <div class="school-name">
+    <div class="cn">会同县无生中学</div>
+    <div class="en">HuiTong County WuSheng Middle School</div>
+  </div>
+  <div class="nav-right">
+    <div class="search-box">
+      <input type="text" placeholder="搜索...">
+      <button class="search-btn" type="button" aria-label="搜索"><svg width="13" height="13" viewBox="0 0 13 13" shape-rendering="crispEdges" fill="#333" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="8" height="8" fill="none" stroke="#333" stroke-width="1"/><rect x="3" y="3" width="4" height="4" fill="#333"/><rect x="8" y="8" width="4" height="2" fill="#333"/><rect x="9" y="9" width="2" height="4" fill="#333"/></svg></button>
+    </div>
+    <div class="hamburger">
+      <span></span><span></span><span></span>
+      <div class="hamburger-menu">
+        <a href="page2-about.html">学校概况</a>
+        <a href="page9-xuesheng.html">学生天地</a>
+        <a href="page10-zhaosheng.html">招聘招生</a>
+        <a href="page11-luntan.html">校园论坛</a>
+        <a href="page12-guanyu.html">关于我们</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 主导航 -->
+<div class="nav-bar">
+  <div class="nav-inner">
+    <div class="nav-item" onclick="location.href='page1.html'">首页</div>
+    <div class="nav-item" onclick="location.href='page2-about.html'">学校概况</div>
+    <div class="nav-item" onclick="location.href='page3-notice.html'">通知公告</div>
+    <div class="nav-item" onclick="location.href='page4-events.html'">无生大事</div>
+    <div class="nav-item" onclick="location.href='page5-jiaoyu.html'">教育教学</div>
+    <div class="nav-item" onclick="location.href='page6-mingshi.html'">名师风采</div>
+    <div class="nav-item" onclick="location.href='page7-xiaoyou.html'">校友聚集</div>
+    <div class="nav-item" onclick="location.href='page8-dangjian.html'">党建园地</div>
+  </div>
+</div>
+<!-- 面包屑 -->
+<div class="breadcrumb"><a href="page1.html">首页</a> &gt; 校友聚集 &gt; 校友旧刊</div>
+
+<div class="clue-main">
+  <div class="clue-card">
+    <div class="clue-title"><span class="ic">■</span> 校友旧刊</div>
+    <div class="clue-sub">2006 届某期《无生校友通讯》的页边，有一段用"替换法"写下的字。</div>
+    <h2 style="font-family:'黑体';color:#3a5a4a;margin-bottom:8px">页边密文</h2>
+    <div id="caesarLock" class="lock-note" style="display:none">本页密文已被封印，暂时无法翻开。</div>
+    <div id="caesarPuzzle">
+      <p>旧刊页边有一段用替换法写下的字。</p>
+      <div class="cipher" id="cipher">ZKDW LV WKH UHODWLRQVKLS EHWZHHQ EDL CKL PDQ DQG OLQ CKHQJBXDQ?</div>
+
+      <div class="answer-box" id="answerBox"></div>
+      <div class="keyboard" id="keyboard"></div>
+      <div class="caesar-actions">
+        <button class="btn ghost" type="button" onclick="delChar()">删除</button>
+        <button class="btn ghost" type="button" onclick="clearAnswer()">清空</button>
+        <button class="btn gold" type="button" onclick="submitAnswer()">确认</button>
+      </div>
+      <div class="msg" id="caesarMsg"></div>
+      <div class="truth hidden" id="caesarTruth"></div>
+      <div id="fragHolder"></div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-logo" id="logo2"></div>
+    <div class="footer-info"><div class="cn">会同县无生中学</div><div class="en">HuiTong County WuSheng Middle School</div></div>
+    <div class="footer-links"><a href="page1.html">首页</a> · <a href="page12-guanyu.html">关于我们</a></div>
+  </div>
+</div>
+
+<script src="logo-data.js"></script>
+<script>if (window.LOGO_B64) { document.getElementById("logo1").src = LOGO_B64; document.getElementById("logo2").src = LOGO_B64; }</script>
+<script src="fragment.js"></script>
+  <script src="search.js"></script>
+<script src="clue.js"></script>
+<script>
+var ANSWER = "qingmeizhuma";
+var answerInput = "";
+
+function buildKeyboard(){
+  var kb = document.getElementById("keyboard");
+  var html = "";
+  for(var i = 0; i < 26; i++){
+    var L = String.fromCharCode(65 + i);
+    html += '<button class="key" type="button" data-l="' + L + '">' + L + '</button>';
+  }
+  kb.innerHTML = html;
+  var keys = kb.querySelectorAll(".key");
+  for(var j = 0; j < keys.length; j++){
+    keys[j].addEventListener("click", function(){ typeChar(this.getAttribute("data-l")); });
+  }
+}
+function typeChar(l){ answerInput += l.toLowerCase(); renderAnswer(); }
+function delChar(){ answerInput = answerInput.slice(0, -1); renderAnswer(); }
+function clearAnswer(){ answerInput = ""; renderAnswer(); }
+function renderAnswer(){
+  var box = document.getElementById("answerBox");
+  box.textContent = answerInput;
+}
+var STORE = "wbs_caesar_solved_v1";
+function isSolved(){
+  try { return localStorage.getItem(STORE) === "1"; } catch(e){ return false; }
+}
+function showSolved(){
+  var m = document.getElementById("caesarMsg");
+  m.textContent = "此页密文已解开。"; m.className = "msg ok";
+  document.getElementById("answerBox").style.display = "none";
+  document.getElementById("keyboard").style.display = "none";
+  var act = document.querySelector(".caesar-actions");
+  if(act) act.style.display = "none";
+  renderF3();
+}
+function collectF3(){
+  var cur = (window.FRAG && window.FRAG.getCollected) ? window.FRAG.getCollected() : [];
+  if(cur.indexOf("f3") < 0) cur.push("f3");
+  var q = "?frag=" + cur.join(",");
+  if(window.FRAG && window.FRAG.known && window.FRAG.known()) q += "&known=1";
+  location.href = "page13-riji.html" + q;
+}
+function renderF3(){
+  var holder = document.getElementById("fragHolder");
+  if(!holder || document.getElementById("frag3")) return;
+  var el = document.createElement("div");
+  el.id = "frag3";
+  el.className = "f3-trigger";
+  el.textContent = "记忆碎片 · 日记第三章";
+  el.addEventListener("click", collectF3);
+  holder.appendChild(el);
+}
+function submitAnswer(){
+  var m = document.getElementById("caesarMsg");
+  if(answerInput === ANSWER){
+    try { localStorage.setItem(STORE, "1"); } catch(e){}
+    showSolved();
+  } else {
+    m.textContent = "答案不对，再想想页边写的是什么。"; m.className = "msg err";
+  }
+}
+function fragParam() {
+  var f = new URLSearchParams(location.search).get("frag");
+  return f ? "?frag=" + encodeURIComponent(f) : "";
+}
+buildKeyboard();
+renderAnswer();
+// 门禁：需先在校友旧刊放入 chenjing 照片，才能翻开这页密文
+(function(){
+  var placed = false;
+  try{ placed = localStorage.getItem("wbs_jiukan_photo_v1") === "1"; }catch(e){}
+  if(!placed){
+    var lock = document.getElementById("caesarLock");
+    if(lock) lock.style.display = "";
+    var puzzle = document.getElementById("caesarPuzzle");
+    if(puzzle) puzzle.style.display = "none";
+    return;
+  }
+  if(isSolved()){ showSolved(); }
+})();
+</script>
+<script src="phase.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

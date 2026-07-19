@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>校广播站 · 摩斯提问 - 会同县无生中学</title>
+<link rel="stylesheet" href="clue.css">
+<script src="symbols.js"></script>
+<style>
+/* ========== 底部免责/版权灰框 ========== */
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #ededed; color: #555; text-align: center; padding: 14px 16px 12px; font-family: "宋体", "SimSun", serif; border-top: 1px solid #ddd; }
+.disclaimer .dis-text { font-size: 11px; letter-spacing: .5px; color: #999; }
+.disclaimer .copy { margin-top: 7px; font-size: 11px; color: #999; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .5px; }
+
+body { max-width: 1200px; margin-left: auto; margin-right: auto; }
+</style>
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+
+
+<!-- 顶部 -->
+<div class="top-bar">
+  <div class="school-logo" id="logo1"></div>
+  <div class="school-name">
+    <div class="cn">会同县无生中学</div>
+    <div class="en">HuiTong County WuSheng Middle School</div>
+  </div>
+  <div class="nav-right">
+    <div class="search-box">
+      <input type="text" placeholder="搜索...">
+      <button class="search-btn" type="button" aria-label="搜索"><svg width="13" height="13" viewBox="0 0 13 13" shape-rendering="crispEdges" fill="#333" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="8" height="8" fill="none" stroke="#333" stroke-width="1"/><rect x="3" y="3" width="4" height="4" fill="#333"/><rect x="8" y="8" width="4" height="2" fill="#333"/><rect x="9" y="9" width="2" height="4" fill="#333"/></svg></button>
+    </div>
+    <div class="hamburger">
+      <span></span><span></span><span></span>
+      <div class="hamburger-menu">
+        <a href="page2-about.html">学校概况</a>
+        <a href="page9-xuesheng.html">学生天地</a>
+        <a href="page10-zhaosheng.html">招聘招生</a>
+        <a href="page11-luntan.html">校园论坛</a>
+        <a href="page12-guanyu.html">关于我们</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 主导航 -->
+<div class="nav-bar">
+  <div class="nav-inner">
+    <div class="nav-item" onclick="location.href='page1.html'">首页</div>
+    <div class="nav-item" onclick="location.href='page2-about.html'">学校概况</div>
+    <div class="nav-item" onclick="location.href='page3-notice.html'">通知公告</div>
+    <div class="nav-item" onclick="location.href='page4-events.html'">无生大事</div>
+    <div class="nav-item" onclick="location.href='page5-jiaoyu.html'">教育教学</div>
+    <div class="nav-item" onclick="location.href='page6-mingshi.html'">名师风采</div>
+    <div class="nav-item" onclick="location.href='page7-xiaoyou.html'">校友聚集</div>
+    <div class="nav-item" onclick="location.href='page8-dangjian.html'">党建园地</div>
+  </div>
+</div>
+<!-- 面包屑 -->
+<div class="breadcrumb"><a href="page1.html">首页</a> &gt; 校园论坛 &gt; 校广播站</div>
+
+<div class="clue-main">
+  <div class="clue-card">
+    <div class="clue-title"><span class="ic">■</span> 校广播站</div>
+    <div class="clue-sub">旧录音还在循环。它用一段摩斯电码，问了一个问题。</div>
+
+    <button class="btn" type="button" onclick="playQ()">&#9654; 播放摩斯提问（纯音频）</button>
+
+
+    <div class="sym-typed" id="typed"><span class="ph">（还没发报）</span></div>
+
+    <div class="sym-palette" id="palette"></div>
+
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+      <button class="btn gold" type="button" onclick="back()">&#9003; 退一格</button>
+      <button class="btn" type="button" onclick="clearAll()">清空</button>
+    </div>
+    <button class="btn gold" type="button" onclick="check()" style="margin-top:14px">确认发送</button>
+    <div class="msg" id="msg"></div>
+    <div class="truth hidden" id="truth"></div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-logo" id="logo2"></div>
+    <div class="footer-info"><div class="cn">会同县无生中学</div><div class="en">HuiTong County WuSheng Middle School</div></div>
+    <div class="footer-links"><a href="page1.html">首页</a> · <a href="page12-guanyu.html">关于我们</a></div>
+  </div>
+</div>
+
+<script src="logo-data.js"></script>
+<script>if (window.LOGO_B64) { document.getElementById("logo1").src = LOGO_B64; document.getElementById("logo2").src = LOGO_B64; }</script>
+<script src="fragment.js"></script>
+  <script src="search.js"></script>
+<script src="clue.js"></script>
+<script>
+var QUESTION = "WHO DIED";   // 摩斯提问：解码为 WHO DIED
+var ANSWER   = "H";         // 回复：死者 = 何宏宇(H)
+var buffer = "";
+var STORE_M = "wbs_morse_solved_v1";
+function isSolvedM(){ try { return localStorage.getItem(STORE_M) === "1"; } catch(e){ return false; } }
+function hideMorseInputs(){
+  var t = document.getElementById("typed"); if(t) t.style.display = "none";
+  var p = document.getElementById("palette"); if(p) p.style.display = "none";
+  var hideFns = ["playQ","back","clearAll","check"];
+  var btns = document.querySelectorAll("button");
+  for(var i=0;i<btns.length;i++){
+    var oc = btns[i].getAttribute("onclick")||"";
+    for(var k=0;k<hideFns.length;k++){ if(oc.indexOf(hideFns[k]+"()")>=0){ btns[i].style.display="none"; break; } }
+  }
+}
+function showSolvedM(){
+  var tr = document.getElementById("truth");
+  tr.classList.remove("hidden");
+  tr.innerHTML = "<div class='relic-note'>" +
+      "<div class='relic-label'>磁带盒里塞着的一张字条</div>" +
+      "<p>我真的不想再继续了，这次只是手机，那下次呢？下次又会是什么？靖川是个好人，只有他不会强迫我了......</p>" +
+    "</div>";
+  hideMorseInputs();
+}
+
+/* 摩斯电码表（A-Z） */
+var MORSE = {
+  A:".-", B:"-...", C:"-.-.", D:"-..", E:".", F:"..-.", G:"--.", H:"....",
+  I:"..", J:".---", K:"-.-", L:".-..", M:"--", N:"-.", O:"---", P:".--.",
+  Q:"--.-", R:".-.", S:"...", T:"-", U:"..-", V:"...-", W:".--", X:"-..-",
+  Y:"-.--", Z:"--.."
+};
+function buildPalette() {
+  var p = document.getElementById("palette");
+  SYM_ORDER.forEach(function (l) {
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "sym-key"; b.setAttribute("aria-label", l);
+    b.innerHTML = symSVG(l);
+    b.addEventListener("click", function () { tap(l); });
+    p.appendChild(b);
+  });
+}
+function updateTyped() {
+  var t = document.getElementById("typed");
+  if (!buffer.length) { t.innerHTML = '<span class="ph">（还没发报）</span>'; return; }
+  t.innerHTML = buffer.split("").map(function (l) { return symSVG(l); }).join("");
+}
+function tap(l) { buffer += l; updateTyped(); }
+function back() { buffer = buffer.slice(0, -1); updateTyped(); }
+function clearAll() { buffer = ""; updateTyped(); }
+
+function playQ() {
+  var Ctx = window.AudioContext || window.webkitAudioContext;
+  var m = document.getElementById("msg");
+  if (!Ctx) { m.textContent = "此浏览器不支持音频。"; m.className = "msg err"; return; }
+  var ctx = new Ctx();
+  if (ctx.state === "suspended") { ctx.resume(); }
+  var unit = 0.12;                                 // 一个点 = 0.12s，一个划 = 3 倍
+  var osc = ctx.createOscillator();
+  osc.type = "sine"; osc.frequency.value = 620;
+  var g = ctx.createGain();
+  g.gain.value = 0.0001;                           // 起始静音
+  osc.connect(g); g.connect(ctx.destination);
+  osc.start();
+  var t = ctx.currentTime + 0.12;
+  var str = QUESTION.toUpperCase();
+  for (var i = 0; i < str.length; i++) {
+    var ch = str[i];
+    if (ch === " ") { t += unit * 7; continue; }   // 词间停顿（7 单位）
+    var code = MORSE[ch] || "";
+    for (var j = 0; j < code.length; j++) {
+      var dur = (code[j] === ".") ? unit : unit * 3;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.25, t + 0.012);
+      g.gain.setValueAtTime(0.25, t + dur - 0.012);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      t += dur;                                    // 点/划时长
+      t += unit;                                   // 符内间隔（1 单位）
+    }
+    t += unit * 2;                                 // 符间（共 ≈3 单位）
+  }
+  osc.stop(t + 0.05);
+  // 纯音频：播放时不显示任何电码
+  m.textContent = "（纯音频播放中，未显示符号——靠耳朵记下点划）"; m.className = "msg";
+}
+
+function check() {
+  var m = document.getElementById("msg");
+  if (buffer === ANSWER) {
+    m.textContent = "回复正确。"; m.className = "msg ok";
+    try { localStorage.setItem(STORE_M, "1"); } catch(e){}
+    showSolvedM();
+  } else {
+    m.textContent = "回复不对。"; m.className = "msg err";
+  }
+}
+function fragParam() {
+  var f = new URLSearchParams(location.search).get("frag");
+  return f ? "?frag=" + encodeURIComponent(f) : "";
+}
+buildPalette(); updateTyped();
+if(isSolvedM()) showSolvedM();
+</script>
+<script src="phase.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>校园论坛 - 会同县无生中学</title>
+<script src="logo-data.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"宋体","SimSun",serif;font-size:12px;background:#fff;color:#333}
+a{color:#3a7bc4;text-decoration:none}
+a:hover{color:#c00;text-decoration:underline}
+
+/* ===== 像素图标通用样式 ===== */
+.px{shape-rendering:crispEdges;display:inline-block;vertical-align:middle}
+.panel-h .px{width:16px;height:16px;margin-right:6px;vertical-align:-3px}
+.modal-head .px{width:16px;height:16px;margin-right:6px;vertical-align:-3px}
+.banner-deco .px{width:18px;height:18px}
+.banner-title .px{width:22px;height:22px;vertical-align:-4px;margin:0 8px}
+.locked .px{width:14px;height:14px;vertical-align:-2px;margin-right:4px}
+.hot-fire{width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.hot-fire .px{width:14px;height:14px}
+.px-gray{filter:grayscale(1);opacity:.55}
+
+/* 面包屑（回首页入口） */
+.breadcrumb{background:#d4d4d4;border-bottom:1px solid #999;padding:6px 16px;font-size:11px;color:#555;font-family:"宋体","SimSun",serif}
+.breadcrumb a{color:#3a7bc4;text-decoration:none}
+.breadcrumb a:hover{color:#c00;text-decoration:underline}
+
+/* ========== 论坛顶部：仅一个可搜索的搜索框 ========== */
+.forum-search{display:flex;gap:6px;padding:10px 16px}
+.forum-search input{flex:1;max-width:360px;border:1px solid #999;padding:6px 10px;font-family:"宋体","SimSun",serif;font-size:13px;outline:none}
+.forum-search input:focus{border-color:#3a7bc4}
+.forum-search button{background:linear-gradient(to bottom,#4a90d9,#3a7bc4);color:#fff;border:2px outset #c0c0c0;padding:6px 20px;cursor:pointer;font-family:"黑体","SimHei",sans-serif;font-size:13px;flex-shrink:0}
+
+/* ===== 满屏论坛主页 ===== */
+.forum-home{min-height:calc(100vh - 30px);padding:14px;display:flex;flex-direction:column;gap:12px}
+
+/* 头部 banner（古早风） */
+.forum-banner{position:relative;background:linear-gradient(to bottom,#2e6db0,#3a7bc4);border:3px solid #c0a040;border-radius:6px;padding:18px 22px;overflow:hidden;text-align:center}
+.banner-title{
+  font-family:"黑体","SimHei",sans-serif;font-size:30px;font-weight:bold;letter-spacing:2px;line-height:1.3;
+  background:linear-gradient(90deg,#ff3b30,#ff9500,#ffcc00,#34c759,#3a7bc4,#af52de,#ff3b30);
+  background-size:300% 100%;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;
+  animation:hue 6s linear infinite;
+  display:flex;align-items:center;justify-content:center;
+  pointer-events:none;
+}
+@keyframes hue{to{background-position:300% 0}}
+.banner-sub{color:#a0b8d8;font-size:12px;margin-top:6px;font-family:Arial}
+.banner-deco{position:absolute;top:8px;left:10px;color:#c0a040;animation:spin 8s linear infinite;pointer-events:none}
+.banner-deco.r{left:auto;right:10px;animation:spin 8s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.banner-account{position:absolute;top:10px;right:14px;font-family:"黑体","SimHei",sans-serif;font-size:13px;z-index:6;pointer-events:auto}
+.banner-account a{color:#ffe08a;text-decoration:none;padding:0 5px}
+.banner-account a:hover{color:#fff;text-decoration:underline}
+.banner-account .sep{color:#7e97c0}
+.banner-account .who{color:#9fe0a0;font-weight:bold}
+.banner-account .logout{background:#c0a040;color:#000;border:none;padding:3px 10px;cursor:pointer;font-size:12px;font-family:"黑体","SimHei",sans-serif;margin-left:6px}
+.banner-account .who-link{color:#ffe08a;text-decoration:underline;font-weight:bold;cursor:pointer;font-family:"黑体","SimHei",sans-serif}
+.banner-account .who-link:hover{color:#fff}
+
+/* 跑马灯（古早风） */
+.welcome-marquee{overflow:hidden;white-space:nowrap;background:#3a7bc4;border-top:2px solid #c0a040;border-bottom:2px solid #c0a040;padding:6px 0}
+.welcome-marquee span{display:inline-block;padding-left:100%;color:#ffe08a;font-size:13px;font-family:"宋体","SimSun",serif;animation:scroll-left 26s linear infinite}
+@keyframes scroll-left{to{transform:translateX(-100%)}}
+
+/* 统计条（古早风计数器） */
+.stats-bar{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;background:#fff;border:2px outset #c0c0c0;padding:8px 14px;font-size:12px;color:#444;font-family:"宋体","SimSun",serif}
+.stats-bar b{color:#3a7bc4;font-family:"Courier New",monospace;background:#f0f0f0;border:1px inset #999;padding:0 6px;letter-spacing:1px}
+.stats-bar .counter{color:#c00}
+
+/* 三栏网格 */
+.forum-grid{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:12px;align-items:start}
+.col{display:flex;flex-direction:column;gap:12px}
+
+/* 面板（古早风边框） */
+.panel{background:#fff;border:2px outset #c0c0c0}
+.panel-h{background:linear-gradient(to bottom,#4a90d9,#3a7bc4);color:#fff;font-family:"黑体","SimHei",sans-serif;font-size:14px;padding:7px 12px;border-bottom:2px solid #c0a040;display:flex;align-items:center;gap:6px}
+.panel-b{padding:10px 12px}
+
+/* 版块网格（丰富栏目） */
+.board-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.board-card{display:block;border:1px solid #cdd8ea;border-left:4px solid #c0a040;background:#f7f9fc;padding:8px 10px;cursor:pointer;transition:all .15s}
+.board-card:hover{background:#3a7bc4;border-left-color:#ffe08a}
+.board-card:hover .bc-title,.board-card:hover .bc-meta{color:#fff}
+.board-card:hover .bc-icon{transform:scale(1.15);filter:brightness(0) invert(1)}
+.bc-icon{width:24px;height:24px;display:block;margin-bottom:4px;transition:transform .15s}
+.bc-title{font-family:"黑体","SimHei",sans-serif;font-size:13px;color:#3a7bc4;font-weight:bold;display:flex;align-items:center;gap:4px}
+.bc-meta{font-size:10px;color:#888;margin-top:3px}
+.bc-new{display:inline-block;background:#c00;color:#fff;font-size:9px;padding:0 4px;border-radius:2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* 讨论热帖 */
+.hot-list{list-style:none}
+.hot-item{display:flex;align-items:center;gap:8px;padding:8px 4px;border-bottom:1px dashed #ccc}
+.hot-item:last-child{border-bottom:none}
+.hot-main{flex:1;min-width:0}
+.hot-t{font-size:13px;color:#3a7bc4;font-family:"黑体","SimHei",sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hot-t:hover{color:#c00;cursor:pointer}
+.hot-m{font-size:10px;color:#999;margin-top:2px}
+.hot-num{text-align:right;font-size:10px;color:#888;flex-shrink:0;line-height:1.5}
+.hot-num b{color:#c00;font-family:"Courier New",monospace}
+
+/* 聊天室入口 */
+.chat-entry .panel-b{text-align:center}
+.chat-room-name{font-family:"黑体","SimHei",sans-serif;font-size:15px;color:#3a7bc4;margin:6px 0}
+.chat-online{font-size:11px;color:#2a9d3a;margin-bottom:10px}
+.chat-online .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#2a9d3a;margin-right:4px;animation:blink 1.2s steps(1) infinite}
+.enter-btn{background:linear-gradient(to bottom,#4a90d9,#3a7bc4);color:#fff;border:2px outset #c0c0c0;padding:8px 22px;cursor:pointer;font-family:"黑体","SimHei",sans-serif;font-size:14px}
+.enter-btn:hover{background:#c0a040;color:#000}
+.lock-tip{font-size:11px;color:#a06a00;margin-top:8px}
+
+/* 站务/风云 */
+.notice-line{font-size:12px;color:#444;line-height:1.9;padding:2px 0;border-bottom:1px dotted #ddd}
+.notice-line:last-child{border-bottom:none}
+.fame-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px dotted #ddd}
+.fame-item:last-child{border-bottom:none}
+.fame-av{width:30px;height:30px;border-radius:50%;background:#3a7bc4;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.fame-info{flex:1}
+.fame-info .fn{font-size:12px;font-weight:bold;color:#3a7bc4;font-family:"黑体","SimHei",sans-serif}
+.fame-info .fd{font-size:10px;color:#888}
+
+/* 页脚（古早风） */
+.forum-footer{background:linear-gradient(to bottom,#3a7bc4,#2e6db0);border-top:3px solid #c0a040;color:#a0b8d8;font-size:11px;padding:12px 16px;text-align:center;line-height:1.9}
+.forum-footer .cn{color:#fff;font-family:"黑体","SimHei",sans-serif;font-size:13px}
+.forum-footer a{color:#a0b8d8}
+
+/* ========== 底部版权栏（与首页底部版权栏风格一致，宽度对齐整个页面） ========== */
+.forum-copy{background:#ededed;color:#555;text-align:center;padding:14px 16px 12px;font-family:"宋体","SimSun",serif;border-top:1px solid #ddd}
+.forum-copy .dis-text{font-size:11px;letter-spacing:.5px;color:#999}
+.forum-copy .copy{margin-top:7px;font-size:11px;color:#999;font-family:"黑体","SimHei",sans-serif;letter-spacing:.5px}
+
+/* ===== 弹窗 ===== */
+.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);z-index:2000;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal-box{width:480px;max-width:94%;background:#fff;border:3px solid #c0a040;box-shadow:4px 4px 12px rgba(0,0,0,.4)}
+.modal-head{background:linear-gradient(to bottom,#4a90d9,#3a7bc4);color:#fff;padding:10px 16px;font-size:15px;font-family:"黑体","SimHei",sans-serif;display:flex;justify-content:space-between;align-items:center}
+.modal-close{cursor:pointer;font-size:18px;color:#fff;line-height:1}
+.modal-body{padding:18px}
+
+/* 登录/注册卡片 */
+.auth-wrap{display:flex;gap:24px;flex-wrap:wrap;justify-content:center}
+.auth-card{width:300px;border:2px outset #c0c0c0;background:linear-gradient(to bottom,#fafafa,#f0f0f0);padding:18px}
+.auth-card h3{font-family:"黑体","SimHei",sans-serif;color:#3a7bc4;font-size:16px;margin-bottom:14px;text-align:center;border-bottom:1px solid #c0a040;padding-bottom:8px}
+.form-row{margin-bottom:12px}
+.form-row label{display:block;font-size:12px;margin-bottom:4px;color:#333}
+.form-row input{width:100%;padding:7px 8px;border:1px inset #808080;font-size:13px;font-family:"宋体"}
+.auth-btn{width:100%;padding:8px;background:#3a7bc4;color:#fff;border:none;cursor:pointer;font-size:14px;font-family:"黑体","SimHei",sans-serif;margin-top:4px}
+.auth-btn:hover{background:#2e6db0}
+.auth-btn:disabled{background:#999;cursor:not-allowed}
+.auth-msg{margin-top:10px;font-size:12px;text-align:center;min-height:16px}
+.auth-msg.err{color:#c00}
+.auth-msg.ok{color:#1a7a1a}
+.auth-tip{font-size:11px;color:#888;margin-top:14px;line-height:1.7;text-align:center}
+.locked{background:#f5f0e0;border:1px dashed #c0a040;padding:10px;font-size:12px;color:#8a6d3b;text-align:center;margin-top:12px;line-height:1.8}
+
+/* 聊天室 */
+.chatroom{width:560px;max-width:96%;display:flex;flex-direction:column;max-height:86vh}
+.cr-log{flex:1;overflow-y:auto;padding:14px;background:#eef2f8;min-height:260px;max-height:56vh}
+.cr-row{display:flex;margin-bottom:10px;align-items:flex-end;gap:8px}
+.cr-row .cav{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-family:"黑体","SimHei",sans-serif;flex-shrink:0;color:#fff;background:#555}
+.cr-row.me{flex-direction:row-reverse}
+.cr-row.me .cav{background:#c0a040;color:#000}
+.cr-bubble{max-width:76%;padding:8px 11px;border-radius:10px;font-size:13px;line-height:1.8;text-align:justify;font-family:"宋体","SimSun",serif;background:#fff;border:1px solid #d7e0ee}
+.cr-row.me .cr-bubble{background:#3a7bc4;color:#fff;border:none}
+.cr-name{font-size:10px;color:#777;margin:0 4px 2px}
+.cr-row.me .cr-name{text-align:right;color:#3a7bc4}
+.cr-input{display:flex;gap:8px;padding:10px 12px;border-top:1px solid #eee}
+.cr-input input{flex:1;border:1px inset #808080;padding:7px 8px;font-size:13px;font-family:"宋体"}
+.cr-input button{background:#3a7bc4;color:#fff;border:none;padding:0 18px;cursor:pointer;font-family:"黑体","SimHei",sans-serif;font-size:13px}
+.cr-input button:hover{background:#2e6db0}
+.cr-members{font-size:11px;color:#888;padding:0 14px 8px}
+
+/* ===== 新增：底部填充内容 ===== */
+.extra-section{display:flex;flex-direction:column;gap:16px;margin-top:4px}
+.section-title{font-family:"黑体","SimHei",sans-serif;font-size:16px;color:#3a7bc4;margin:2px 2px 2px;border-left:5px solid #c0a040;padding-left:10px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.thread-list{list-style:none}
+.thread-row{display:flex;align-items:center;gap:8px;padding:7px 4px;border-bottom:1px dotted #bcd4ec}
+.thread-row:last-child{border-bottom:none}
+.tr-badge{font-size:9px;padding:1px 5px;border-radius:2px;color:#3a7bc4;background:#cfe0f2;flex-shrink:0;font-family:"黑体","SimHei",sans-serif}
+.tr-badge.new{background:#e08a00;color:#fff}
+.tr-badge.hot{background:#c0392b;color:#fff}
+.tr-badge.top{background:#3a7bc4;color:#fff}
+.tr-title{font-size:12px;color:#333;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tr-title:hover{color:#c00;cursor:pointer;text-decoration:underline}
+.tr-meta{font-size:10px;color:#999;flex-shrink:0}
+
+.branch-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.branch-card{border:1px solid #bcd4ec;border-top:3px solid #5ba3e0;background:#f4f9ff;padding:8px 6px;text-align:center;cursor:pointer;transition:all .15s}
+.branch-card:hover{background:#3a7bc4}
+.branch-card:hover .br-c,.branch-card:hover .br-n{color:#fff}
+.br-c{font-family:"黑体","SimHei",sans-serif;font-size:15px;color:#3a7bc4;font-weight:bold}
+.br-n{font-size:10px;color:#888;margin-top:3px;line-height:1.4}
+
+.year-wall{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;padding:6px 0}
+.year-badge{width:64px;height:64px;border-radius:50%;background:linear-gradient(to bottom,#5ba3e0,#3a7bc4);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;font-family:"黑体","SimHei",sans-serif;transition:transform .15s;box-shadow:1px 1px 3px rgba(0,0,0,.15)}
+.year-badge:hover{transform:scale(1.08)}
+.year-badge .y{font-size:17px;font-weight:bold;line-height:1}
+.year-badge .s{font-size:9px;margin-top:3px;opacity:.9}
+
+.guide-list{list-style:none;columns:2;column-gap:26px}
+.guide-item{font-size:12px;color:#444;line-height:2;break-inside:avoid;padding-left:14px;position:relative;margin-bottom:2px}
+.guide-item:before{content:"";position:absolute;left:0;top:10px;width:6px;height:6px;background:#c0a040}
+.vote-box{border:1px solid #bcd4ec;background:#f4f9ff;padding:14px}
+.vote-q{font-family:"黑体","SimHei",sans-serif;font-size:13px;color:#3a7bc4;margin-bottom:12px}
+.vote-opt{font-size:12px;color:#333;margin-bottom:10px}
+.vote-bar{height:9px;background:#d6e6f5;margin-top:4px;border-radius:5px;overflow:hidden}
+  .vote-bar i{display:block;height:100%;background:linear-gradient(to right,#7ec0ee,#3a7bc4)}
+</style>
+<link rel="stylesheet" href="reveal.css?v=4">
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+
+<!-- ===== 像素图标精灵（纯代码绘制，crispEdges 保持像素感） ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="ic-book" viewBox="0 0 16 16">
+      <path d="M1 3 H8 V13 H1 Z" fill="#3a7bc4"/>
+      <path d="M15 3 H8 V13 H15 Z" fill="#3a7bc4"/>
+      <rect x="2" y="4" width="5" height="1" fill="#fff"/>
+      <rect x="2" y="6" width="5" height="1" fill="#fff"/>
+      <rect x="2" y="8" width="5" height="1" fill="#fff"/>
+      <rect x="9" y="4" width="5" height="1" fill="#fff"/>
+      <rect x="9" y="6" width="5" height="1" fill="#fff"/>
+      <rect x="9" y="8" width="5" height="1" fill="#fff"/>
+    </symbol>
+    <symbol id="ic-megaphone" viewBox="0 0 16 16">
+      <path d="M2 6 H7 L12 3 V13 L7 10 H2 Z" fill="#c0392b"/>
+      <rect x="13" y="6" width="2" height="4" fill="#c0a040"/>
+      <rect x="2" y="6" width="1" height="4" fill="#7a2018"/>
+    </symbol>
+    <symbol id="ic-cap" viewBox="0 0 16 16">
+      <path d="M8 3 L15 6 L8 9 L1 6 Z" fill="#3a7bc4"/>
+      <rect x="7" y="9" width="2" height="4" fill="#3a7bc4"/>
+      <rect x="7" y="13" width="2" height="2" fill="#c0a040"/>
+    </symbol>
+    <symbol id="ic-scroll" viewBox="0 0 16 16">
+      <rect x="3" y="2" width="10" height="2" fill="#c0a040"/>
+      <rect x="3" y="12" width="10" height="2" fill="#c0a040"/>
+      <rect x="4" y="3" width="8" height="10" fill="#fff"/>
+      <rect x="5" y="5" width="6" height="1" fill="#999"/>
+      <rect x="5" y="7" width="6" height="1" fill="#999"/>
+      <rect x="5" y="9" width="4" height="1" fill="#999"/>
+    </symbol>
+    <symbol id="ic-drop" viewBox="0 0 16 16">
+      <path d="M8 2 C5 7 4 9 4 11 A4 4 0 0 0 12 11 C12 9 11 7 8 2 Z" fill="#2a9d3a"/>
+    </symbol>
+    <symbol id="ic-box" viewBox="0 0 16 16">
+      <path d="M2 5 L8 2 L14 5 L8 8 Z" fill="#c0a040"/>
+      <path d="M2 5 V11 L8 14 V8 Z" fill="#3a7bc4"/>
+      <path d="M14 5 V11 L8 14 V8 Z" fill="#2e6db0"/>
+    </symbol>
+    <symbol id="ic-masks" viewBox="0 0 16 16">
+      <rect x="2" y="5" width="5" height="6" fill="#3a7bc4"/>
+      <rect x="9" y="5" width="5" height="6" fill="#c0392b"/>
+      <rect x="3" y="7" width="1" height="1" fill="#fff"/>
+      <rect x="5" y="9" width="1" height="1" fill="#fff"/>
+      <rect x="10" y="7" width="1" height="1" fill="#fff"/>
+      <rect x="12" y="9" width="1" height="1" fill="#fff"/>
+    </symbol>
+    <symbol id="ic-search" viewBox="0 0 16 16">
+      <circle cx="6" cy="6" r="4" fill="#fff" stroke="#3a7bc4" stroke-width="2"/>
+      <rect x="9" y="9" width="5" height="2" fill="#3a7bc4" transform="rotate(45 11 10)"/>
+    </symbol>
+    <symbol id="ic-letter" viewBox="0 0 16 16">
+      <rect x="2" y="4" width="12" height="9" fill="#fff" stroke="#3a7bc4" stroke-width="1.5"/>
+      <path d="M2 4 L8 9 L14 4" fill="none" stroke="#3a7bc4" stroke-width="1.5"/>
+      <path d="M8 10 l-1.6-1.6 a1.4 1.4 0 0 1 1.6-1.4 a1.4 1.4 0 0 1 1.6 1.4 Z" fill="#c0392b"/>
+    </symbol>
+    <symbol id="ic-rocket" viewBox="0 0 16 16">
+      <path d="M8 2 C10 4 10 8 9 10 L7 10 C6 8 6 4 8 2 Z" fill="#c0a040"/>
+      <circle cx="8" cy="6" r="1.4" fill="#3a7bc4"/>
+      <path d="M7 10 L5 13 L7 11 Z" fill="#c0392b"/>
+      <path d="M9 10 L11 13 L9 11 Z" fill="#c0392b"/>
+      <rect x="7" y="11" width="2" height="3" fill="#888"/>
+    </symbol>
+    <symbol id="ic-star" viewBox="0 0 16 16">
+      <path d="M8 2 L10 6 L14 6 L11 9 L12 13 L8 10 L4 13 L5 9 L2 6 L6 6 Z" fill="#c0a040"/>
+    </symbol>
+    <symbol id="ic-wrench" viewBox="0 0 16 16">
+      <rect x="3" y="3" width="2" height="9" fill="#7a7a7a" transform="rotate(35 4 7)"/>
+      <rect x="11" y="4" width="2" height="9" fill="#7a7a7a" transform="rotate(-35 12 8)"/>
+      <rect x="6" y="6" width="4" height="4" fill="#555"/>
+    </symbol>
+    <symbol id="ic-flame" viewBox="0 0 16 16">
+      <path d="M8 2 C10 5 12 7 12 10 a4 4 0 0 1 -8 0 C4 8 5 7 6 6 C6 8 7 8 7 7 C8 9 9 8 8 2 Z" fill="#c0392b"/>
+      <path d="M8 9 a2 2 0 0 1 -2 3 a2 2 0 0 0 2 -3 Z" fill="#c0a040"/>
+    </symbol>
+    <symbol id="ic-chat" viewBox="0 0 16 16">
+      <path d="M2 3 H14 V11 H6 L3 14 V11 H2 Z" fill="#3a7bc4"/>
+      <rect x="4" y="5" width="8" height="1" fill="#fff"/>
+      <rect x="4" y="7" width="6" height="1" fill="#fff"/>
+    </symbol>
+    <symbol id="ic-trophy" viewBox="0 0 16 16">
+      <path d="M4 2 H12 V6 a4 4 0 0 1 -8 0 Z" fill="#c0a040"/>
+      <rect x="7" y="10" width="2" height="2" fill="#c0a040"/>
+      <rect x="5" y="12" width="6" height="2" fill="#3a7bc4"/>
+      <path d="M4 3 H2 V6 H4" fill="none" stroke="#c0a040" stroke-width="1.5"/>
+      <path d="M12 3 H14 V6 H12" fill="none" stroke="#c0a040" stroke-width="1.5"/>
+    </symbol>
+    <symbol id="ic-flower" viewBox="0 0 16 16">
+      <circle cx="8" cy="4" r="2" fill="#c0392b"/>
+      <circle cx="8" cy="12" r="2" fill="#c0392b"/>
+      <circle cx="4" cy="8" r="2" fill="#c0392b"/>
+      <circle cx="12" cy="8" r="2" fill="#c0392b"/>
+      <circle cx="8" cy="8" r="2" fill="#c0a040"/>
+    </symbol>
+    <symbol id="ic-warn" viewBox="0 0 16 16">
+      <path d="M8 2 L15 14 H1 Z" fill="#e0a000"/>
+      <rect x="7" y="6" width="2" height="5" fill="#3a2a00"/>
+      <rect x="7" y="12" width="2" height="2" fill="#3a2a00"/>
+    </symbol>
+  <symbol id="ic-retro-announce" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" fill="#c0392b" stroke="#333" stroke-width="1"/><rect x="4" y="5" width="8" height="2" fill="#fff"/><rect x="4" y="8" width="6" height="2" fill="#fff"/><circle cx="8" cy="3" r="1.2" fill="#333"/></symbol><symbol id="ic-retro-book" viewBox="0 0 16 16"><rect x="3" y="4" width="10" height="9" fill="#3a7bc4" stroke="#333" stroke-width="1"/><rect x="3" y="4" width="2" height="9" fill="#333"/><rect x="6" y="6" width="5" height="1" fill="#fff"/><rect x="6" y="8" width="5" height="1" fill="#fff"/><rect x="6" y="10" width="4" height="1" fill="#fff"/></symbol><symbol id="ic-retro-grad" viewBox="0 0 16 16"><rect x="3" y="2" width="10" height="12" fill="#333"/><rect x="4" y="3" width="8" height="10" fill="#3a7bc4"/><rect x="6" y="5" width="4" height="3" fill="#fff"/><rect x="6" y="9" width="4" height="1" fill="#fff"/></symbol><symbol id="ic-retro-archive" viewBox="0 0 16 16"><rect x="3" y="2" width="10" height="12" fill="#c0a040" stroke="#333" stroke-width="1"/><rect x="3" y="6" width="10" height="1" fill="#333"/><rect x="7" y="4" width="2" height="1" fill="#fff"/><rect x="7" y="9" width="2" height="1" fill="#fff"/><rect x="3" y="10" width="10" height="1" fill="#333"/></symbol><symbol id="ic-retro-tea" viewBox="0 0 16 16"><rect x="4" y="6" width="8" height="7" fill="#2a9d3a" stroke="#333" stroke-width="1"/><rect x="4" y="6" width="8" height="1" fill="#333"/><rect x="6" y="3" width="1" height="3" fill="#fff"/><rect x="9" y="3" width="1" height="3" fill="#fff"/><rect x="5" y="9" width="6" height="1" fill="#fff"/></symbol><symbol id="ic-retro-floppy" viewBox="0 0 16 16"><rect x="2" y="2" width="12" height="12" fill="#c0a040" stroke="#333" stroke-width="1"/><rect x="4" y="2" width="5" height="4" fill="#333"/><rect x="9" y="3" width="3" height="2" fill="#fff"/><rect x="5" y="9" width="6" height="4" fill="#fff"/></symbol><symbol id="ic-retro-banner" viewBox="0 0 16 16"><rect x="2" y="4" width="12" height="5" fill="#3a7bc4" stroke="#333" stroke-width="1"/><rect x="2" y="9" width="1" height="5" fill="#333"/><rect x="13" y="9" width="1" height="5" fill="#333"/><rect x="4" y="6" width="8" height="1" fill="#fff"/></symbol><symbol id="ic-retro-lost" viewBox="0 0 16 16"><circle cx="7" cy="7" r="4" fill="#fff" stroke="#3a7bc4" stroke-width="2"/><rect x="10" y="10" width="4" height="2" fill="#333" transform="rotate(45 12 11)"/><rect x="6" y="6" width="2" height="2" fill="#3a7bc4"/><rect x="7" y="9" width="1" height="2" fill="#3a7bc4"/></symbol><symbol id="ic-retro-mail" viewBox="0 0 16 16"><rect x="4" y="5" width="8" height="9" fill="#3a7bc4" stroke="#333" stroke-width="1"/><rect x="4" y="4" width="8" height="1" fill="#333"/><rect x="7" y="2" width="2" height="3" fill="#333"/><rect x="6" y="8" width="4" height="3" fill="#fff"/></symbol><symbol id="ic-retro-news" viewBox="0 0 16 16"><rect x="3" y="2" width="10" height="12" fill="#fff" stroke="#3a7bc4" stroke-width="2"/><rect x="4" y="3" width="8" height="2" fill="#c0a040"/><rect x="4" y="6" width="4" height="1" fill="#999"/><rect x="4" y="8" width="4" height="1" fill="#999"/><rect x="9" y="6" width="3" height="1" fill="#999"/><rect x="9" y="8" width="3" height="1" fill="#999"/></symbol><symbol id="ic-retro-diary" viewBox="0 0 16 16"><rect x="3" y="2" width="10" height="12" fill="#c0a040" stroke="#333" stroke-width="1"/><rect x="3" y="2" width="2" height="12" fill="#333"/><rect x="8" y="8" width="3" height="3" fill="#fff" stroke="#333"/><rect x="9" y="6" width="1" height="3" fill="#333"/></symbol><symbol id="ic-retro-pc" viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="9" fill="#7a7a7a" stroke="#333" stroke-width="1"/><rect x="4" y="5" width="8" height="5" fill="#fff"/><rect x="6" y="12" width="4" height="2" fill="#333"/><rect x="3" y="14" width="10" height="1" fill="#333"/></symbol></defs>
+</svg>
+
+<!-- 站内搜索框（仅一个，可站内搜索） -->
+<div class="forum-search search-box">
+  <input type="text" id="siteSearch" onkeydown="if(event.key==='Enter')doSiteSearch(document.getElementById('siteSearch').value)">
+  <button onclick="doSiteSearch(document.getElementById('siteSearch').value)">搜索</button>
+</div>
+
+<!-- 面包屑（回首页入口） -->
+<div class="breadcrumb">
+  <a href="page1.html">首页</a> &gt; 校园论坛
+</div>
+
+<!-- 满屏论坛主页 -->
+<div class="forum-home">
+
+  <!-- 头部 banner -->
+  <div class="forum-banner">
+    <div class="banner-deco"><svg class="px"><use href="#ic-flower"/></svg></div>
+    <div class="banner-deco r"><svg class="px"><use href="#ic-flower"/></svg></div>
+    <div class="banner-title"><svg class="px"><use href="#ic-star"/></svg>欢迎光临 无生中学 · 校园论坛<svg class="px"><use href="#ic-star"/></svg></div>
+    <div class="banner-sub">HuiTong WuSheng Middle School BBS · 本站成立于 2003 年 · 一同走过十二载</div>
+<div class="banner-account" id="forumAccount">
+  <a href="javascript:void(0)">注册</a>
+  <span class="sep">|</span>
+  <a href="javascript:void(0)">登录</a>
+</div>
+  </div>
+
+  <!-- 跑马灯 -->
+  <div class="welcome-marquee">
+    <span>【站务公告】欢迎来到无生中学校园论坛！本论坛始建于 2003 年，历经多次搬迁与改版。注册通道目前暂停，请使用校内指定账号登录。严禁发布与校园无关内容，违者封号。旧教学楼区域暂不对外开放。祝各位校友、同窗交流愉快！</span>
+  </div>
+
+  <!-- 统计条 -->
+  <div class="stats-bar">
+    <span>您是第 <b class="counter">0001234</b> 位访客</span>
+    <span>当前在线：<b>128</b></span>
+    <span>总主题：<b>5821</b></span>
+    <span>总帖子：<b>47390</b></span>
+    <span>注册会员：<b>3097</b></span>
+    <span>论坛年龄：<b>12</b> 年</span>
+  </div>
+
+  <!-- 三栏内容 -->
+  <div class="forum-grid">
+
+    <!-- 左：校园主题栏目（丰富） -->
+    <div class="col">
+      <div class="panel">
+        <div class="panel-h"><svg class="px"><use href="#ic-book"/></svg> 校园主题栏目</div>
+        <div class="panel-b">
+          <div class="board-grid">
+            <div class="board-card"><svg class="bc-icon"><use href="#ic-retro-announce"/></svg><div class="bc-title">校园公告</div><div class="bc-meta">主题 320 · 帖 1180</div></div>
+            <div class="board-card"><svg class="bc-icon"><use href="#ic-retro-book"/></svg><div class="bc-title">学习交流<span class="bc-new">新</span></div><div class="bc-meta">主题 980 · 帖 8720</div></div>
+            <div class="board-card"><svg class="bc-icon"><use href="#ic-retro-grad"/></svg><div class="bc-title">校友天地</div><div class="bc-meta">主题 640 · 帖 5300</div></div>
+            <div class="board-card"><svg class="bc-icon"><use href="#ic-retro-archive"/></svg><div class="bc-title">校史拾遗</div><div class="bc-meta">主题 210 · 帖 1620</div></div>
+            <div class="board-card"><svg class="bc-icon"><use href="#ic-retro-tea"/></svg><div class="bc-title">灌水闲聊<span class="bc-new">热</span></div><div class="bc-meta">主题 1500 · 帖 19800</div></div>
+            <div class="board-card"><svg class="bc-icon"><use href="#ic-retro-floppy"/></svg><div class="bc-title">资源共享</div><div class="bc-meta">主题 430 · 帖 3100</div></div>
+            <div class="board-card"><svg class="bc-icon"><use href="#ic-retro-banner"/></svg><div class="bc-title">社团风采</div><div class="bc-meta">主题 360 · 帖 2900</div></div>
+            <div class="board-card"><svg class="bc-icon"><use href="#ic-retro-lost"/></svg><div class="bc-title">失物招领</div><div class="bc-meta">主题 180 · 帖 940</div></div>
+            <div class="board-card"><svg class="bc-icon"><use href="#ic-retro-mail"/></svg><div class="bc-title">表白墙<span class="bc-new">新</span></div><div class="bc-meta">主题 520 · 帖 2630</div></div>
+            <div class="board-card"><svg class="bc-icon"><use href="#ic-retro-news"/></svg><div class="bc-title">考研就业</div><div class="bc-meta">主题 410 · 帖 3360</div></div>
+            <div class="board-card"><svg class="bc-icon"><use href="#ic-retro-diary"/></svg><div class="bc-title">心情日记</div><div class="bc-meta">主题 760 · 帖 6240</div></div>
+            <div class="board-card"><svg class="bc-icon"><use href="#ic-retro-pc"/></svg><div class="bc-title">技术宅</div><div class="bc-meta">主题 290 · 帖 2010</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 中：讨论热帖 -->
+    <div class="col">
+      <div class="panel">
+        <div class="panel-h"><svg class="px"><use href="#ic-flame"/></svg> 讨论热帖 <span class="bc-new" style="animation:blink 1s steps(1) infinite">HOT</span></div>
+        <div class="panel-b">
+          <ul class="hot-list">
+            <li class="hot-item">
+              <span class="hot-fire"><svg class="px"><use href="#ic-flame"/></svg></span>
+              <div class="hot-main"><div class="hot-t">2015届高考经验交流暨谢师帖</div><div class="hot-m">高三（3）班 · 2015-06-25</div></div>
+              <div class="hot-num">回复 <b>326</b><br>浏览 5210</div>
+            </li>
+            <li class="hot-item">
+              <span class="hot-fire"><svg class="px"><use href="#ic-flame"/></svg></span>
+              <div class="hot-main"><div class="hot-t">旧教学楼要拆了吗，天台门怎么还一直锁着</div><div class="hot-m">2009届校友 · 2015-08-12</div></div>
+              <div class="hot-num">回复 <b>214</b><br>浏览 3880</div>
+            </li>
+            <li class="hot-item">
+              <span class="hot-fire"><svg class="px"><use href="#ic-flame"/></svg></span>
+              <div class="hot-main"><div class="hot-t">校史研读小组招募，欢迎对校史感兴趣的同学</div><div class="hot-m">团委 · 2015-09-10</div></div>
+              <div class="hot-num">回复 <b>158</b><br>浏览 2740</div>
+            </li>
+            <li class="hot-item">
+              <span class="hot-fire"><svg class="px px-gray"><use href="#ic-chat"/></svg></span>
+              <div class="hot-main"><div class="hot-t">表白墙｜致高三（2）班那个穿白衬衫的你</div><div class="hot-m">匿名 · 2015-05-20</div></div>
+              <div class="hot-num">回复 <b>97</b><br>浏览 1990</div>
+            </li>
+            <li class="hot-item">
+              <span class="hot-fire"><svg class="px px-gray"><use href="#ic-chat"/></svg></span>
+              <div class="hot-main"><div class="hot-t"><a href="page22-graduation-photo.html" style="color:inherit;text-decoration:none">求2006届毕业照高清扫描版</a></div><div class="hot-m">2010届 · 2015-07-03</div></div>
+              <div class="hot-num">回复 <b>63</b><br>浏览 1120</div>
+            </li>
+            <li class="hot-item">
+              <span class="hot-fire"><svg class="px px-gray"><use href="#ic-chat"/></svg></span>
+              <div class="hot-main"><div class="hot-t">食堂 nouvelle 窗口的糖醋排骨回来了！</div><div class="hot-m">在校生 · 2015-09-15</div></div>
+              <div class="hot-num">回复 <b>41</b><br>浏览 880</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右：聊天室 + 站务 + 风云 -->
+    <div class="col">
+      <div class="panel chat-entry">
+        <div class="panel-h"><svg class="px"><use href="#ic-chat"/></svg> 聊天室</div>
+        <div class="panel-b">
+          <div class="chat-room-name">2006届毕业班聊天室</div>
+          <div class="chat-online"><span class="dot"></span>聊天室在线 · 仅校友可入</div>
+          <button class="enter-btn" id="enterBtn" onclick="enterChatRoom()">进入聊天室</button>
+          <div class="lock-tip" id="lockTip">※ 聊天室仅向已登录用户开放，请先登录。</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-h"><svg class="px"><use href="#ic-megaphone"/></svg> 站务公告</div>
+        <div class="panel-b">
+          <div class="notice-line">· 注册功能暂停，使用校内账号登录</div>
+          <div class="notice-line">· 旧教学楼区域暂不对外开放</div>
+          <div class="notice-line">· 发帖请遵守网络文明公约</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-h"><svg class="px"><use href="#ic-trophy"/></svg> 本月风云人物</div>
+        <div class="panel-b">
+          <div class="fame-item"><div class="fame-av">班</div><div class="fame-info"><div class="fn">高三7班</div><div class="fd">发帖 126 · 本科上线率创新高</div></div></div>
+          <div class="fame-item"><div class="fame-av">校</div><div class="fame-info"><div class="fn">2009届校友</div><div class="fd">发帖 88 · 校史达人</div></div></div>
+          <div class="fame-item"><div class="fame-av">团</div><div class="fame-info"><div class="fn">校史研读小组</div><div class="fd">发帖 54 · 校史常客</div></div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== 新增内容：填满页面 ===== -->
+  <div class="extra-section">
+
+    <!-- 论坛最新主题 -->
+    <div class="section-title">论坛最新主题</div>
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-h"><svg class="px"><use href="#ic-book"/></svg> 最新发表</div>
+        <div class="panel-b">
+          <ul class="thread-list">
+            <li class="thread-row"><span class="tr-badge new">新</span><span class="tr-title">2016届新生报到须知及分班情况查询</span><span class="tr-meta">09-01</span></li>
+            <li class="thread-row"><span class="tr-badge new">新</span><span class="tr-title">校史馆新增校史展板</span><span class="tr-meta">08-28</span></li>
+            <li class="thread-row"><span class="tr-badge top">置顶</span><span class="tr-title">关于旧教学楼封闭待拆期间出入管理的说明</span><span class="tr-meta">08-25</span></li>
+            <li class="thread-row"><span class="tr-badge hot">热</span><span class="tr-title">食堂二楼新窗口测评，糖醋排骨稳了</span><span class="tr-meta">08-22</span></li>
+            <li class="thread-row"><span class="tr-badge">·</span><span class="tr-title">校运会报名开始，广播操比赛看谁家</span><span class="tr-meta">08-20</span></li>
+            <li class="thread-row"><span class="tr-badge">·</span><span class="tr-title">高一化学竞赛集训名单公示</span><span class="tr-meta">08-18</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><svg class="px"><use href="#ic-flame"/></svg> 最新回复</div>
+        <div class="panel-b">
+          <ul class="thread-list">
+            <li class="thread-row"><span class="tr-badge hot">热</span><span class="tr-title">旧教学楼要拆了吗，天台门怎么还一直锁着</span><span class="tr-meta">214</span></li>
+            <li class="thread-row"><span class="tr-badge hot">热</span><span class="tr-title">校史研读小组招募，欢迎对校史感兴趣的同学</span><span class="tr-meta">158</span></li>
+            <li class="thread-row"><span class="tr-badge">·</span><span class="tr-title"><a href="page22-graduation-photo.html" style="color:inherit;text-decoration:none">求2006届毕业照高清扫描版</a></span><span class="tr-meta">63</span></li>
+            <li class="thread-row"><span class="tr-badge">·</span><span class="tr-title">何宏宇后来有同学联系上吗</span><span class="tr-meta">51</span></li>
+            <li class="thread-row"><span class="tr-badge">·</span><span class="tr-title">表白墙｜致高三（2）班那个穿白衬衫的你</span><span class="tr-meta">97</span></li>
+            <li class="thread-row"><span class="tr-badge">·</span><span class="tr-title">历届优秀班级评比，咱班能进前十不</span><span class="tr-meta">44</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 各地校友分会 -->
+    <div class="section-title">各地校友分会</div>
+    <div class="branch-grid">
+      <div class="branch-card"><div class="br-c">京</div><div class="br-n">北京分会<br>312人</div></div>
+      <div class="branch-card"><div class="br-c">沪</div><div class="br-n">上海分会<br>268人</div></div>
+      <div class="branch-card"><div class="br-c">穗</div><div class="br-n">广州分会<br>201人</div></div>
+      <div class="branch-card"><div class="br-c">深</div><div class="br-n">深圳分会<br>233人</div></div>
+      <div class="branch-card"><div class="br-c">湘</div><div class="br-n">长沙分会<br>189人</div></div>
+      <div class="branch-card"><div class="br-c">怀</div><div class="br-n">怀化分会<br>421人</div></div>
+      <div class="branch-card"><div class="br-c">杭</div><div class="br-n">杭州分会<br>142人</div></div>
+      <div class="branch-card"><div class="br-c">蓉</div><div class="br-n">成都分会<br>118人</div></div>
+      <div class="branch-card"><div class="br-c">渝</div><div class="br-n">重庆分会<br>96人</div></div>
+      <div class="branch-card"><div class="br-c">汉</div><div class="br-n">武汉分会<br>107人</div></div>
+      <div class="branch-card"><div class="br-c">珠</div><div class="br-n">珠海分会<br>64人</div></div>
+      <div class="branch-card"><div class="br-c">厦</div><div class="br-n">厦门分会<br>58人</div></div>
+    </div>
+
+    <!-- 毕业纪念墙 -->
+    <div class="section-title">毕业纪念墙 · 选一年回望青春</div>
+    <div class="year-wall">
+      <div class="year-badge"><span class="y">2000</span><span class="s">届</span></div>
+      <div class="year-badge"><span class="y">2001</span><span class="s">届</span></div>
+      <div class="year-badge"><span class="y">2002</span><span class="s">届</span></div>
+      <div class="year-badge"><span class="y">2003</span><span class="s">届</span></div>
+      <div class="year-badge"><span class="y">2004</span><span class="s">届</span></div>
+      <div class="year-badge"><span class="y">2005</span><span class="s">届</span></div>
+      <div class="year-badge"><span class="y">2006</span><span class="s">届</span></div>
+      <div class="year-badge"><span class="y">2007</span><span class="s">届</span></div>
+      <div class="year-badge"><span class="y">2008</span><span class="s">届</span></div>
+      <div class="year-badge"><span class="y">2009</span><span class="s">届</span></div>
+      <div class="year-badge"><span class="y">2010</span><span class="s">届</span></div>
+      <div class="year-badge"><span class="y">2011</span><span class="s">届</span></div>
+      <div class="year-badge"><span class="y">2012</span><span class="s">届</span></div>
+      <div class="year-badge"><span class="y">2013</span><span class="s">届</span></div>
+      <div class="year-badge"><span class="y">2014</span><span class="s">届</span></div>
+      <div class="year-badge"><span class="y">2015</span><span class="s">届</span></div>
+    </div>
+
+    <!-- 新手指南 + 本期投票 -->
+    <div class="two-col">
+      <div class="panel">
+        <div class="panel-h"><svg class="px"><use href="#ic-scroll"/></svg> 新手指南</div>
+        <div class="panel-b">
+          <ul class="guide-list">
+            <li class="guide-item">注册功能暂停，请使用校内指定账号登录</li>
+            <li class="guide-item">发帖请遵守网络文明公约，违者封号</li>
+            <li class="guide-item">旧教学楼暂不对外开放，请勿靠近</li>
+            <li class="guide-item">查阅校史请至校务办公室登记</li>
+            <li class="guide-item">聊天室仅向已登录校友开放</li>
+            <li class="guide-item">回帖请使用文明用语，禁止人身攻击</li>
+            <li class="guide-item">资源下载区文件请于 24 小时内查收</li>
+            <li class="guide-item">找回密码请联系值班管理员</li>
+          </ul>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><svg class="px"><use href="#ic-star"/></svg> 本期投票</div>
+        <div class="panel-b">
+          <div class="vote-box">
+            <div class="vote-q">你最想念母校的哪一处？</div>
+            <div class="vote-opt">老教学楼<div class="vote-bar"><i style="width:38%"></i></div></div>
+            <div class="vote-opt">校史馆与荣誉橱窗<div class="vote-bar"><i style="width:21%"></i></div></div>
+            <div class="vote-opt">食堂糖醋排骨窗口<div class="vote-bar"><i style="width:29%"></i></div></div>
+            <div class="vote-opt">操场与那棵老樟树<div class="vote-bar"><i style="width:12%"></i></div></div>
+            <div style="font-size:10px;color:#999;margin-top:8px">已有 1842 人参与 · 投票截止 2015-10-01</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 页脚 -->
+  <div class="forum-footer">
+    <div class="cn">会同县无生中学 · 校园论坛</div>
+    本站为校友自发维护的非官方交流平台 · 建站于 2003 年 · 邮编 418300 · 电话 0745-1234567<br>
+    返回学校主页请使用页面上方面包屑导航 | 建议使用 1024×768 以上分辨率浏览
+  </div>
+
+</div>
+
+<!-- ========== 底部版权栏（与首页底部版权栏一致，宽度对齐整个页面） ========== -->
+<div class="forum-copy">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+
+<!-- 登录弹窗（独立窗口） -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal-box" style="width:360px">
+    <div class="modal-head">
+      <span><svg class="px"><use href="#ic-chat"/></svg> 账号登录</span>
+      <span class="modal-close" onclick="closeLogin()">×</span>
+    </div>
+    <div class="modal-body">
+      <div class="auth-wrap" style="justify-content:center">
+        <div class="auth-card" style="width:100%">
+          <h3>账号登录</h3>
+          <div class="form-row">
+            <label>用户名</label>
+            <input type="text" id="loginUser" placeholder="请输入用户名">
+          </div>
+          <div class="form-row">
+            <label>密码</label>
+            <input type="password" id="loginPass" placeholder="请输入密码">
+          </div>
+          <button class="auth-btn" onclick="doLogin()">登 录</button>
+          <div class="auth-msg" id="loginMsg"></div>
+          <div class="auth-tip" id="loginTip">校园论坛仅向本校师生开放。账号与密码须为校内指定账户，输入正确方可登录。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 注册弹窗（独立窗口，注册仍封锁） -->
+<div class="modal-overlay" id="regModal">
+  <div class="modal-box" style="width:360px">
+    <div class="modal-head">
+      <span><svg class="px"><use href="#ic-star"/></svg> 注册账号</span>
+      <span class="modal-close" onclick="closeReg()">×</span>
+    </div>
+    <div class="modal-body">
+      <div class="auth-wrap" style="justify-content:center">
+        <div class="auth-card" style="width:100%">
+          <h3>注册账号</h3>
+          <div class="form-row">
+            <label>用户名</label>
+            <input type="text" id="regUser" placeholder="请输入用户名" disabled>
+          </div>
+          <div class="form-row">
+            <label>密码</label>
+            <input type="password" id="regPass" placeholder="请输入密码" disabled>
+          </div>
+          <button class="auth-btn" disabled>注 册</button>
+          <div class="locked">
+            <svg class="px"><use href="#ic-warn"/></svg> 注册功能已暂停，暂不开放新用户注册。<br>如需进入论坛，请使用已有的校内账号登录。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+function loadLogo(){ /* 本页无校徽图，留空以兼容 logo-data.js */ }
+
+// 登录状态
+var VALID_USER = "jiyouze";
+var VALID_PASS = "19871103";
+var loggedIn = false;
+var loginForChatroom = false; // 本次登录是否由“进入聊天室”触发
+
+// 渲染顶部账户区（注册/登录 或 已登录），统一用 addEventListener 绑定，
+// 避免内联 onclick 在个别预览/iframe 环境下对 <a href="#"> 不触发的问题
+function diaryHref(){
+  return (window.FRAG && FRAG.link) ? FRAG.link('page13-riji.html') : 'page13-riji.html?known=1';
+}
+function setAccountUI(state){
+  var acc = document.getElementById('forumAccount');
+  if(!acc) return;
+  if(state === 'in'){
+    acc.innerHTML = '欢迎回来！<a href="javascript:void(0)" class="who-link" id="whoLink">纪佑泽</a><button class="logout" id="logoutBtn">退出</button>';
+    var who = document.getElementById('whoLink');
+    var out = document.getElementById('logoutBtn');
+    if(who) who.addEventListener('click', function(e){ e.preventDefault(); location.href = diaryHref(); });
+    if(out) out.addEventListener('click', function(e){ e.preventDefault(); doLogout(); });
+  } else {
+    acc.innerHTML = '<a href="javascript:void(0)" id="topRegLink">注册</a><span class="sep">|</span><a href="javascript:void(0)" id="topLoginLink">登录</a>';
+    var rl = document.getElementById('topRegLink');
+    var ll = document.getElementById('topLoginLink');
+    if(rl) rl.addEventListener('click', function(e){ e.preventDefault(); openReg(); });
+    if(ll) ll.addEventListener('click', function(e){ e.preventDefault(); openLogin(); });
+  }
+}
+
+// 渲染已登录界面（顶栏、聊天室入口、提示语）
+function renderLoggedIn(){
+  setAccountUI('in');
+  document.getElementById('enterBtn').textContent = '进入聊天室';
+  document.getElementById('lockTip').textContent = '※ 已登录，欢迎回到 2006 届毕业班！';
+}
+
+// 加载时恢复登录态：localStorage 已登录，或经由 ?from=forum 进入（从聊天室返回）
+function restoreLogin(){
+  var v = null;
+  try { v = localStorage.getItem('wusheng_forum_login'); } catch(e){}
+  if(v === '1'){ loggedIn = true; renderLoggedIn(); return; }
+  if(/[?&]from=forum\b/.test(location.search)){
+    loggedIn = true;
+    try { localStorage.setItem('wusheng_forum_login','1'); } catch(e){}
+    renderLoggedIn();
+  }
+}
+
+function openLogin(note){
+  closeReg();
+  document.getElementById('loginModal').classList.add('show');
+  document.getElementById('loginMsg').textContent = '';
+  document.getElementById('loginTip').textContent = note || '校园论坛仅向本校师生开放。账号与密码须为校内指定账户，输入正确方可登录。';
+  setTimeout(function(){ var el=document.getElementById('loginUser'); if(el) el.focus(); }, 50);
+}
+function closeLogin(){ document.getElementById('loginModal').classList.remove('show'); }
+function openReg(note){
+  closeLogin();
+  document.getElementById('regModal').classList.add('show');
+}
+function closeReg(){ document.getElementById('regModal').classList.remove('show'); }
+
+function doLogin(){
+  var u = document.getElementById('loginUser').value.trim();
+  var p = document.getElementById('loginPass').value;
+  var msg = document.getElementById('loginMsg');
+  if(u === VALID_USER && p === VALID_PASS){
+    msg.className = 'auth-msg ok';
+    msg.textContent = '登录成功！这个用户名「jiyouze」……你好像很久以前就用过了。';
+    loggedIn = true;
+    try{ localStorage.setItem('wusheng_forum_login','1'); }catch(e){}
+    closeLogin();
+    if (window.FRAG && FRAG.setKnown) FRAG.setKnown();
+    renderLoggedIn();
+    // 若本次登录是由“进入聊天室”触发，成功后直接进聊天室，避免二次点击
+    if(loginForChatroom){
+      loginForChatroom = false;
+      location.href = 'page21-chatroom.html?from=forum';
+      return;
+    }
+  } else {
+    msg.className = 'auth-msg err';
+    msg.textContent = '用户名或密码错误，请使用校内指定账户登录。';
+  }
+}
+function doLogout(){
+  loggedIn = false;
+  loginForChatroom = false;
+  try{ localStorage.removeItem('wusheng_forum_login'); }catch(e){}
+  setAccountUI('out');
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+  document.getElementById('enterBtn').textContent = '进入聊天室';
+  document.getElementById('lockTip').textContent = '※ 聊天室仅向已登录用户开放，请先登录。';
+}
+
+// 聊天室已独立为 page21-chatroom.html（仅登录可入）
+function enterChatRoom(){
+  if(!loggedIn){ loginForChatroom = true; openLogin('请先登录后再进入「2006届毕业班聊天室」。'); return; }
+  location.href = 'page21-chatroom.html?from=forum';
+}
+
+document.querySelectorAll('.modal-overlay').forEach(function(o){
+  o.addEventListener('click', function(e){ if(e.target === o) o.classList.remove('show'); });
+});
+
+// 页面加载时先绑定顶部账户区事件（用 addEventListener，避免依赖内联 onclick），再恢复登录态
+setAccountUI('out');
+restoreLogin();
+</script>
+<script src="fragment.js"></script>
+<script src="search.js"></script>
+<script src="clue.js"></script>
+<script src="reveal.js?v=4"></script>
+  <script src="phase.js"></script>
+  <script src="pagenum.js"></script>
+</body>
+</html>

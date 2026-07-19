@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>心理老师招聘详情 - 会同县无生中学</title>
+<script src="logo-data.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"宋体","SimSun",serif;font-size:12px;background: #f5f5f0;color:#333}
+a{color:#333;text-decoration:none}
+a:hover{color:#c93a3a;text-decoration:underline}
+
+/* 地址栏 */
+/* 顶部 */
+.top-bar{background:linear-gradient(to bottom,#3a5a4a,#2d4838);border-bottom:3px solid #edc75a;padding:8px 16px;display:flex;align-items:center;gap:12px}
+.school-logo{width:48px;height:48px;border-radius:50%;border:2px solid #edc75a;overflow:hidden;background:#fff;flex-shrink:0}
+.school-logo img{width:100%;height:100%;object-fit:contain}
+.school-name{color:#fff}
+.school-name .cn { font-family: "华文行楷", "STXingkai", "楷体", "KaiTi", "SimSun", serif; font-size: 26px; font-weight: bold; letter-spacing: 2px; color: #fff; }
+.school-name .en { font-size: 10px; color: #a8c4b8; letter-spacing: 0px; margin-top: 2px; font-family: "Times New Roman", serif; }
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.search-box{display:flex;align-items:center;background:#fff;border:1px inset #808080;padding:2px}
+.search-box input{border:none;outline:none;font-size:11px;width:100px;padding:1px 4px;font-family:"宋体"}
+.search-btn{background:none;border:none;cursor:pointer;font-size:13px;padding:0 4px;color:#333}
+.hamburger{position:relative;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:18px;height:2px;background:#fff;margin:2px 0}
+.hamburger-menu{display:none;position:absolute;top:100%;right:0;background:#fff;border:2px outset #c0c0c0;min-width:140px;z-index:999;box-shadow:2px 2px 4px rgba(0,0,0,.3)}
+.hamburger-menu a{display:block;padding:6px 12px;font-size:12px;border-bottom:1px solid #ddd;color:#333}
+.hamburger-menu a:hover{background:#3a5a4a;color:#fff}
+.hamburger:hover .hamburger-menu{display:block}
+
+/* 导航 */
+.nav-bar{background:linear-gradient(to bottom,#2d4838,#3a5a4a);border-bottom:2px solid #edc75a;padding:0}
+.nav-inner{display:flex;align-items:center}
+.nav-item{padding:8px 14px;color:#fff;font-size:13px;font-family:"黑体","SimHei",sans-serif;cursor:pointer;border-right:1px solid #3a5a4a;white-space:nowrap}
+.nav-item:hover{background:#edc75a;color:#000}
+.nav-item.active{background:#edc75a;color:#000}
+
+/* 面包屑 */
+.breadcrumb{background:#d4d4d4;border:1px solid #999;padding:6px 16px;font-size:11px;margin:8px 8px;color:#555;font-family:"宋体","SimSun",serif}
+.breadcrumb a{color:#3a5a4a;text-decoration:none}
+.breadcrumb a:hover{color:#c93a3a;text-decoration:underline}
+
+/* 主内容 */
+.main-wrap{display:flex;margin:8px;gap:8px;min-height:calc(100vh - 280px)}
+.left-nav{width:200px;flex-shrink:0;background:#fff;border:2px outset #c0c0c0}
+.left-nav .nav-title{background:linear-gradient(to bottom,#2d4838,#3a5a4a);color:#fff;padding:8px 12px;font-size:14px;font-family:"黑体","SimHei",sans-serif;text-align:center;border-bottom:2px solid #edc75a}
+.left-nav .nav-item2{padding:10px 16px;font-size:13px;cursor:pointer;border-bottom:1px solid #ddd;transition:all .2s}
+.left-nav .nav-item2:hover{background:#eef3ea}
+.left-nav .nav-item2.active{background:#3a5a4a;color:#fff;font-weight:bold;border-left:3px solid #edc75a}
+.right-content{flex:1;background:#fff;border:2px outset #c0c0c0;padding:20px;overflow-y:auto;max-height:calc(100vh - 280px)}
+
+.section-title{font-size:18px;font-family:"黑体","SimHei",sans-serif;color:#3a5a4a;border-bottom:2px solid #edc75a;padding-bottom:6px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-title .icon{color:#edc75a;font-size:16px}
+.intro-text p{text-indent:2em;line-height:2;margin-bottom:10px;text-align:justify}
+
+/* 信息表 */
+.data-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12px}
+.data-table th{background:#3a5a4a;color:#fff;font-family:"黑体","SimHei",sans-serif;padding:8px 10px;border:1px solid #3a5a4a;text-align:left}
+.data-table td{border:1px solid #999;padding:7px 10px;line-height:1.8}
+.data-table tr:nth-child(even) td{background:#eef3ea}
+
+/* 职位列表 */
+.job-list{list-style:none;margin:12px 0}
+.job-list li{padding:12px 14px;border:1px solid #ccc;border-left:4px solid #edc75a;margin-bottom:10px;background:#fafafa}
+.job-list .jt{font-weight:bold;font-size:14px;color:#3a5a4a;font-family:"黑体","SimHei",sans-serif}
+.job-list .jd{font-size:12px;color:#555;margin-top:4px;line-height:1.8}
+
+/* 备注框 */
+.note-box{border:1px dashed #999;background:#faf5eb;padding:12px 16px;font-size:12px;color:#5a3e2b;line-height:2;margin-top:18px}
+.note-box .nt{color:#c93a3a;font-weight:bold;font-family:"黑体","SimHei",sans-serif;margin-bottom:6px}
+
+/* 页脚 */
+.footer{background:linear-gradient(to bottom,#3a5a4a,#2d4838);border-top:3px solid #edc75a;padding:16px;color:#cfe3d8;font-size:11px;margin-top:8px}
+.footer-inner{display:flex;align-items:center;gap:16px;padding:0 16px}
+.footer-logo{width:40px;height:40px;border-radius:50%;border:1px solid #edc75a;overflow:hidden;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.footer-logo img{width:90%;height:90%;object-fit:contain}
+.footer-info{flex:1}
+.footer-info .cn{font-size:14px;font-weight:bold;color:#fff;font-family:"黑体","SimHei",sans-serif}
+.footer-info .en{font-size:9px;color:#9bbfae;margin-top:2px}
+.footer-links{text-align:right;line-height:1.8}
+.footer-links a{color:#cfe3d8}
+
+/* ========== 底部免责/版权灰框 ========== */
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #ededed; color: #555; text-align: center; padding: 14px 16px 12px; font-family: "宋体", "SimSun", serif; border-top: 1px solid #ddd; }
+.disclaimer .dis-text { font-size: 11px; letter-spacing: .5px; color: #999; }
+.disclaimer .copy { margin-top: 7px; font-size: 11px; color: #999; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .5px; }
+
+body { max-width: 1200px; margin-left: auto; margin-right: auto; }
+</style>
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+
+
+
+<!-- 顶部 -->
+<div class="top-bar">
+  <div class="school-logo" id="logo1"></div>
+  <div class="school-name">
+    <div class="cn">会同县无生中学</div>
+    <div class="en">HuiTong County WuSheng Middle School</div>
+  </div>
+  <div class="nav-right">
+    <div class="search-box">
+      <input type="text" id="pgSearch" placeholder="搜索...">
+      <button class="search-btn" onclick="doSiteSearch(document.getElementById('pgSearch').value)">🔍</button>
+    </div>
+    <div class="hamburger">
+      <span></span><span></span><span></span>
+      <div class="hamburger-menu">
+        <a href="page9-xuesheng.html">学生天地</a>
+        <a href="page10-zhaosheng.html">招聘招生</a>
+        <a href="page11-luntan.html">校园论坛</a>
+        <a href="page12-guanyu.html">关于我们</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 主导航 -->
+<div class="nav-bar">
+  <div class="nav-inner">
+    <div class="nav-item" onclick="location.href='page1.html'">首页</div>
+    <div class="nav-item" onclick="location.href='page2-about.html'">学校概况</div>
+    <div class="nav-item" onclick="location.href='page3-notice.html'">通知公告</div>
+    <div class="nav-item" onclick="location.href='page4-events.html'">无生大事</div>
+    <div class="nav-item" onclick="location.href='page5-jiaoyu.html'">教育教学</div>
+    <div class="nav-item" onclick="location.href='page6-mingshi.html'">名师风采</div>
+    <div class="nav-item" onclick="location.href='page7-xiaoyou.html'">校友聚集</div>
+    <div class="nav-item" onclick="location.href='page8-dangjian.html'">党建园地</div>
+  </div>
+</div>
+
+<!-- 面包屑 -->
+<div class="breadcrumb">
+  <a href="page1.html">首页</a> &gt; <a href="page10-zhaosheng.html">招聘招生</a> &gt; <span>心理老师招聘详情</span>
+</div>
+
+<!-- 主内容 -->
+<div class="main-wrap">
+  <div class="right-content">
+
+    <div class="section-title"><span class="icon">■</span> 心理老师招聘详情</div>
+
+    <div class="intro-text">
+      <p>心理健康是学生全面发展的重要基石。为进一步加强各校区的心理健康教育工作，我校现面向校内外公开招聘<strong>心理老师（心理健康教育课任课教师）</strong>一名，主要负责心理健康教育课教学、个体心理咨询与危机干预、以及心理健康主题活动的组织开展。</p>
+      <p>无生中学并非仅在湖南会同县设有一处校区——作为一所跨区域办学的学校，目前<strong>无生中学在全国多地均设有分校</strong>，各校区共享同一套师资标准与招聘体系。因此，应聘者在任一"无生中学"校区的任职经历，均被本次招聘所认可。</p>
+    </div>
+
+    <div class="section-title" style="font-size:15px;margin-top:22px"><span class="icon">■</span> 任职要求</div>
+    <table class="data-table">
+      <tr><th style="width:120px">岗位名称</th><td>心理老师（心理健康教育课任课教师）　1 名</td></tr>
+      <tr><th>学历要求</th><td>心理学、应用心理或相近专业，本科及以上学历。</td></tr>
+      <tr><th>资格要求</th><td>持有心理咨询师（或心理健康教育）相关资格证书。</td></tr>
+      <tr><th>任职经验</th><td><strong>有过在"无生中学"任职的经验</strong>（本校任一校区均可，含会同县总校及全国各地分校）。</td></tr>
+      <tr><th>能力要求</th><td>熟悉中学生心理发展特点，能独立开展个体辅导、团体心理活动与危机干预。</td></tr>
+    </table>
+
+    <div class="section-title" style="font-size:15px;margin-top:22px"><span class="icon">■</span> 岗位职责</div>
+    <ul class="job-list">
+      <li>
+        <div class="jt">承担心理健康教育课教学工作</div>
+        <div class="jd">按校区课表完成心理健康教育课授课，编写适用的校本心育教案与活动方案。</div>
+      </li>
+      <li>
+        <div class="jt">开展心理咨询与危机干预</div>
+        <div class="jd">面向学生提供个体心理咨询，建立心理档案，对高危个案及时介入并上报。</div>
+      </li>
+      <li>
+        <div class="jt">组织心理健康主题活动</div>
+        <div class="jd">策划心理健康月、团体辅导、家长课堂等主题活动，营造积极的校园心育氛围。</div>
+      </li>
+    </ul>
+
+    <div class="note-box">
+      <div class="nt">※ 应聘说明</div>
+      <div>简历投递邮箱：wusheng@edu.cn（邮件主题请注明"应聘心理老师+姓名+曾任职校区"）。</div>
+      <div>曾在"无生中学"任一校区任职者，请在简历中注明校区名称与任职时段，将作为优先录用的重要参考。</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 页脚 -->
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-logo" id="logo3"></div>
+    <div class="footer-info">
+      <div class="cn">会同县无生中学</div>
+      <div class="en">HuiTong County WuSheng Middle School</div>
+    </div>
+    <div class="footer-links">
+      邮编: 418300 | 电话: 0745-1234567<br>
+      邮箱: wusheng@edu.cn | 地址: 湖南省怀化市会同县
+    </div>
+  </div>
+</div>
+
+<script>
+function loadLogo(){
+  if(typeof LOGO_B64 !== 'undefined'){
+    document.querySelectorAll('#logo1,#logo3').forEach(function(el){
+      el.innerHTML = '<img src="'+LOGO_B64+'" alt="校徽">';
+    });
+  }
+}
+loadLogo();
+
+function goSearch(){ doSiteSearch(document.getElementById('pgSearch').value); }
+document.getElementById('pgSearch').addEventListener('keydown', function(e){ if(e.key==='Enter') goSearch(); });
+</script>
+<script src="search.js"></script>
+<script src="fragment.js"></script>
+<script src="clue.js"></script>
+<script src="phase.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

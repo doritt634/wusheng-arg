@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>名师风采 - 会同县无生中学</title>
+<script src="logo-data.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"宋体","SimSun",serif;font-size:12px;background: #f5f5f0;color:#333}
+a{color:#333;text-decoration:none}
+a:hover{color:#c93a3a;text-decoration:underline}
+
+/* 地址栏 */
+/* 顶部 */
+.top-bar{background:linear-gradient(to bottom,#3a5a4a,#2d4838);border-bottom:3px solid #edc75a;padding:8px 16px;display:flex;align-items:center;gap:12px}
+.school-logo{width:48px;height:48px;border-radius:50%;border:2px solid #edc75a;overflow:hidden;background:#fff;flex-shrink:0}
+.school-logo img{width:100%;height:100%;object-fit:contain}
+.school-name{color:#fff}
+.school-name .cn { font-family: "华文行楷", "STXingkai", "楷体", "KaiTi", "SimSun", serif; font-size: 26px; font-weight: bold; letter-spacing: 2px; color: #fff; }
+.school-name .en { font-size: 10px; color: #a8c4b8; letter-spacing: 0px; margin-top: 2px; font-family: "Times New Roman", serif; }
+
+/* 导航 */
+.nav-bar{background:linear-gradient(to bottom,#2d4838,#3a5a4a);border-bottom:2px solid #edc75a;padding:0}
+.nav-inner{display:flex;align-items:center}
+.nav-item{padding:8px 14px;color:#fff;font-size:13px;font-family:"黑体","SimHei",sans-serif;cursor:pointer;border-right:1px solid #3a5a4a;white-space:nowrap}
+.nav-item:hover{background:#edc75a;color:#000}
+.nav-item.active{background:#edc75a;color:#000}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;padding-right:8px}
+.search-box{display:flex;align-items:center;background:#fff;border:1px inset #808080;padding:2px}
+.search-box input{border:none;outline:none;font-size:11px;width:100px;padding:1px 4px;font-family:"宋体"}
+.search-btn{background:none;border:none;cursor:pointer;font-size:13px;padding:0 4px;color:#333}
+.hamburger{position:relative;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:18px;height:2px;background:#fff;margin:2px 0}
+.hamburger-menu{display:none;position:absolute;top:100%;right:0;background:#fff;border:2px outset #c0c0c0;min-width:140px;z-index:999;box-shadow:2px 2px 4px rgba(0,0,0,.3)}
+.hamburger-menu a{display:block;padding:6px 12px;font-size:12px;border-bottom:1px solid #ddd;color:#333}
+.hamburger-menu a:hover{background:#3a5a4a;color:#fff}
+.hamburger:hover .hamburger-menu{display:block}
+
+/* 面包屑 */
+.breadcrumb{background:#d4d4d4;border:1px solid #999;padding:6px 16px;font-size:11px;margin:8px 8px;color:#555;font-family:"宋体","SimSun",serif}
+.breadcrumb a{color:#3a5a4a;text-decoration:none}
+.breadcrumb a:hover{color:#c93a3a;text-decoration:underline}
+
+/* 主内容 */
+.main-wrap{display:block;margin:8px}
+.content-box{background:#fff;border:2px outset #c0c0c0;padding:20px}
+
+/* 板块 */
+.section-title{font-size:18px;font-family:"黑体","SimHei",sans-serif;color:#3a5a4a;border-bottom:2px solid #edc75a;padding-bottom:6px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-title .icon{color:#edc75a;font-size:16px}
+.intro-text p{text-indent:2em;line-height:2;margin-bottom:10px;text-align:justify}
+
+/* 教师网格 */
+.leader-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin:20px 0}
+.leader-card{text-align:center;border:2px outset #c0c0c0;padding:14px 10px 12px;background:linear-gradient(to bottom,#fafafa,#f0f0f0);position:relative}
+.leader-card:before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(to right,#3a5a4a,#edc75a,#3a5a4a)}
+.leader-card .avatar{width:100px;aspect-ratio:3/4;height:auto;background:#ccc;border-radius:4px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#888;border:2px solid #999;overflow:hidden;box-shadow:2px 2px 4px rgba(0,0,0,.2)}
+.leader-card .avatar img{width:100%;height:100%;object-fit:cover}
+.leader-card .name{font-weight:bold;font-size:15px;font-family:"黑体","SimHei",sans-serif;margin-bottom:2px;color:#3a5a4a}
+.leader-card .title{font-size:11px;color:#c93a3a;font-weight:bold;margin-bottom:6px;letter-spacing:1px}
+.leader-card .divider{width:40px;height:1px;background:#edc75a;margin:0 auto 6px}
+.leader-card .info{font-size:10px;color:#666;line-height:1.6}
+/* 招生咨询触发「祈愿」对话后，贾义正、俞丽两张卡片转灰（已离开/离职） */
+.leader-card.grayed{filter:grayscale(100%);opacity:.55;border-color:#999}
+.leader-card.grayed:before{background:linear-gradient(to right,#999,#bbb,#999)}
+
+/* 说明框 */
+.note-box{margin-top:20px;border:1px solid #edc75a;background:#faf5eb;padding:14px 18px;font-size:12px;color:#333;line-height:2}
+.note-box .note-title{font-weight:bold;font-family:"黑体","SimHei",sans-serif;color:#3a5a4a;margin-bottom:6px}
+
+/* 页脚 */
+.footer{background:linear-gradient(to bottom,#3a5a4a,#2d4838);border-top:3px solid #edc75a;padding:16px;color:#cfe3d8;font-size:11px;margin-top:8px}
+.footer-inner{display:flex;align-items:center;gap:16px;padding:0 16px}
+.footer-logo{width:40px;height:40px;border-radius:50%;border:1px solid #edc75a;overflow:hidden;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.footer-logo img{width:90%;height:90%;object-fit:contain}
+.footer-info{flex:1}
+.footer-info .cn{font-size:14px;font-weight:bold;color:#fff;font-family:"黑体","SimHei",sans-serif}
+.footer-info .en{font-size:9px;color:#9bbfae;margin-top:2px}
+.footer-links{text-align:right;line-height:1.8}
+.footer-links a{color:#cfe3d8}
+
+/* ========== 底部免责/版权灰框 ========== */
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #ededed; color: #555; text-align: center; padding: 14px 16px 12px; font-family: "宋体", "SimSun", serif; border-top: 1px solid #ddd; }
+.disclaimer .dis-text { font-size: 11px; letter-spacing: .5px; color: #999; }
+.disclaimer .copy { margin-top: 7px; font-size: 11px; color: #999; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .5px; }
+
+body { max-width: 1200px; margin-left: auto; margin-right: auto; }
+</style>
+<link rel="stylesheet" href="reveal.css?v=4">
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+
+
+
+<!-- 顶部 -->
+<div class="top-bar">
+  <div class="school-logo" id="logo1"></div>
+  <div class="school-name">
+    <div class="cn">会同县无生中学</div>
+    <div class="en">HuiTong County WuSheng Middle School</div>
+  </div>
+  <div class="nav-right">
+    <div class="search-box">
+      <input type="text" placeholder="搜索...">
+      <button class="search-btn">🔍</button>
+    </div>
+    <div class="hamburger">
+      <span></span><span></span><span></span>
+      <div class="hamburger-menu">
+        <a href="page9-xuesheng.html">学生天地</a>
+        <a href="page10-zhaosheng.html">招聘招生</a>
+        <a href="page11-luntan.html">校园论坛</a>
+        <a href="page12-guanyu.html">关于我们</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 主导航 -->
+<div class="nav-bar">
+  <div class="nav-inner">
+    <div class="nav-item" onclick="location.href='page1.html'">首页</div>
+    <div class="nav-item" onclick="location.href='page2-about.html'">学校概况</div>
+    <div class="nav-item" onclick="location.href='page3-notice.html'">通知公告</div>
+    <div class="nav-item" onclick="location.href='page4-events.html'">无生大事</div>
+    <div class="nav-item" onclick="location.href='page5-jiaoyu.html'">教育教学</div>
+    <div class="nav-item active">名师风采</div>
+    <div class="nav-item" onclick="location.href='page7-xiaoyou.html'">校友聚集</div>
+    <div class="nav-item" onclick="location.href='page8-dangjian.html'">党建园地</div>
+  </div>
+</div>
+
+<!-- 面包屑 -->
+<div class="breadcrumb">
+  <a href="page1.html">首页</a> &gt; 名师风采
+</div>
+
+<!-- 主内容 -->
+<div class="main-wrap" data-phase="2">
+  <div class="content-box">
+    <div class="section-title"><span class="icon">■</span> 名师风采</div>
+    <div class="intro-text">
+      <p>学校拥有一支师德高尚、业务精湛、结构合理的教师队伍。多年来，广大教师扎根讲台、潜心育人，涌现出一批在省、市有影响的骨干教师和学科带头人。以下为部分现任教师代表。</p>
+    </div>
+
+    <div class="leader-grid">
+      <div class="leader-card">
+        <div class="avatar"><img src="zhouwenbin.png" alt="周文斌"></div>
+        <div class="name">周文斌</div>
+        <div class="title">化学教师</div>
+        <div class="divider"></div>
+        <div class="info">1962年生，1985年进校<br>长期任教高三化学<br>1990届高三（2）班班主任</div>
+      </div>
+      <div class="leader-card">
+        <div class="avatar"><img src="huangzhiyuan.png" alt="黄志远"></div>
+        <div class="name">黄志远</div>
+        <div class="title">语文教师</div>
+        <div class="divider"></div>
+        <div class="info">1971年生，1995年进校<br>高三语文备课组长<br>校刊《无生苑》主编</div>
+      </div>
+      <div class="leader-card">
+        <div class="avatar"><img src="sunhuimin.png" alt="孙慧敏"></div>
+        <div class="name">孙慧敏</div>
+        <div class="title">数学教师</div>
+        <div class="divider"></div>
+        <div class="info">1975年生，1999年进校<br>中学高级教师<br>数学竞赛辅导教师</div>
+      </div>
+      <div class="leader-card">
+        <div class="avatar"><img src="wuwentao.png" alt="吴文涛"></div>
+        <div class="name">吴文涛</div>
+        <div class="title">英语教师</div>
+        <div class="divider"></div>
+        <div class="info">1978年生，2001年进校<br>英语教研组组长<br>长期任教高三英语</div>
+      </div>
+      <div class="leader-card">
+        <div class="avatar"><img src="zhengguoqiang.png" alt="郑国强"></div>
+        <div class="name">郑国强</div>
+        <div class="title">物理教师</div>
+        <div class="divider"></div>
+        <div class="info">1970年生，1994年进校<br>物理实验室负责人<br>科技艺术节指导教师</div>
+      </div>
+      <div class="leader-card">
+        <div class="avatar"><img src="sumeilin.png" alt="苏美玲"></div>
+        <div class="name">苏美玲</div>
+        <div class="title">生物教师</div>
+        <div class="divider"></div>
+        <div class="info">1981年生，2004年进校<br>生物教研组骨干<br>生物竞赛辅导教师</div>
+      </div>
+      <div class="leader-card">
+        <div class="avatar"><img src="majunjie.png" alt="马俊杰"></div>
+        <div class="name">马俊杰</div>
+        <div class="title">政治教师</div>
+        <div class="divider"></div>
+        <div class="info">1973年生，1997年进校<br>政治教研组组长<br>《生命教育》任课教师</div>
+      </div>
+      <div class="leader-card">
+        <div class="avatar"><img src="fenglijuan.png" alt="冯丽娟"></div>
+        <div class="name">冯丽娟</div>
+        <div class="title">历史教师</div>
+        <div class="divider"></div>
+        <div class="info">1979年生，2003年进校<br>中学一级教师<br>校史选修课主讲之一</div>
+      </div>
+      <div class="leader-card">
+        <div class="avatar"><img src="jiangdawei.png" alt="蒋大为"></div>
+        <div class="name">蒋大为</div>
+        <div class="title">地理教师</div>
+        <div class="divider"></div>
+        <div class="info">1976年生，2000年进校<br>地理教研组骨干<br>户外研学指导教师</div>
+      </div>
+      <div class="leader-card">
+        <div class="avatar"><img src="xujing.png" alt="许静"></div>
+        <div class="name">许静</div>
+        <div class="title">音乐教师</div>
+        <div class="divider"></div>
+        <div class="info">1982年生，2005年进校<br>校合唱团指导<br>校园文艺汇演导演</div>
+      </div>
+      <div class="leader-card">
+        <div class="avatar"><img src="yangjianguo.png" alt="杨建国"></div>
+        <div class="name">杨建国</div>
+        <div class="title">体育教师</div>
+        <div class="divider"></div>
+        <div class="info">1974年生，1998年进校<br>校田径队教练<br>国家二级裁判</div>
+      </div>
+      <div class="leader-card">
+        <div class="avatar"><img src="tangxiaomei.png" alt="唐晓梅"></div>
+        <div class="name">唐晓梅</div>
+        <div class="title">美术教师</div>
+        <div class="divider"></div>
+        <div class="info">1983年生，2006年进校<br>美术教研组骨干<br>校园书画展策展人</div>
+      </div>
+      <div class="leader-card">
+        <div class="avatar"><img src="gaolei.png" alt="高磊"></div>
+        <div class="name">高磊</div>
+        <div class="title">信息技术教师</div>
+        <div class="divider"></div>
+        <div class="info">1984年生，2007年进校<br>计算机房管理<br>参与2015年校园网络升级</div>
+      </div>
+      <div class="leader-card" data-name="俞丽">
+        <div class="avatar"><img src="yuli.png" alt="俞丽"></div>
+        <div class="name">俞丽</div>
+        <div class="title">语文教师</div>
+        <div class="divider"></div>
+        <div class="info">1979年生，2001年进校<br><span class="anomaly" data-group="yu" data-id="yu1">2006届高三（7）班班主任，所带班级高考成绩突出（明细未完全公示）</span></div>
+      </div>
+      <div class="leader-card" data-name="贾义正">
+        <div class="avatar"><img src="jiayizheng1.png" alt="贾义正"></div>
+        <div class="name">贾义正</div>
+        <div class="title">心理老师</div>
+        <div class="divider"></div>
+        <div class="info">1976年10月11日生，2005年进校<br>心理学专业，任心理辅导教师<br>校"十年贡献奖"获得者</div>
+      </div>
+    </div>
+
+    <div class="note-box">
+      <div class="note-title">▌关于校史资料</div>
+      <p style="text-indent:2em">学校校史编纂工作由校史编纂组分工负责，多位老教师协助搜集、核实史料。</p>
+    </div>
+  </div>
+</div>
+
+<!-- 页脚 -->
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-logo" id="logo2"></div>
+    <div class="footer-info">
+      <div class="cn">会同县无生中学</div>
+      <div class="en">HuiTong County WuSheng Middle School</div>
+    </div>
+    <div class="footer-links">
+      邮编: 418300 | 电话: 0745-1234567<br>
+      邮箱: wusheng@edu.cn | 地址: 湖南省怀化市会同县
+    </div>
+  </div>
+</div>
+
+<script>
+function loadLogo(){
+  if(typeof LOGO_B64 !== 'undefined'){
+    var els = document.querySelectorAll('#logo1,#logo2');
+    els.forEach(function(el){
+      el.innerHTML = '<img src="'+LOGO_B64+'" alt="校徽">';
+    });
+  }
+}
+loadLogo();
+document.querySelector('.hamburger').addEventListener('click', function(e){
+  e.stopPropagation();
+  this.classList.toggle('active');
+});
+document.addEventListener('click', function(){
+  document.querySelector('.hamburger').classList.remove('active');
+});
+// 招生咨询发送「祈愿」触发后，把名师风采里贾义正、俞丽的卡片色调变成灰色
+try {
+  if (localStorage.getItem('wbs_mingshi_gray_v1') === '1') {
+    document.querySelectorAll('.leader-card').forEach(function(c){
+      var n = c.getAttribute('data-name');
+      if (n === '贾义正' || n === '俞丽') c.classList.add('grayed');
+    });
+  }
+} catch(e){}
+</script>
+<script src="fragment.js"></script>
+  <script src="search.js"></script>
+<script src="clue.js"></script>
+<script src="reveal.js?v=4"></script>
+  <script src="phase.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

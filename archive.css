@@ -1,0 +1,191 @@
+/* =========================================================================
+ * 电子档案馆（archive.css） —— 深红色调
+ * 与游戏主体的天蓝/纯白刻意区分：这是一处「别的所在」。
+ * 暗红渐变 + 金线 + 宋体 + 羊皮纸档案卡，无 emoji。
+ * ========================================================================= */
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(120% 80% at 50% -10%, #5a1414 0%, #3d0e0e 45%, #260808 100%) fixed;
+  color: #e9d9c4;
+  font-family: "宋体", SimSun, "Noto Serif CJK SC", serif;
+  min-height: 100vh;
+}
+
+.arch-wrap {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* 顶部题头 */
+.arch-head {
+  text-align: center;
+  padding-bottom: 22px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid rgba(201,162,74,.45);
+  position: relative;
+}
+.arch-head::after {
+  content: "";
+  position: absolute; left: 50%; bottom: -4px;
+  width: 120px; height: 1px; transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, #c9a24a, transparent);
+}
+.arch-seal {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 56px; height: 56px; margin-bottom: 12px;
+  border: 2px solid #c9a24a; border-radius: 50%;
+  color: #c9a24a; font-size: 26px; font-weight: bold;
+  box-shadow: 0 0 0 4px rgba(201,162,74,.12) inset;
+}
+.arch-title {
+  font-size: 30px; letter-spacing: 8px; color: #f0dcae; margin: 6px 0 4px;
+  text-shadow: 0 2px 8px rgba(0,0,0,.6);
+}
+.arch-sub {
+  font-size: 14px; letter-spacing: 3px; color: #b89a9a;
+}
+
+/* 说明条（仅作氛围，不剧透） */
+.arch-note {
+  font-size: 13px; color: #b89a9a; line-height: 1.9;
+  background: rgba(0,0,0,.22); border-left: 3px solid #7a2b2b;
+  padding: 12px 16px; margin-bottom: 28px; letter-spacing: 1px;
+}
+
+/* 档案柜网格 */
+.arch-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 640px) { .arch-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.drawer {
+  position: relative;
+  background: linear-gradient(180deg, #4a1414, #360d0d);
+  border: 1px solid #7a2b2b;
+  border-radius: 8px;
+  padding: 22px 16px 18px;
+  text-align: center;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  user-select: none;
+}
+.drawer:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(0,0,0,.45); border-color: #c9a24a; }
+.drawer .yr {
+  font-size: 30px; color: #f0dcae; letter-spacing: 2px;
+  text-shadow: 0 2px 6px rgba(0,0,0,.5);
+}
+.drawer .label { font-size: 13px; color: #c6a98a; margin-top: 6px; letter-spacing: 2px; }
+.drawer .handle {
+  position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+  width: 30px; height: 5px; border-radius: 3px; background: #8a3535;
+}
+
+/* 锁定态 */
+.drawer.locked { cursor: not-allowed; opacity: .62; }
+.drawer.locked:hover { transform: none; box-shadow: none; border-color: #7a2b2b; }
+.drawer.locked .yr { color: #9a7d6a; }
+.drawer .lock {
+  display: inline-block; margin-top: 8px; color: #b58a6a; font-size: 12px; letter-spacing: 2px;
+}
+.drawer .lock svg { vertical-align: -2px; margin-right: 4px; }
+
+/* 学生名册 */
+.roster { display: flex; flex-direction: column; gap: 10px; }
+.stu {
+  background: #efe3c8;
+  color: #3a2a18;
+  border: 1px solid #c9a24a;
+  border-radius: 6px;
+  padding: 14px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer;
+  transition: box-shadow .15s ease, transform .1s ease;
+  font-size: 15px;
+}
+.stu:hover { box-shadow: 0 6px 18px rgba(0,0,0,.4); transform: translateX(2px); }
+.stu .name { font-size: 17px; font-weight: bold; letter-spacing: 2px; }
+.stu .meta { font-size: 12px; color: #6b5436; letter-spacing: 1px; }
+.stu.locked { background: #d8c3a6; border-style: dashed; }
+.stu.locked .name::after { content: " · 已加密"; color: #8a3b1b; font-size: 12px; font-weight: normal; }
+
+/* 详情 / 加密面板 */
+.detail {
+  display: none;
+  margin: -4px 0 6px;
+  background: #f6ecd6;
+  border: 1px solid #c9a24a; border-top: none;
+  border-radius: 0 0 6px 6px;
+  padding: 16px 20px;
+  color: #3a2a18; font-size: 14px; line-height: 1.95;
+  letter-spacing: 1px;
+}
+.detail.open { display: block; }
+.detail .field { display: flex; gap: 10px; }
+.detail .field .k { width: 64px; color: #8a3b1b; flex: none; }
+.detail .field .v { color: #3a2a18; }
+.detail .clue { margin-top: 8px; padding-top: 8px; border-top: 1px dashed #c9a24a; color: #5a3a1b; }
+
+.lockbox {
+  display: none; margin: -4px 0 6px;
+  background: #efe2c8; border: 1px solid #8a3b1b; border-top: none;
+  border-radius: 0 0 6px 6px; padding: 14px 20px;
+}
+.lockbox.open { display: block; }
+.lockbox label { font-size: 13px; color: #8a3b1b; letter-spacing: 1px; }
+.lockbox input {
+  font-family: "宋体", serif; font-size: 15px; letter-spacing: 3px;
+  padding: 6px 10px; margin: 8px 0; width: 200px;
+  border: 1px solid #8a3b1b; border-radius: 4px; background: #fff; color: #3a2a18;
+}
+.lockbox button {
+  font-family: "宋体", serif; font-size: 14px; letter-spacing: 2px;
+  padding: 6px 16px; margin-left: 8px; cursor: pointer;
+  background: #5a1414; color: #f0dcae; border: 1px solid #c9a24a; border-radius: 4px;
+}
+.lockbox button:hover { background: #7a1c1c; }
+.lock-msg { font-size: 12px; margin-top: 4px; min-height: 16px; letter-spacing: 1px; }
+.lock-msg.err { color: #b03a1a; }
+.lock-msg.ok { color: #2e6b2e; }
+
+/* 底部返回 */
+.arch-foot {
+  margin-top: 40px; text-align: center;
+}
+.arch-back {
+  display: inline-block; font-size: 13px; letter-spacing: 2px;
+  color: #c6a98a; text-decoration: none;
+  border: 1px solid rgba(201,162,74,.5); border-radius: 4px;
+  padding: 8px 18px; transition: background .15s ease, color .15s ease;
+}
+.arch-back:hover { background: rgba(201,162,74,.14); color: #f0dcae; }
+
+/* 学籍页角落符号（无说明，留待玩家自行发现） */
+.sym { width: 24px; height: 24px; vertical-align: middle; flex: none; }
+.detail .mark-seal {
+  margin-top: 12px; padding-top: 9px;
+  border-top: 1px dashed rgba(138,59,27,.22);
+  display: flex; align-items: center;
+}
+.detail .mark-seal .sym { width: 22px; height: 22px; opacity: .82; }
+
+/* 档案馆解密后的人物小传（如 何宏宇） */
+.detail .bio-block { margin-top: 10px; padding: 10px 12px; background: #fbf4e8; border: 1px solid #e6cf9a; border-left: 3px solid #c0392b; border-radius: 4px; }
+.detail .bio-h { font-family: "黑体","SimHei",sans-serif; font-size: 12px; color: #a82a12; letter-spacing: 1px; margin-bottom: 6px; }
+.detail .bio-t { font-size: 13px; line-height: 1.9; color: #4a3520; text-align: justify; }
+.detail .bio-t strong { color: #b03a1a; font-weight: bold; }
+
+/* 轻提示 */
+.arch-toast {
+  position: fixed; left: 50%; top: 22%; transform: translateX(-50%);
+  background: rgba(20,4,4,.92); border: 1px solid #7a2b2b; color: #e9d9c4;
+  padding: 10px 22px; border-radius: 4px; font-size: 14px; letter-spacing: 2px;
+  opacity: 0; transition: opacity .3s ease; pointer-events: none; z-index: 2000;
+}
+.arch-toast.show { opacity: 1; }

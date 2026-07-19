@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>会同县无生中学 · 玩家手记</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: "Songti SC", "宋体", "SimSun", "Noto Serif SC", serif;
+    background:
+      radial-gradient(ellipse at 50% 32%, #1d1d20 0%, #101012 55%, #050506 100%);
+    color: #cdc8bd;
+    font-size: 17px;
+    line-height: 2.05;
+    min-height: 100%;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* 暗角 + 极轻微颗粒感 */
+  body::after {
+    content: "";
+    position: fixed; inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(0,0,0,.55) 100%);
+    z-index: 5;
+  }
+
+  .stage {
+    position: relative;
+    z-index: 2;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 84px 28px 140px;
+    opacity: 0;
+    animation: fadein 1.6s ease forwards;
+  }
+  @keyframes fadein { to { opacity: 1; } }
+
+  /* 隐藏 logo-data.js 自动注入到 .stage 顶部的校徽 */
+  .stage > img.site-emblem-auto, .stage > img.logo-img { display: none !important; }
+
+  .kicker {
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 8px;
+    color: #6f6a5e;
+    margin-bottom: 6px;
+    text-indent: 8px;
+  }
+  .rule {
+    width: 54px; height: 1px;
+    background: #5a5346;
+    margin: 0 auto 38px;
+    opacity: .7;
+  }
+
+  .identity {
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: #8d8676;
+    margin-bottom: 22px;
+    text-indent: 4px;
+  }
+
+  .story p { margin-bottom: 22px; text-align: justify; }
+
+  /* 门上那行小字——像一句挥之不去的低语 */
+  .whisper {
+    color: #9fb0c4;
+    font-style: italic;
+    letter-spacing: .5px;
+    text-shadow: 0 0 14px rgba(120,150,190,.25);
+  }
+  .whisper q { quotes: "“" "”"; }
+
+  .task-row { display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start; margin-top: 34px; }
+  .task {
+    flex: 1 1 240px;
+    padding: 16px 20px;
+    border-left: 2px solid #b89a52;
+    background: rgba(184,154,82,.06);
+    color: #e3dccb;
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+  .task b { color: #c9ad6a; font-weight: normal; letter-spacing: 3px; }
+
+  /* 玩法（可展开） */
+  .play {
+    flex: 1 1 240px;
+    padding: 16px 20px;
+    border-left: 2px solid #b89a52;
+    background: rgba(184,154,82,.06);
+    color: #e3dccb;
+    font-size: 16px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .play-head { color: #c9ad6a; font-weight: normal; letter-spacing: 3px; display: flex; align-items: center; gap: 8px; }
+  .play-arrow { display: inline-block; font-size: 12px; transition: transform .2s; }
+  .play.open .play-arrow { transform: rotate(90deg); }
+  .play-detail { display: none; margin-top: 12px; color: #cfc8b6; font-size: 14px; line-height: 1.9; }
+  .play.open .play-detail { display: block; }
+  .play-detail ul { margin: 4px 0 0; padding-left: 20px; }
+  .play-detail li { margin: 5px 0; }
+  .play-detail b { color: #c9ad6a; font-weight: normal; }
+
+  /* 左下角：进入游戏 */
+  .enter {
+    position: fixed;
+    left: 26px;
+    bottom: 26px;
+    z-index: 10;
+    font-family: "黑体", "SimHei", sans-serif;
+    font-size: 15px;
+    letter-spacing: 3px;
+    color: #b8a06a;
+    text-decoration: none;
+    padding: 8px 12px;
+    border: 1px solid rgba(184,160,106,.35);
+    background: rgba(10,10,12,.4);
+    transition: color .35s, border-color .35s, box-shadow .35s, background .35s, transform .35s;
+    animation: breathe 3.4s ease-in-out infinite;
+  }
+  .enter::after { content: " ›"; opacity: .6; }
+  .enter:hover {
+    color: #f0dca0;
+    border-color: rgba(240,220,160,.8);
+    box-shadow: 0 0 18px rgba(240,220,160,.35);
+    background: rgba(20,18,12,.65);
+    transform: translateX(3px);
+    animation: none;
+  }
+  @keyframes breathe {
+    0%,100% { box-shadow: 0 0 0 rgba(184,160,106,0); }
+    50%     { box-shadow: 0 0 12px rgba(184,160,106,.18); }
+  }
+
+  @media (max-width: 540px) {
+    body { font-size: 15.5px; line-height: 1.95; }
+    .stage { padding: 60px 20px 130px; }
+    .enter { left: 16px; bottom: 16px; font-size: 14px; }
+  }
+
+/* ========== 底部免责/版权灰框 ========== */
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #1a1a1a; color: #6b6b6b; text-align: center; padding: 6px 16px 5px; font-family: "宋体", "SimSun", serif; }
+.disclaimer .dis-text { font-size: 10px; letter-spacing: .3px; color: #555; }
+.disclaimer .copy { margin-top: 3px; font-size: 10px; color: #555; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .3px; }
+</style>
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+  <main class="stage">
+    <div class="kicker">序</div>
+    <div class="rule"></div>
+
+    <div class="identity">玩家身份</div>
+
+    <div class="story">
+      <p>我叫二狗，是一名28岁的北漂青年，我家在南方的一个偏远山区，从山沟沟里接受劣质教育长大的我却以优异的成绩考上了北方的一所高等院校。好日子没多久，高考后我就病倒了，一连烧了好几天。家里人请不起医生，就只能请县里的神棍当驱邪来医治，那神棍只看我一眼便说我只需改个名就可以痊愈。我父母没文化，干脆照着乡里人的规矩，给我取了个土名——“二狗”，连姓氏都给去了。</p>
+
+      <p>没成想刚改完名第二天我就醒了，却丢了高中三年的大部分记忆，就只记得自己最爱吃食堂的一盘又酸又甜的绿色的荤菜。之后多年我一直寻觅这道菜，试图用这道菜来唤醒我的记忆，可我问过的每一个餐厅厨师都骂我是神经病，我只能说，好吧我确实有病。</p>
+
+      <p>北漂这些年我一直庸庸碌碌，今年终于是卸下了心气转身回了老家县城的一所重点中学教书。说来也怪，我一不是师范生二没教书经验，那学校招聘处却主动找上了我，想让我担任他们的心理老师，说只要我能帮助学生们开解情绪就可以了。这种天上掉馅饼的好事当然是要接受的了，于是在9月1日当天我顺利上岗，可我只有每周一的晚课才需要上课，这几天我就先熟悉了一下学校环境，逛着逛着就来到了一所废弃的楼。</p>
+
+      <p>冥冥之中我觉得这楼有种力量在召唤着我，我就走了进去一路往上走，到了一个开了锁的门前，推开了门。门的背后是这栋楼的天台，我还没走进天台上的小屋，楼下就传来异响，我吓的转身就打算下楼，关门的时候我看见门上有一串字符，我拿出手机匆匆拍了张照片就跑出了大楼。</p>
+
+      <p>之后几天我一直睡不安稳，总想着再去那里看看，可后来再去就发现门已经被锁住了，除了一道需要钥匙开的锁之外还有两道密码锁。最后我想到了我拍下来的东西，翻出照片才发现门上是一串网址。我试着搜索了一下，没想到真的有东西，只不过是学校的官网。我正打算把手机丢到一边，想起网址旁好像还有一行小字，又翻了回去。</p>
+
+      <p><span class="whisper">“钥匙藏在网站里。我在等你。”</span>我浑身一激灵，心脏却不受控制地狂跳。到底是谁在等我，为什么要等我，我一定要找到答案。</p>
+    </div>
+
+    <div class="task-row">
+      <div class="task">
+        <b>任务</b><br>
+        找到钥匙打开天台门。找到真相。
+      </div>
+      <div class="play" id="playBox" onclick="this.classList.toggle('open')">
+        <span class="play-head">玩法 <span class="play-arrow">▸</span></span>
+        <div class="play-detail">
+          线索散落在各个页面之中。
+          <ul>
+            <li><b>浏览探索</b>：多翻看页面、理解人物关系，线索常藏在文字、图片与细节里。</li>
+            <li><b>站内搜索</b>：用页面搜索框输入关键词，可快速定位线索。</li>
+            <li><b>记录推算</b>：把看到的密码、字符记下来，遇到密码锁时输入正确口令即可解锁。</li>
+            <li><b>收集碎片</b>：散落各处的「碎片」集齐后会触发关键剧情。</li>
+            <li><b>页面封锁</b>：页面分为三个阶段，每个阶段会有限制页面，如果前一个阶段的页面没有全部解开则无法进入下一阶段，有些在前一个阶段无效的线索说不定在后一个阶段就有效了。</li>
+            <li><b>自动保存</b>：已解锁的内容会保存在本地，随时可以接着玩。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <a class="enter" href="page1.html">进入游戏</a>
+  <script src="phase.js"></script>
+  <script src="logo-data.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

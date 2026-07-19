@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>关于我们 - 会同县无生中学</title>
+<script src="logo-data.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"宋体","SimSun",serif;font-size:12px;background: #f5f5f0;color:#333}
+a{color:#333;text-decoration:none}
+a:hover{color:#c93a3a;text-decoration:underline}
+
+/* 地址栏 */
+/* 顶部 */
+.top-bar{background:linear-gradient(to bottom,#3a5a4a,#2d4838);border-bottom:3px solid #edc75a;padding:8px 16px;display:flex;align-items:center;gap:12px}
+.school-logo{width:48px;height:48px;border-radius:50%;border:2px solid #edc75a;overflow:hidden;background:#fff;flex-shrink:0}
+.school-logo img{width:100%;height:100%;object-fit:contain}
+.school-name{color:#fff}
+.school-name .cn { font-family: "华文行楷", "STXingkai", "楷体", "KaiTi", "SimSun", serif; font-size: 26px; font-weight: bold; letter-spacing: 2px; color: #fff; }
+.school-name .en { font-size: 10px; color: #a8c4b8; letter-spacing: 0px; margin-top: 2px; font-family: "Times New Roman", serif; }
+
+/* 导航 */
+.nav-bar{background:linear-gradient(to bottom,#2d4838,#3a5a4a);border-bottom:2px solid #edc75a;padding:0}
+.nav-inner{display:flex;align-items:center}
+.nav-item{padding:8px 14px;color:#fff;font-size:13px;font-family:"黑体","SimHei",sans-serif;cursor:pointer;border-right:1px solid #3a5a4a;white-space:nowrap}
+.nav-item:hover{background:#edc75a;color:#000}
+.nav-item.active{background:#edc75a;color:#000}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;padding-right:8px}
+.search-box{display:flex;align-items:center;background:#fff;border:1px inset #808080;padding:2px}
+.search-box input{border:none;outline:none;font-size:11px;width:100px;padding:1px 4px;font-family:"宋体"}
+.search-btn{background:none;border:none;cursor:pointer;font-size:13px;padding:0 4px;color:#333}
+.hamburger{position:relative;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:18px;height:2px;background:#fff;margin:2px 0}
+.hamburger-menu{display:none;position:absolute;top:100%;right:0;background:#fff;border:2px outset #c0c0c0;min-width:140px;z-index:999;box-shadow:2px 2px 4px rgba(0,0,0,.3)}
+.hamburger-menu a{display:block;padding:6px 12px;font-size:12px;border-bottom:1px solid #ddd;color:#333}
+.hamburger-menu a:hover{background:#3a5a4a;color:#fff}
+.hamburger:hover .hamburger-menu{display:block}
+
+/* 面包屑 */
+.breadcrumb{background:#d4d4d4;border:1px solid #999;padding:6px 16px;font-size:11px;margin:8px 8px;color:#555;font-family:"宋体","SimSun",serif}
+.breadcrumb a{color:#3a5a4a;text-decoration:none}
+.breadcrumb a:hover{color:#c93a3a;text-decoration:underline}
+
+/* 主内容 */
+.main-wrap{display:flex;margin:8px;gap:8px;min-height:calc(100vh - 280px)}
+.left-nav{width:200px;flex-shrink:0;background:#fff;border:2px outset #c0c0c0}
+.left-nav .nav-title{background:linear-gradient(to bottom,#2d4838,#3a5a4a);color:#fff;padding:8px 12px;font-size:14px;font-family:"黑体","SimHei",sans-serif;text-align:center;border-bottom:2px solid #edc75a}
+.left-nav .nav-item2{padding:10px 16px;font-size:13px;cursor:pointer;border-bottom:1px solid #ddd;transition:all .2s}
+.left-nav .nav-item2:hover{background:#eef3ea}
+.left-nav .nav-item2.active{background:#3a5a4a;color:#fff;font-weight:bold;border-left:3px solid #edc75a}
+.right-content{flex:1;background:#fff;border:2px outset #c0c0c0;padding:20px;overflow-y:auto;max-height:calc(100vh - 280px)}
+
+/* 板块 */
+.section{display:none}
+.section.active{display:block}
+.section-title{font-size:18px;font-family:"黑体","SimHei",sans-serif;color:#3a5a4a;border-bottom:2px solid #edc75a;padding-bottom:6px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-title .icon{color:#edc75a;font-size:16px}
+.intro-text p{text-indent:2em;line-height:2;margin-bottom:10px;text-align:justify}
+
+/* 成员名单 */
+.member-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:16px 0}
+.member-card{border:2px outset #c0c0c0;padding:14px 12px;background:linear-gradient(to bottom,#fafafa,#f0f0f0);text-align:center;position:relative}
+.member-card:before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(to right,#3a5a4a,#edc75a,#3a5a4a)}
+.member-card .avatar{width:72px;height:72px;border-radius:50%;background:#ccc;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff;background:linear-gradient(135deg,#3a5a4a,#3a5a4a);border:2px solid #edc75a;overflow:hidden}
+.member-card .name{font-weight:bold;font-size:15px;font-family:"黑体","SimHei",sans-serif;color:#3a5a4a;margin-bottom:2px}
+.member-card .role{font-size:11px;color:#c93a3a;font-weight:bold;margin-bottom:6px}
+.member-card .desc{font-size:11px;color:#666;line-height:1.7}
+
+/* 备注框 */
+.note-box{border:1px dashed #999;background:#faf5eb;padding:12px 16px;font-size:12px;color:#5a3e2b;line-height:2;margin-top:18px}
+.note-box .nt{color:#c93a3a;font-weight:bold;font-family:"黑体","SimHei",sans-serif;margin-bottom:6px}
+
+/* 页脚 */
+.footer{background:linear-gradient(to bottom,#3a5a4a,#2d4838);border-top:3px solid #edc75a;padding:16px;color:#cfe3d8;font-size:11px;margin-top:8px}
+.footer-inner{display:flex;align-items:center;gap:16px;padding:0 16px}
+.footer-logo{width:40px;height:40px;border-radius:50%;border:1px solid #edc75a;overflow:hidden;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.footer-logo img{width:90%;height:90%;object-fit:contain}
+.footer-info{flex:1}
+.footer-info .cn{font-size:14px;font-weight:bold;color:#fff;font-family:"黑体","SimHei",sans-serif}
+.footer-info .en{font-size:9px;color:#9bbfae;margin-top:2px}
+.footer-links{text-align:right;line-height:1.8}
+.footer-links a{color:#cfe3d8}
+
+/* ========== 底部免责/版权灰框 ========== */
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #ededed; color: #555; text-align: center; padding: 14px 16px 12px; font-family: "宋体", "SimSun", serif; border-top: 1px solid #ddd; }
+.disclaimer .dis-text { font-size: 11px; letter-spacing: .5px; color: #999; }
+.disclaimer .copy { margin-top: 7px; font-size: 11px; color: #999; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .5px; }
+
+body { max-width: 1200px; margin-left: auto; margin-right: auto; }
+</style>
+<link rel="stylesheet" href="reveal.css?v=4">
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+
+
+
+<!-- 顶部 -->
+<div class="top-bar">
+  <div class="school-logo" id="logo1"></div>
+  <div class="school-name">
+    <div class="cn">会同县无生中学</div>
+    <div class="en">HuiTong County WuSheng Middle School</div>
+  </div>
+  <div class="nav-right">
+    <div class="search-box">
+      <input type="text" placeholder="搜索...">
+      <button class="search-btn">🔍</button>
+    </div>
+    <div class="hamburger">
+      <span></span><span></span><span></span>
+      <div class="hamburger-menu">
+        <a href="page9-xuesheng.html">学生天地</a>
+        <a href="page10-zhaosheng.html">招聘招生</a>
+        <a href="page11-luntan.html">校园论坛</a>
+        <a href="page12-guanyu.html">关于我们</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 主导航 -->
+<div class="nav-bar">
+  <div class="nav-inner">
+    <div class="nav-item" onclick="location.href='page1.html'">首页</div>
+    <div class="nav-item" onclick="location.href='page2-about.html'">学校概况</div>
+    <div class="nav-item" onclick="location.href='page3-notice.html'">通知公告</div>
+    <div class="nav-item" onclick="location.href='page4-events.html'">无生大事</div>
+    <div class="nav-item" onclick="location.href='page5-jiaoyu.html'">教育教学</div>
+    <div class="nav-item" onclick="location.href='page6-mingshi.html'">名师风采</div>
+    <div class="nav-item" onclick="location.href='page7-xiaoyou.html">校友聚集</div>
+    <div class="nav-item" onclick="location.href='page8-dangjian.html'">党建园地</div>
+  </div>
+</div>
+
+<!-- 面包屑 -->
+<div class="breadcrumb">
+  <a href="page1.html">首页</a> &gt; 关于我们
+</div>
+
+<!-- 主内容 -->
+<div class="main-wrap">
+  <div class="left-nav">
+    <div class="nav-title">关于我们</div>
+    <div class="nav-item2 active" onclick="switchTab('site',this)">■ 网站简介</div>
+    <div class="nav-item2" onclick="switchTab('team',this)">■ 制作成员</div>
+  </div>
+
+  <div class="right-content">
+
+    <!-- 网站简介 -->
+    <div class="section active" id="sec-site">
+      <div class="section-title"><span class="icon">■</span> 网站简介</div>
+      <div class="intro-text">
+        <p>会同县无生中学官方网站由学校校务办公室统筹建设，旨在向社会各界展示办学成果、发布招生与招聘信息、服务广大师生与家长。网站内容涵盖学校概况、通知公告、无生大事、教育教学、名师风采、校友聚集、党建园地、学生天地、招聘招生、校园论坛等栏目。</p>
+        <p>本网站为校内教学与宣传用途，部分历史资料因年代久远等原因，可能存在不完整之处，相关原始文书由校务办公室保管，以校方最终核定为准。如发现内容错漏，欢迎通过页脚联系方式反馈。</p>
+      </div>
+      <div class="note-box">
+        <div class="nt">※ 版权与联系</div>
+        <div>本站内容版权归会同县无生中学所有，未经许可不得转载。意见反馈请联系：wusheng@edu.cn ｜ 0745-1234567。</div>
+      </div>
+    </div>
+
+    <!-- 制作成员 -->
+    <div class="section" id="sec-team">
+      <div class="section-title"><span class="icon">■</span> 网页制作成员名单</div>
+      <div class="intro-text">
+        <p>本网站由以下同学与老师组成的制作小组协作完成，感谢每一位成员的辛勤付出。</p>
+      </div>
+      <div class="member-grid">
+        <div class="member-card">
+          <div class="avatar">林晓燕</div>
+          <div class="name">林晓燕</div>
+          <div class="role">项目统筹</div>
+          <div class="desc">团委书记，负责整体策划与进度协调</div>
+        </div>
+        <div class="member-card">
+          <div class="avatar">陈志远</div>
+          <div class="name">陈志远</div>
+          <div class="role">前端开发</div>
+          <div class="desc">2015届校友，负责页面结构与交互实现</div>
+        </div>
+        <div class="member-card">
+          <div class="avatar">苏　晴</div>
+          <div class="name">苏　晴</div>
+          <div class="role">视觉设计</div>
+          <div class="desc">美术教师，负责版式与配色设计</div>
+        </div>
+        <div class="member-card">
+          <div class="avatar">周文斌</div>
+          <div class="name">周文斌</div>
+          <div class="role">内容校对</div>
+          <div class="desc">化学教师，负责史料核对与文字润色</div>
+        </div>
+        <div class="member-card">
+          <div class="avatar">何嘉怡</div>
+          <div class="name">何嘉怡</div>
+          <div class="role">资料整理</div>
+          <div class="desc">校史研读小组成员，负责档案归类</div>
+        </div>
+        <div class="member-card">
+          <div class="avatar">罗一航</div>
+          <div class="name">罗一航</div>
+          <div class="role">测试运维</div>
+          <div class="desc">信息技术教师，负责网站部署与维护</div>
+        </div>
+        <div class="member-card">
+          <div class="avatar">贾义正</div>
+          <div class="name">贾义正</div>
+          <div class="role">校史顾问</div>
+          <div class="desc">副校长，提供校史编纂专业指导</div>
+        </div>
+        <div class="member-card">
+          <div class="avatar">王秀英</div>
+          <div class="name">王秀英</div>
+          <div class="role">后勤支持</div>
+          <div class="desc">总务主任，保障制作期间物资与场地</div>
+        </div>
+        <div class="member-card">
+          <div class="avatar">俞　丽</div>
+          <div class="anomaly" data-id="yu3" data-group="yu">
+            <div class="name">俞　丽</div>
+            <div class="role">审核发布</div>
+            <div class="desc">政教主任，负责内容终审与上线发布</div>
+          </div>
+        </div>
+      </div>
+      <div class="note-box">
+        <div class="nt">※ 声明</div>
+        <div>本名单为网站制作小组成员，不代表学校行政编制。</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 页脚 -->
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-logo" id="logo3"></div>
+    <div class="footer-info">
+      <div class="cn">会同县无生中学</div>
+      <div class="en">HuiTong County WuSheng Middle School</div>
+    </div>
+    <div class="footer-links">
+      邮编: 418300 | 电话: 0745-1234567<br>
+      邮箱: wusheng@edu.cn | 地址: 湖南省怀化市会同县
+    </div>
+  </div>
+</div>
+
+<script>
+function loadLogo(){
+  if(typeof LOGO_B64 !== 'undefined'){
+    document.querySelectorAll('#logo1,#logo3').forEach(function(el){
+      el.innerHTML = '<img src="'+LOGO_B64+'" alt="校徽">';
+    });
+  }
+}
+loadLogo();
+
+function switchTab(tab, el){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active')});
+  document.querySelectorAll('.nav-item2').forEach(function(n){n.classList.remove('active')});
+  document.getElementById('sec-'+tab).classList.add('active');
+  el.classList.add('active');
+}
+</script>
+<!-- 数字散在三处：校史的年、届别的尾、公告的日。拼起来，是那一晚。 -->
+<script src="fragment.js"></script>
+  <script src="search.js"></script>
+<script src="clue.js"></script>
+<script src="reveal.js?v=4"></script>
+  <script src="phase.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

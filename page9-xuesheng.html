@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>学生天地 - 会同县无生中学</title>
+<script src="logo-data.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"宋体","SimSun",serif;font-size:12px;background: #f5f5f0;color:#333}
+a{color:#333;text-decoration:none}
+a:hover{color:#c93a3a;text-decoration:underline}
+
+/* 地址栏 */
+/* 顶部 */
+.top-bar{background:linear-gradient(to bottom,#3a5a4a,#2d4838);border-bottom:3px solid #edc75a;padding:8px 16px;display:flex;align-items:center;gap:12px}
+.school-logo{width:48px;height:48px;border-radius:50%;border:2px solid #edc75a;overflow:hidden;background:#fff;flex-shrink:0}
+.school-logo img{width:100%;height:100%;object-fit:contain}
+.school-name{color:#fff}
+.school-name .cn { font-family: "华文行楷", "STXingkai", "楷体", "KaiTi", "SimSun", serif; font-size: 26px; font-weight: bold; letter-spacing: 2px; color: #fff; }
+.school-name .en { font-size: 10px; color: #a8c4b8; letter-spacing: 0px; margin-top: 2px; font-family: "Times New Roman", serif; }
+
+/* 导航 */
+.nav-bar{background:linear-gradient(to bottom,#2d4838,#3a5a4a);border-bottom:2px solid #edc75a;padding:0}
+.nav-inner{display:flex;align-items:center}
+.nav-item{padding:8px 14px;color:#fff;font-size:13px;font-family:"黑体","SimHei",sans-serif;cursor:pointer;border-right:1px solid #3a5a4a;white-space:nowrap}
+.nav-item:hover{background:#edc75a;color:#000}
+.nav-item.active{background:#edc75a;color:#000}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;padding-right:8px}
+.search-box{display:flex;align-items:center;background:#fff;border:1px inset #808080;padding:2px}
+.search-box input{border:none;outline:none;font-size:11px;width:100px;padding:1px 4px;font-family:"宋体"}
+.search-btn{background:none;border:none;cursor:pointer;font-size:13px;padding:0 4px;color:#333}
+.hamburger{position:relative;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:18px;height:2px;background:#fff;margin:2px 0}
+.hamburger-menu{display:none;position:absolute;top:100%;right:0;background:#fff;border:2px outset #c0c0c0;min-width:140px;z-index:999;box-shadow:2px 2px 4px rgba(0,0,0,.3)}
+.hamburger-menu a{display:block;padding:6px 12px;font-size:12px;border-bottom:1px solid #ddd;color:#333}
+.hamburger-menu a:hover{background:#3a5a4a;color:#fff}
+.hamburger:hover .hamburger-menu{display:block}
+
+/* 面包屑 */
+.breadcrumb{background:#d4d4d4;border:1px solid #999;padding:6px 16px;font-size:11px;margin:8px 8px;color:#555;font-family:"宋体","SimSun",serif}
+.breadcrumb a{color:#3a5a4a;text-decoration:none}
+.breadcrumb a:hover{color:#c93a3a;text-decoration:underline}
+
+/* 主内容 */
+.main-wrap{display:flex;margin:8px;gap:8px;min-height:calc(100vh - 280px)}
+.left-nav{width:200px;flex-shrink:0;background:#fff;border:2px outset #c0c0c0}
+.left-nav .nav-title{background:linear-gradient(to bottom,#2d4838,#3a5a4a);color:#fff;padding:8px 12px;font-size:14px;font-family:"黑体","SimHei",sans-serif;text-align:center;border-bottom:2px solid #edc75a}
+.left-nav .nav-item2{padding:10px 16px;font-size:13px;cursor:pointer;border-bottom:1px solid #ddd;transition:all .2s}
+.left-nav .nav-item2:hover{background:#eef3ea}
+.left-nav .nav-item2.active{background:#3a5a4a;color:#fff;font-weight:bold;border-left:3px solid #edc75a}
+.right-content{flex:1;background:#fff;border:2px outset #c0c0c0;padding:20px;overflow-y:auto;max-height:calc(100vh - 280px)}
+
+/* 板块 */
+.section{display:none}
+.section.active{display:block}
+.section-title{font-size:18px;font-family:"黑体","SimHei",sans-serif;color:#3a5a4a;border-bottom:2px solid #edc75a;padding-bottom:6px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-title .icon{color:#edc75a;font-size:16px}
+
+/* 数据表 */
+.data-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:12px}
+.data-table th{background:#3a5a4a;color:#fff;font-family:"黑体","SimHei",sans-serif;padding:8px 10px;border:1px solid #3a5a4a}
+.data-table td{border:1px solid #999;padding:7px 10px}
+.data-table tr:nth-child(even) td{background:#eef3ea}
+.data-table .yr{color:#3a5a4a;font-weight:bold;white-space:nowrap;width:70px}
+
+.intro-text p{text-indent:2em;line-height:2;margin-bottom:10px;text-align:justify}
+
+/* 备注框 */
+.note-box{border:1px dashed #999;background:#faf5eb;padding:12px 16px;font-size:12px;color:#5a3e2b;line-height:2;margin-top:18px}
+.note-box .nt{color:#c93a3a;font-weight:bold;font-family:"黑体","SimHei",sans-serif;margin-bottom:6px}
+
+/* 页脚 */
+.footer{background:linear-gradient(to bottom,#3a5a4a,#2d4838);border-top:3px solid #edc75a;padding:16px;color:#cfe3d8;font-size:11px;margin-top:8px}
+.footer-inner{display:flex;align-items:center;gap:16px;padding:0 16px}
+.footer-logo{width:40px;height:40px;border-radius:50%;border:1px solid #edc75a;overflow:hidden;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.footer-logo img{width:90%;height:90%;object-fit:contain}
+.footer-info{flex:1}
+.footer-info .cn{font-size:14px;font-weight:bold;color:#fff;font-family:"黑体","SimHei",sans-serif}
+.footer-info .en{font-size:9px;color:#9bbfae;margin-top:2px}
+.footer-links{text-align:right;line-height:1.8}
+.footer-links a{color:#cfe3d8}
+
+/* ========== 底部免责/版权灰框 ========== */
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #ededed; color: #555; text-align: center; padding: 14px 16px 12px; font-family: "宋体", "SimSun", serif; border-top: 1px solid #ddd; }
+.disclaimer .dis-text { font-size: 11px; letter-spacing: .5px; color: #999; }
+.disclaimer .copy { margin-top: 7px; font-size: 11px; color: #999; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .5px; }
+
+body { max-width: 1200px; margin-left: auto; margin-right: auto; }
+</style>
+<link rel="stylesheet" href="reveal.css?v=4">
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+
+
+
+<!-- 顶部 -->
+<div class="top-bar">
+  <div class="school-logo" id="logo1"></div>
+  <div class="school-name">
+    <div class="cn">会同县无生中学</div>
+    <div class="en">HuiTong County WuSheng Middle School</div>
+  </div>
+  <div class="nav-right">
+    <div class="search-box">
+      <input type="text" placeholder="搜索...">
+      <button class="search-btn">🔍</button>
+    </div>
+    <div class="hamburger">
+      <span></span><span></span><span></span>
+      <div class="hamburger-menu">
+        <a href="page9-xuesheng.html">学生天地</a>
+        <a href="page10-zhaosheng.html">招聘招生</a>
+        <a href="page11-luntan.html">校园论坛</a>
+        <a href="page12-guanyu.html">关于我们</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 主导航 -->
+<div class="nav-bar">
+  <div class="nav-inner">
+    <div class="nav-item" onclick="location.href='page1.html'">首页</div>
+    <div class="nav-item" onclick="location.href='page2-about.html'">学校概况</div>
+    <div class="nav-item" onclick="location.href='page3-notice.html'">通知公告</div>
+    <div class="nav-item" onclick="location.href='page4-events.html'">无生大事</div>
+    <div class="nav-item" onclick="location.href='page5-jiaoyu.html'">教育教学</div>
+    <div class="nav-item" onclick="location.href='page6-mingshi.html'">名师风采</div>
+    <div class="nav-item" onclick="location.href='page7-xiaoyou.html'">校友聚集</div>
+    <div class="nav-item" onclick="location.href='page8-dangjian.html'">党建园地</div>
+  </div>
+</div>
+
+<!-- 面包屑 -->
+<div class="breadcrumb">
+  <a href="page1.html">首页</a> &gt; <span id="bread-sub">学生天地</span>
+</div>
+
+<!-- 主内容 -->
+<div class="main-wrap">
+  <div class="left-nav">
+    <div class="nav-title">学生天地</div>
+    <div class="nav-item2 active" onclick="switchTab('classes',this)">■ 历届优秀班级</div>
+    <div class="nav-item2" onclick="switchTab('top',this)">■ 历届状元</div>
+  </div>
+
+  <div class="right-content">
+
+    <!-- 历届优秀班级 -->
+    <div class="section active" id="sec-classes">
+      <div class="section-title"><span class="icon">■</span> 历届优秀班级（2000届—2015届）</div>
+      <div class="intro-text">
+        <p>自建校以来，我校各班集体在学风建设、文体活动与社会实践中争优创先，涌现出一大批市、县级优秀班集体。以下为2000届至2015届具有代表性的优秀班级名录，供在校班级学习借鉴。</p>
+      </div>
+      <table class="data-table">
+        <tr><th>届别</th><th>班级</th><th>所获荣誉</th></tr>
+        <tr><td class="yr">2000届</td><td>高三（1）班</td><td>怀化市优秀班集体</td></tr>
+        <tr><td class="yr">2001届</td><td>高三（2）班</td><td>校级优秀班集体</td></tr>
+        <tr><td class="yr">2002届</td><td>高三（3）班</td><td>怀化市优秀班集体</td></tr>
+        <tr><td class="yr">2003届</td><td>高二（1）班</td><td>湖南省先进班集体</td></tr>
+        <tr><td class="yr">2004届</td><td>高三（1）班</td><td>校级优秀班集体</td></tr>
+        <tr><td class="yr">2005届</td><td>高三（4）班</td><td>怀化市优秀班集体</td></tr>
+        <tr><td class="yr">2006届</td><td>高三（7）班</td><td>校级文明班级</td></tr>
+        <tr><td class="yr">2007届</td><td>高三（7）班</td><td>湖南省先进班集体</td></tr>
+        <tr><td class="yr">2008届</td><td>高三（7）班</td><td>怀化市优秀班集体</td></tr>
+        <tr><td class="yr">2009届</td><td>高三（7）班</td><td>校级优秀班集体</td></tr>
+        <tr><td class="yr">2010届</td><td>高三（7）班</td><td>怀化市优秀班集体</td></tr>
+        <tr><td class="yr">2011届</td><td>高三（7）班</td><td>湖南省先进班集体</td></tr>
+        <tr><td class="yr">2012届</td><td>高三（7）班</td><td>校级优秀班集体</td></tr>
+        <tr><td class="yr">2013届</td><td>高三（7）班</td><td>怀化市优秀班集体</td></tr>
+        <tr><td class="yr">2014届</td><td>高三（7）班</td><td>湖南省先进班集体</td></tr>
+        <tr><td class="yr">2015届</td><td>高三（7）班</td><td>怀化市优秀班集体（本届高考本科上线率61%，创历史新高）</td></tr>
+      </table>
+      <div class="note-box">
+        <div class="nt">※ 资料说明</div>
+        <div>以上班级荣誉以班主任年度申报、政教处核定为准。</div>
+      </div>
+    </div>
+
+    <!-- 历届状元 -->
+    <div class="section" id="sec-top">
+      <div class="section-title"><span class="icon">■</span> 历届状元（2000届—2015届）</div>
+      <div class="intro-text">
+        <p>"状元"为校内对每届高考文、理科最高分学生的习惯称谓，是莘莘学子勤学苦读、勇攀高峰的缩影。以下名录按届别排列，谨此激励后学。</p>
+      </div>
+      <table class="data-table" id="topTable">
+        <colgroup>
+          <col class="c-yr"><col class="c-name"><col><col><col class="c-school">
+        </colgroup>
+        <tr><th>届别</th><th>姓名</th><th>类别</th><th>高考成绩</th><th>升学院校</th></tr>
+        <tr><td class="yr">2000届</td><td>李　伟</td><td>理科状元</td><td>618分</td><td>清华大学</td></tr>
+        <tr><td class="yr">2001届</td><td>王　芳</td><td>文科状元</td><td>615分</td><td>北京大学</td></tr>
+        <tr><td class="yr">2002届</td><td>张　磊</td><td>理科状元</td><td>612分</td><td>复旦大学</td></tr>
+        <tr><td class="yr">2003届</td><td>刘　洋</td><td>理科状元</td><td>619分</td><td>清华大学</td></tr>
+        <tr><td class="yr">2004届</td><td>陈　静</td><td>文科状元</td><td>610分</td><td>武汉大学</td></tr>
+        <tr><td class="yr">2005届</td><td>杨　光</td><td>理科状元</td><td>608分</td><td>浙江大学</td></tr>
+        <tr><td class="yr">2006届</td><td><span class="anomaly" data-group="he" data-id="he4">何宏宇</span></td><td>理科状元</td><td>695分</td><td>清华大学</td></tr>
+        <tr><td class="yr">2007届</td><td>孙　浩</td><td>理科状元</td><td>695分</td><td>清华大学</td></tr>
+        <tr><td class="yr">2008届</td><td>周　婷</td><td>理科状元</td><td>685分</td><td>上海交通大学</td></tr>
+        <tr><td class="yr">2009届</td><td>吴　强</td><td>理科状元</td><td>702分</td><td>清华大学</td></tr>
+        <tr><td class="yr">2010届</td><td>郑　爽</td><td>文科状元</td><td>648分</td><td>北京大学</td></tr>
+        <tr><td class="yr">2011届</td><td>黄　磊</td><td>理科状元</td><td>688分</td><td>中国科学技术大学</td></tr>
+        <tr><td class="yr">2012届</td><td>马　丽</td><td>文科状元</td><td>656分</td><td>复旦大学</td></tr>
+        <tr><td class="yr">2013届</td><td>徐　杰</td><td>理科状元</td><td>701分</td><td>清华大学</td></tr>
+        <tr><td class="yr">2014届</td><td>胡　兵</td><td>理科状元</td><td>699分</td><td>浙江大学</td></tr>
+        <tr><td class="yr">2015届</td><td>林　涛</td><td>理科状元</td><td>705分</td><td>清华大学（创校史最高分纪录）</td></tr>
+      </table>
+      <div class="note-box">
+        <div class="nt">※ 资料说明</div>
+        <div>高考成绩以当年省教育考试院公布为准。部分早期状元同学的联系方式未予公开，相关贺信原件存于校史馆荣誉橱窗。</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 页脚 -->
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-logo" id="logo3"></div>
+    <div class="footer-info">
+      <div class="cn">会同县无生中学</div>
+      <div class="en">HuiTong County WuSheng Middle School</div>
+    </div>
+    <div class="footer-links">
+      邮编: 418300 | 电话: 0745-1234567<br>
+      邮箱: wusheng@edu.cn | 地址: 湖南省怀化市会同县
+    </div>
+  </div>
+</div>
+
+<script>
+function loadLogo(){
+  if(typeof LOGO_B64 !== 'undefined'){
+    document.querySelectorAll('#logo1,#logo3').forEach(function(el){
+      el.innerHTML = '<img src="'+LOGO_B64+'" alt="校徽">';
+    });
+  }
+}
+loadLogo();
+
+function switchTab(tab, el){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active')});
+  document.querySelectorAll('.nav-item2').forEach(function(n){n.classList.remove('active')});
+  document.getElementById('sec-'+tab).classList.add('active');
+  el.classList.add('active');
+  var names = {classes:'历届优秀班级', top:'历届状元'};
+  document.getElementById('bread-sub').textContent = names[tab] || '学生天地';
+}
+</script>
+<script src="fragment.js"></script>
+  <script src="search.js"></script>
+<script src="clue.js"></script>
+<script src="reveal.js?v=4"></script>
+  <script src="phase.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

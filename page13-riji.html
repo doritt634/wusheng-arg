@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>纪佑泽的日记 · 无生中学</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: "宋体","SimSun",serif; font-size: 14px; background: #f5f5f0; color: #333; margin: 0; }
+  /* 模拟地址栏 */
+  /* 顶部栏 */
+  .top-bar { background: linear-gradient(to bottom,#3a5a4a,#2d4838); border-bottom: 2px solid #edc75a; display: flex; align-items: center; padding: 6px 16px; }
+  /* 校徽：圆形金边容器，与其他页面一致（logo-data.js 注入校徽图） */
+  .top-bar .school-logo { width: 48px; height: 48px; border-radius: 50%; border: 2px solid #edc75a; overflow: hidden; background: #fff; flex-shrink: 0; }
+  .top-bar .school-name { color: #fff; font-family: "宋体","SimSun",serif; font-size: 22px; letter-spacing: 2px; margin-left: 12px; }
+  .top-bar .school-en { color: #edc75a; font-size: 11px; margin-left: 10px; font-family: Arial, sans-serif; }
+  /* 主导航 */
+  .nav-bar { background: linear-gradient(to bottom,#2d4838,#3a5a4a); border-bottom: 2px solid #edc75a; }
+  .nav-inner { display: flex; }
+  .nav-inner a { color: #fff; text-decoration: none; padding: 8px 14px; font-size: 13px; border-right: 1px solid #3a5a4a; white-space: nowrap; font-family: "黑体","SimHei",sans-serif; cursor: pointer; }
+  .nav-inner a:hover { background: #edc75a; color: #000; }
+  /* 面包屑 */
+  .breadcrumb { font-family: "宋体","SimSun",serif; font-size: 12px; color: #d4d4d4; padding: 8px 16px; background: #fff; border-bottom: 1px solid #eee; }
+  .breadcrumb a { color: #3a5a4a; text-decoration: none; }
+  .breadcrumb a:hover { color: #c93a3a; }
+  /* 主内容 */
+  .main-wrap { max-width: 860px; margin: 18px auto; padding: 0 16px 40px; }
+  .diary-title { font-family: "宋体","SimSun",serif; font-size: 26px; color: #2d4838; letter-spacing: 3px; text-align: center; margin: 10px 0 4px; }
+  .diary-sub { text-align: center; color: #888; font-size: 12px; margin-bottom: 18px; }
+  .diary-note { background: #fff8e8; border: 1px solid #e0c060; border-radius: 4px; padding: 10px 14px; font-size: 13px; color: #7a5a10; margin-bottom: 22px; line-height: 1.8; }
+  .diary-entry { background: #fff; border: 1px solid #ccc; border-left: 4px solid #3a5a4a; border-radius: 3px; padding: 14px 18px; margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+  .diary-entry h3 { margin: 0 0 8px; font-size: 15px; color: #3a5a4a; font-family: "黑体","SimHei",sans-serif; }
+  .diary-entry .date { font-size: 12px; color: #999; margin-left: 10px; font-weight: normal; }
+  .diary-entry .d-date { display: block; font-size: 12px; color: #999; margin: 12px 0 4px; }
+  .diary-entry .redact { background: #1a1a1a; color: #1a1a1a; border-radius: 2px; padding: 0 3px; -webkit-user-select: text; user-select: text; transition: color .15s; }
+  .diary-entry .redact:hover { color: #ddd; }
+  .diary-entry .redact.revealed { background: #f3e6bf; color: #333; box-shadow: 0 0 0 1px #d8b34a; }
+  /* 第五章结尾「他真的死了。太好了。」恐怖样式（静止）：暗红斜体 + 血光阴影 */
+  .diary-entry .creepy {
+    display: inline-block;
+    color: #7a0010;
+    font-style: italic;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow: 0 0 6px rgba(170,0,24,.7), 0 0 12px rgba(120,0,18,.45);
+  }
+  /* 第五章高潮（改动后）：暗红渐变背景 + 血字颤抖 + 逐段浮现 */
+  .diary-entry.ch5-climax {
+    background: linear-gradient(180deg, #1a0808, #0a0404);
+    border-left: 4px solid #5a2a2a;
+    color: #d4d4d4;
+    box-shadow: 0 0 18px rgba(120,0,18,.35);
+  }
+  .diary-entry.ch5-climax h3 { color: #8a5a4a; }
+  .diary-entry.ch5-climax .date { color: #6a4a3a; }
+  .diary-entry.ch5-climax p { color: #d4d4d4; }
+  .diary-entry.ch5-climax .d-date { color: #6a4a3a; }
+  @keyframes ch5fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  /* 血字颤抖 */
+  .diary-entry.ch5-climax .creepy { animation: creepTremble .32s infinite; }
+  @keyframes creepTremble {
+    0%,100% { transform: translate(0,0); }
+    25% { transform: translate(-1px,1px); }
+    50% { transform: translate(1px,-1px); }
+    75% { transform: translate(-1px,-1px); }
+  }
+  .diary-entry p { margin: 8px 0; line-height: 2; font-size: 14px; color: #333; }
+  .diary-entry.locked { border-left-color: #bbb; background: #f6f6f6; }
+  .diary-entry.locked h3 { color: #999; }
+  .diary-entry .lock { color: #b00; font-size: 13px; }
+  .diary-entry .hint { color: #888; font-size: 13px; font-style: italic; }
+  .restored { display: none; background: #2d4838; color: #f3e6bf; border: 1px solid #edc75a; border-radius: 4px; padding: 14px 18px; text-align: center; font-size: 14px; letter-spacing: 1px; margin-bottom: 20px; }
+  .restored.show { display: block; }
+  .dish-channel{display:block;background:linear-gradient(to right,#2e8b6a,#25a233);color:#fff;padding:10px 16px;border-radius:4px;margin-bottom:20px;font-size:13px;font-family:"黑体","SimHei",sans-serif;line-height:1.7}
+  .back-home { text-align: center; margin-top: 24px; }
+  .back-home a { color: #3a5a4a; text-decoration: none; font-size: 13px; }
+  .back-home a:hover { color: #c93a3a; }
+  .dl-toast{position:fixed;right:18px;bottom:18px;z-index:2000;background:#c93a3a;color:#fff;padding:12px 16px;border-radius:6px;box-shadow:0 4px 16px rgba(0,0,0,.3);font-family:"黑体","SimHei",sans-serif;font-size:13px;max-width:240px;line-height:1.6;cursor:pointer;display:flex;align-items:center;gap:10px;animation:dlToastIn .3s ease}
+  .dl-toast .dl-x{margin-left:auto;cursor:pointer;font-size:16px;line-height:1;opacity:.85;padding:0 2px}
+  .dl-toast .dl-x:hover{opacity:1}
+  @keyframes dlToastIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* ========== 底部免责/版权灰框 ========== */
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #ededed; color: #555; text-align: center; padding: 14px 16px 12px; font-family: "宋体", "SimSun", serif; border-top: 1px solid #ddd; }
+.disclaimer .dis-text { font-size: 11px; letter-spacing: .5px; color: #999; }
+.disclaimer .copy { margin-top: 7px; font-size: 11px; color: #999; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .5px; }
+
+body { max-width: 1200px; margin-left: auto; margin-right: auto; }
+</style>
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="school-logo" id="logo1"></div>
+  <span class="school-name">会同县无生中学</span>
+  <span class="school-en">HUITONG WUSHENG MIDDLE SCHOOL</span>
+</div>
+<div class="nav-bar"><div class="nav-inner">
+  <a href="page1.html">首页</a>
+  <a href="page2-about.html">学校概况</a>
+  <a href="page3-notice.html">通知公告</a>
+  <a href="page4-events.html">无生大事</a>
+  <a href="page5-jiaoyu.html">教育教学</a>
+  <a href="page6-mingshi.html">名师风采</a>
+  <a href="page7-xiaoyou.html">校友聚集</a>
+  <a href="page8-dangjian.html">党建园地</a>
+</div></div>
+<div class="breadcrumb">
+  <a href="page1.html">首页</a> &gt; 纪佑泽的日记
+</div>
+
+<div class="main-wrap">
+  <div class="diary-title">纪佑泽的日记</div>
+  <div class="diary-sub">一本旧日记 · 字迹有些地方被水浸过</div>
+  <div class="diary-note">这些页面散落在校园网站的角落里，像被谁刻意藏起来的记忆。每找到一片「记忆碎片」，这里就会多写出一章。集齐全部，你也许会想起一些事。</div>
+
+  <div class="dish-channel" id="dishChannel">你解锁了那盘又酸又甜的绿色的荤菜。记忆的通道，由此为你打开。</div>
+
+  <div class="restored" id="restored">你已想起全部。2005 到 2006 年发生的事，与你有关——而你，就是纪佑泽。</div>
+
+  <!-- f1 -->
+  <div class="diary-entry locked" data-entry="f1">
+    <h3>第一章<span class="date"></span></h3>
+    <p class="lock">［本章尚未解锁］</p>
+    <p class="hint"></p>
+  </div>
+  <!-- f2 -->
+  <div class="diary-entry locked" data-entry="f2">
+    <h3>第二章<span class="date">2005.9.19</span></h3>
+    <p class="lock">［本章尚未解锁］</p>
+    <p class="hint"></p>
+  </div>
+  <!-- f3 -->
+  <div class="diary-entry locked" data-entry="f3">
+    <h3>第三章<span class="date">2005.11.26</span></h3>
+    <p class="lock">［本章尚未解锁］</p>
+    <p class="hint"></p>
+  </div>
+  <!-- f4 -->
+  <div class="diary-entry locked" data-entry="f4">
+    <h3>第四章<span class="date">2006.6.5</span></h3>
+    <p class="lock">［本章尚未解锁］</p>
+    <p class="hint"></p>
+  </div>
+  <!-- f5 -->
+  <div class="diary-entry locked" data-entry="f5">
+    <h3>第五章<span class="date">2006.6.5</span></h3>
+    <p class="lock">［本章尚未解锁］</p>
+    <p class="hint"></p>
+  </div>
+
+  <div class="back-home"><a href="page1.html">← 返回学校首页</a></div>
+</div>
+
+<div id="dlToast" class="dl-toast" style="display:none">当前有文件可下载<span class="dl-x" id="dlToastClose">×</span></div>
+
+<script src="logo-data.js"></script>
+<script src="fragment.js"></script>
+<script>
+(function(){
+  var ENTRIES = {
+    f1: { h:'第一章', d:'', body:
+      '<span class="d-date">2005.9.1</span>' +
+      '<p>高三开学第一天。学校为了给我们减压，新开了一门「心理课」，新来的贾老师就是心理老师，上课时间排在每周一最后一节晚课。</p>' +
+      '<span class="d-date">2005.9.5</span>' +
+      '<p>第一节心理课。贾老师介绍了一种叫「扶乩」的东西，说那其实就是占卜，能用来排解烦恼。我们本来商量着去<b>秘密基地</b>试，可大家都等不及了，当晚就在宿舍里闹着试了一次。起初何宏宇是不想参与的，架不住我们软磨硬泡，也只好答应了。</p>' +
+      '<p>那晚我们在宿舍问：「要是突然查寝，谁的手机会被收？」结果指向了何宏宇。没想到话音刚落，真有人来查寝——何宏宇的手机被收了，而我们几个人的，竟一个都没被翻出来。</p>' +
+      '<span class="d-date">2005.9.6</span>' +
+      '<p>跟家里打电话，家里人突然说要给我换新手机，问了一圈，宿舍其他人也都接到了同样的消息。黄靖川想起何宏宇家里的境况，虽说自己家也不宽裕，还是决定把那部新手机让给何宏宇。</p>' },
+    f2: { h:'第二章', d:'', body:
+      '<span class="d-date">2005.9.19</span>' +
+      '<p>贾老师今天讲了新课，他说其实扶乩不像我们表面上看到的那么简单，它所蕴含的强大力量是我们无法想象的，我们现在掌握的只是一部分，而且使用一定要有限度，千万不能<span class="redact">xxxxxxxx</span>，<span class="redact">xxxx</span>此消彼长，<span class="redact">xxxxx</span>。<span class="redact">xxxxxxxxx</span>。</p>' +
+      '<span class="d-date">2005.9.30</span>' +
+      '<p>下午翻墙出去吃饭，我在沙县门口看见陈鑫垚和陈瑞在吵架，吵得还挺凶的。模模糊糊听到一些，大概是开学前陈鑫垚听到陈瑞爸妈私下嘀咕他，说他天天在陈瑞家蹭吃蹭喝，他们家养活不起两个孩子，陈鑫垚爸妈也从来没表示一下之类的话。看起来他像是一直憋在心里没问过，这次不知道怎么了一下子就爆发了，陈瑞倒是一个劲在解释。不过要我说，他自己爸妈私下嘀咕他朋友他能不知道？八成是自己也这么想的。后来就是陈鑫垚冲着陈瑞吼：「我不想听你废话！你就说你敢不敢？敢我们现在就去！」然后就是陈瑞被拽着踉踉跄跄地离开了。</p>' },
+    f3: { h:'第三章', d:'', body:
+      '<span class="d-date">2005.11.26</span>' +
+      '<p>林正元为什么会突然跟王妙涵在一起了？还总是一脸深情地望着她。他以前不是最烦王妙涵了吗，每次他和白芷蔓一起的时候王妙涵总贴过去，又被林正元骂走，我还见她偷偷哭过几次，跟被辜负了一样。难不成……</p>' +
+      '<span class="d-date">2005.11.28</span>' +
+      '<p>我知道了！我知道了！扶乩根本就不是占卜而是<span class="redact">祈愿</span>！贾老师之前上课的时候说的「我们会发现的」的规则就是这个吧！现在暂时还不能让大家知道，不然会引起混乱的。</p>' +
+      // 2005.11.29：第五章解锁前显示旧文案，解锁后替换为加粗新文案
+      '<span class="d-date" data-old="f5">2005.11.29</span>' +
+      '<p data-old="f5">我就不应该告诉杜兴！也都怪我没掩饰好自己的情绪，被他看出了端倪，非缠着我问。我让他不要告诉别人他果然还是说出去了。今天又跟他吵了一架，黄靖川这小子还是一如既往地当和事佬，真是越来越看不惯他那样了。</p>' +
+      '<span class="d-date" data-new="f5">2005.11.29</span>' +
+      '<p data-new="f5" style="font-weight:bold;color:#8b0000">我把发现告诉杜兴了，我就知道他一定会说出去，这个蠢货，也不枉我演一番兄弟撕破脸的戏码来打消黄靖川的怀疑。但看他说的话……总觉得话里有话。</p>' },
+    f4: { h:'第四章', d:'2006.6.5', body:
+      '<span class="d-date">2006.6.5</span>' +
+      '<p>今天是我们高中生涯的最后一次心理课，我现在心情非常非常激动，我的人生转折点可能就要从这里开始了。马上就要高考了，贾老师在教室里问我们想不想考出完美的答卷的时候我就隐约猜到了，只是没想到真的可以再赌一把，用一个人，换所有人。</p>' +
+      '<span class="d-date">2006.6.6</span>' +
+      '<p>今天全班一起来了秘密基地，贾老师也来了。</p>' },
+    f5: { h:'第五章', d:'2006.6.5', body:
+      '<span class="d-date">2006.6.5</span>' +
+      '<p>今天是我们高中生涯的最后一次心理课，我现在心情非常非常激动，我的人生转折点马上就要从这里开始了。马上就要高考了，下课后我把大家都留在了教室里，我问了大家，果然他们都想毫不费力就能考出完美的答卷。人性的贪欲是止不住的。所以我们决定再赌一把，用一个人，换所有人。</p>' +
+      '<span class="d-date">2006.6.6</span>' +
+      '<p>今天全班一起来了秘密基地，贾老师也来了。</p>' +
+      '<span class="d-date">2006.6.9</span>' +
+      '<p>何宏宇坠楼了。我承认我很期待。<span class=\"creepy\">他真的死了。太好了。</span></p>' }
+  };
+  var LS_KEY = 'wbs_frag_v1';
+  var ORDER5 = ['f1', 'f2', 'f3', 'f4', 'f5'];
+  function lsFrags(){
+    var a = [];
+    try { a = JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch(e){ a = []; }
+    if(!Array.isArray(a)) a = [];
+    return a;
+  }
+  // 直接从 localStorage 读取已解锁记忆（真相源），并与 fragment.js 的 getCollected 合并；
+  // 这样即使 fragment.js 被浏览器缓存为旧版，日记解锁状态也保持已解锁。
+  function getFrags(){
+    var have = lsFrags();
+    if(window.FRAG && window.FRAG.getCollected){
+      window.FRAG.getCollected().forEach(function(x){ if(have.indexOf(x) < 0) have.push(x); });
+    }
+    return have.filter(function(x){ return ORDER5.indexOf(x) >= 0; });
+  }
+  var frags = getFrags();
+  // 双保险：把当前已解锁集合立即持久化，确保刷新 / 重进日记页后保持已解锁
+  try { localStorage.setItem(LS_KEY, JSON.stringify(frags)); } catch(e){}
+  var all = true;
+  // 第五章（f5）是否已解锁：f5 已采集 或 已置显示标记，均视为解锁
+  function ch5Unlocked(){
+    try{ return (frags.indexOf('f5') >= 0) || (localStorage.getItem('wbs_ch5_visible_v1') === '1'); }catch(e){ return false; }
+  }
+  document.querySelectorAll('.diary-entry').forEach(function(el){
+    var id = el.getAttribute('data-entry');
+    // 第五章（f5）：f5 已采集（或旧标记 wbs_ch5_visible_v1 已置）即显示；否则仍隐藏
+    if(id === 'f5'){
+      if(!ch5Unlocked()){ el.style.display = 'none'; return; }
+    }
+    var unlocked = (frags.indexOf(id) >= 0);
+    if(unlocked){
+      el.classList.remove('locked');
+      var html = ENTRIES[id];
+      el.innerHTML = '<h3>' + html.h + '<span class="date">' + html.d + '</span></h3>' + html.body;
+      // 第五章（f5）：高潮样式——暗红渐变背景 + 血字颤抖 + 段落逐条浮现
+      if(id === 'f5'){
+        el.classList.add('ch5-climax');
+        var _kids = el.children;
+        for(var _ci = 0; _ci < _kids.length; _ci++){
+          _kids[_ci].style.animation = 'ch5fade .7s ease both';
+          _kids[_ci].style.animationDelay = (_ci * 0.18) + 's';
+        }
+      }
+      // 第三章（f3）：PDF 下载完成后，被遮盖的「祈愿」显现原字
+      if(id === 'f3'){
+        var pdfDone = false;
+        try{ pdfDone = localStorage.getItem('wbs_pdf_downloaded_v1') === '1'; }catch(e){}
+        if(pdfDone){
+          el.querySelectorAll('.redact').forEach(function(r){ r.classList.add('revealed'); });
+        }
+        // 第三章 2005.11.29 段落：第五章解锁前显示旧文案，解锁后替换为加粗新文案
+        el.querySelectorAll('[data-old="f5"]').forEach(function(c){ c.style.display = ch5Unlocked() ? 'none' : ''; });
+        el.querySelectorAll('[data-new="f5"]').forEach(function(c){ c.style.display = ch5Unlocked() ? '' : 'none'; });
+      }
+    } else {
+      all = false;
+      el.querySelector('.hint').textContent = '未解锁 · 记忆碎片尚未找到';
+    }
+  });
+  if(all){ document.getElementById('restored').classList.add('show'); }
+
+  // 第三章（f3）解锁后：右下角弹出红色信息，提示可下载资源
+  // 与新消息提示音（page22 的 playNewMsgAudio）使用同一音频文件 notice.wav，
+  // 但本提示是「页面加载时自动弹出」，浏览器自动播放策略可能拦截；
+  // 因此若 play() 被拒，则等待玩家首次交互（点击/按键）时补播一次，
+  // 以与「新消息出现时」的听觉体验保持一致。
+  var dlAudio = null;
+  function playDlAudio(){
+    try{
+      if(!dlAudio){ dlAudio = new Audio('notice.wav'); dlAudio.loop = false; dlAudio.preload = 'auto'; }
+      dlAudio.currentTime = 0;
+      var p = dlAudio.play();
+      if(p && p.catch){
+        p.catch(function(){
+          // 自动播放被拦截：注册一次性用户交互监听，交互后补播一次
+          var once = function(){
+            document.removeEventListener('click', once);
+            document.removeEventListener('keydown', once);
+            document.removeEventListener('touchstart', once);
+            var t = document.getElementById('dlToast');
+            if(t && t.style.display !== 'none'){
+              try{ dlAudio.currentTime = 0; dlAudio.play().catch(function(){}); }catch(e){}
+            }
+          };
+          document.addEventListener('click', once, { once: true });
+          document.addEventListener('keydown', once, { once: true });
+          document.addEventListener('touchstart', once, { once: true });
+        });
+      }
+    }catch(e){}
+  }
+  function stopDlAudio(){
+    try{ if(dlAudio){ dlAudio.pause(); dlAudio.currentTime = 0; } }catch(e){}
+  }
+  function showDlToast(){
+    var t = document.getElementById('dlToast');
+    if(!t) return;
+    t.style.display = 'flex';
+    try{ localStorage.setItem('wbs_dl_toast_v1', '1'); }catch(e){}
+    playDlAudio();
+  }
+  if(frags.indexOf('f3') >= 0){
+    var shown = false;
+    try{ shown = localStorage.getItem('wbs_dl_toast_v1') === '1'; }catch(e){}
+    if(!shown){ showDlToast(); }
+  }
+  var toast = document.getElementById('dlToast');
+  if(toast){
+    toast.addEventListener('click', function(e){
+      if(e.target && e.target.id === 'dlToastClose'){ toast.style.display = 'none'; stopDlAudio(); return; }
+      stopDlAudio();
+      if(window.FRAG && window.FRAG.go){ FRAG.go('downloads.html'); }
+      else { location.href = 'downloads.html'; }
+    });
+  }
+})();
+</script>
+<script src="clue.js"></script>
+<script src="phase.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

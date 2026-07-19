@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>校历 - 会同县无生中学</title>
+<script src="logo-data.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"宋体","SimSun",serif;font-size:12px;background: #f5f5f0;color:#333}
+a{color:#3a5a4a;text-decoration:none}
+a:hover{color:#c93a3a;text-decoration:underline}
+
+/* ========== 顶部校徽与导航栏 (经典深蓝条) ========== */
+.top-bar {
+  background: linear-gradient(to bottom, #3a5a4a, #2d4838);
+  color: #fff; display: flex; align-items: center;
+  padding: 8px 16px; position: relative;
+  border-bottom: 3px solid #edc75a;
+}
+.school-brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.school-logo {
+  width: 48px; height: 48px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  border: 2px solid #edc75a;
+  overflow: hidden; background: #fff; flex-shrink: 0;
+}
+.school-logo .logo-img { width: 100%; height: 100%; object-fit: cover; }
+.school-name { display: flex; flex-direction: column; }
+.school-name .cn { font-family: "华文行楷", "STXingkai", "楷体", "KaiTi", "SimSun", serif; font-size: 26px; font-weight: bold; letter-spacing: 2px; color: #fff; }
+.school-name .en { font-size: 10px; color: #a8c4b8; letter-spacing: 0px; margin-top: 2px; font-family: "Times New Roman", serif; }
+
+.main-nav { display: flex; margin-left: auto; align-items: center; }
+.main-nav a {
+  color: #fff; text-decoration: none; padding: 8px 14px;
+  display: flex; align-items: center; font-size: 13px;
+  border-right: 1px solid #3a5a4a;
+  white-space: nowrap; font-family: "黑体", "SimHei", sans-serif;
+  cursor: pointer; background: transparent;
+}
+.main-nav a:first-child { border-left: none; }
+.main-nav a:hover { background: #edc75a; color: #000; text-decoration: none; }
+.main-nav a.active { background: #edc75a; color: #000; font-weight: bold; }
+
+.top-right { display: flex; align-items: center; gap: 10px; margin-left: 16px; flex-shrink: 0; }
+.search-box { display: flex; align-items: center; background: #fff; border: 1px inset #808080; padding: 2px; }
+.search-box input { border: none; outline: none; padding: 1px 4px; font-size: 11px; width: 100px; font-family: "宋体", "SimSun", serif; }
+.search-box button {
+  background: none; border: none; cursor: pointer;
+  font-size: 13px; padding: 0 4px; color: #333;
+  display: flex; align-items: center; justify-content: center;
+}
+.hamburger { position: relative; cursor: pointer; padding: 4px; }
+.hamburger .bar { width: 18px; height: 2px; background: #fff; margin: 2px 0; }
+.hamburger-dropdown {
+  display: none; position: absolute; top: 100%; right: 0; background: #fff;
+  border: 2px outset #c0c0c0; min-width: 140px; z-index: 999;
+  box-shadow: 2px 2px 4px rgba(0,0,0,.3);
+}
+.hamburger-dropdown a {
+  display: block; padding: 6px 12px; color: #333; text-decoration: none;
+  font-size: 12px; border-bottom: 1px solid #ddd; font-family: "宋体", "SimSun", sans-serif;
+}
+
+/* 面包屑 */
+.breadcrumb{background:#d4d4d4;border:1px solid #999;padding:6px 16px;font-size:11px;margin:8px 8px;color:#555}
+.breadcrumb a{color:#3a5a4a;text-decoration:none}
+
+/* 主内容 */
+.main-wrap{margin:8px 12px;min-height:calc(100vh - 260px)}
+.page-title{font-size:20px;font-family:"黑体","SimHei",sans-serif;color:#3a5a4a;border-bottom:3px solid #edc75a;padding-bottom:8px;margin-bottom:18px}
+.page-subtitle{font-size:13px;color:#666;margin-bottom:16px}
+
+/* 校历表格 */
+.cal-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px;border:2px solid #3a5a4a}
+.cal-table th{background:linear-gradient(to bottom,#2d4838,#3a5a4a);color:#fff;font-family:"黑体","SimHei",sans-serif;padding:10px;border:1px solid #3a5a4a;text-align:center}
+.cal-table td{border:1px solid #999;padding:8px 10px;vertical-align:top;line-height:1.9}
+.cal-table tr:nth-child(even){background:#eef3ea}
+.cal-table .month-cell{background:linear-gradient(to bottom,#2d4838,#3a5a4a);color:#fff;font-weight:bold;text-align:center;font-size:14px}
+.cal-table .event-holiday{color:#c93a3a;font-weight:bold}
+.cal-table .event-exam{color:#2e8b6a;font-weight:bold}
+.cal-table .event-special{color:#8b4513;font-weight:bold}
+.cal-note{margin-top:14px;padding:10px 14px;background:#fffbe6;border-left:4px solid #edc75a;font-size:11px;color:#555;line-height:1.8}
+
+/* 页脚 */
+.site-footer{background:linear-gradient(to bottom,#3a5a4a,#2d4838);color:#c2d6cc;padding:14px 20px;margin-top:24px;text-align:center;font-size:11px;border-top:3px solid #edc75a}
+
+/* ========== 底部免责/版权灰框 ========== */
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #ededed; color: #555; text-align: center; padding: 14px 16px 12px; font-family: "宋体", "SimSun", serif; border-top: 1px solid #ddd; }
+.disclaimer .dis-text { font-size: 11px; letter-spacing: .5px; color: #999; }
+.disclaimer .copy { margin-top: 7px; font-size: 11px; color: #999; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .5px; }
+
+body { max-width: 1200px; margin-left: auto; margin-right: auto; }
+</style>
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+
+
+<!-- ========== 顶部校徽与导航栏 ========== -->
+<div class="top-bar">
+  <div class="school-brand">
+    <div class="school-logo"></div>
+    <div class="school-name">
+      <div class="cn">会同县无生中学</div>
+      <div class="en">HuiTong County Wusheng Middle School</div>
+    </div>
+  </div>
+  <nav class="main-nav">
+    <a href="page1.html">首页</a>
+    <a href="page2-about.html">学校概况</a>
+    <a href="page3-notice.html">通知公告</a>
+    <a href="page4-events.html">无生大事</a>
+    <a href="page5-jiaoyu.html">教育教学</a>
+    <a href="page6-mingshi.html">名师风采</a>
+    <a href="page7-xiaoyou.html">校友聚集</a>
+    <a href="page8-dangjian.html">党建园地</a>
+  </nav>
+  <div class="top-right">
+    <div class="search-box">
+      <input type="text" id="siteSearch" placeholder="搜索..." onkeydown="if(event.key==='Enter')doSiteSearch(document.getElementById('siteSearch').value)">
+      <button aria-label="搜索" onclick="doSiteSearch(document.getElementById('siteSearch').value)">🔍</button>
+    </div>
+    <div class="hamburger" onclick="this.classList.toggle('active')">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="hamburger-dropdown">
+        <a href="page9-xuesheng.html">学生天地</a>
+        <a href="page10-zhaosheng.html">招聘招生</a>
+        <a href="page11-luntan.html">校园论坛</a>
+        <a href="page12-guanyu.html">关于我们</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 面包屑 -->
+<div class="breadcrumb">
+  <a href="page1.html">首页</a> &gt; <span>校历安排</span>
+</div>
+
+<!-- 主内容 -->
+<div class="main-wrap">
+  <h1 class="page-title"><span style="color:#edc75a;">&#9632;</span> 会同县无生中学 2015–2016 学年校历</h1>
+  <p class="page-subtitle">本学年自2015年9月1日起至2016年6月30日止，共计42周，教学时间约190天。</p>
+
+  <table class="cal-table">
+    <thead>
+      <tr><th width="18%">月份</th><th>主要事项</th></tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="2" class="month-cell">2015 年 9 月</td></tr>
+      <tr><td>9 月 1 日（周二）</td><td>开学报到，正式上课；新生军训开始（为期一周）<br>全校升旗仪式暨新学期开学典礼</td></tr>
+      <tr><td>9 月 10 日（周四）</td><td class="event-special">教师节庆祝活动</td></tr>
+      <tr><td>9 月中旬</td><td>各年级摸底考试；社团招新</td></tr>
+      <tr><td>9月下旬</td><td>第一次月考命题工作启动；校园艺术节筹备</td></tr>
+
+      <tr><td colspan="2" class="month-cell">2015 年 10 月</td></tr>
+      <tr><td>10 月 1 日 – 7 日</td><td class="event-holiday">国庆节放假（共 7 天）；10月8日正常上课</td></tr>
+      <tr><td>10 月中旬</td><td>第一次阶段性测试（月考）；秋季运动会（10月16–17日）</td></tr>
+      <tr><td>10 月下旬</td><td>期中考试复习启动；家长开放日活动</td></tr>
+
+      <tr><td colspan="2" class="month-cell">2015 年 11 月</td></tr>
+      <tr><td>11月上旬</td><td class="event-exam">期中考试（11月4–6日，共三天）</td></tr>
+      <tr><td>11月中旬</td><td>成绩分析与家长会；教学质量中期检查</td></tr>
+      <tr><td>11月下旬</td><td>学科竞赛选拔培训；冬季长跑活动启动</td></tr>
+
+      <tr><td colspan="2" class="month-cell">2015 年 12 月</td></tr>
+      <tr><td>12 月上旬</td><td>"一二·九"爱国主义教育活动；英语口语竞赛</td></tr>
+      <tr><td>12 月中旬</td><td>第二次月考（12月15–17日）；元旦文艺汇演彩排</td></tr>
+      <tr><td>12 月下旬</td><td>年度评优评先公示；期末复习动员会</td></tr>
+      <tr><td>12 月31日</td><td class="event-special">迎新年联欢活动（下午半天）</td></tr>
+
+      <tr><td colspan="2" class="month-cell">2016 年 1 月</td></tr>
+      <tr><td>1 月1 日</td><td class="event-holiday">元旦放假一天</td></tr>
+      <tr><td>1 月上旬</td><td class="event-exam">期末考试（1月7–11日，按年级错开安排）</td></tr>
+      <tr><td>1 月中旬</td><td>阅卷统分、成绩录入；寒假作业布置<br>散学典礼与学期总结表彰大会</td></tr>
+      <tr><td>1 月22 日 – 2 月22 日</td><td class="event-holiday">寒假（约一个月）</td></tr>
+
+      <tr><td colspan="2" class="month-cell">2016 年 2 月</td></tr>
+      <tr><td>2 月8 日（除夕）– 13 日</td><td class="event-holiday">春节假期（含元宵节）</td></tr>
+      <tr><td>2 月23 日（周二）</td><td>春季学期开学报到；领取教材教辅</td></tr>
+      <tr><td>2 月下旬</td><td>新学期开学典礼；高考百日誓师大会（高三）<br>各班制定新学期目标计划</td></tr>
+
+      <tr><td colspan="2" class="month-cell">2016 年 3 月</td></tr>
+      <tr><td>3 月上旬</td><td>学雷锋志愿服务月活动启动</td></tr>
+      <tr><td>3月中旬</td><td>高三一模考试；中考体育训练强化</td></tr>
+      <tr><td>3月下旬</td><td>植树节主题活动；女生节/心理健康周</td></tr>
+
+      <tr><td colspan="2" class="month-cell">2016 年 4 月</td></tr>
+      <tr><td>4 月4 日 – 6 日</td><td class="event-holiday">清明节假期（共 3 天）</td></tr>
+      <tr><td>4 月中旬</td><td>高三二模考试；期中考试（非毕业年级）</td></tr>
+      <tr><td>4月下旬</td><td>春季运动会（4月21–22日）；校史教育专题讲座</td></tr>
+
+      <tr><td colspan="2" class="month-cell">2016 年 5 月</td></tr>
+      <tr><td>5 月1 日 – 3 日</td><td class="event-holiday">劳动节假期（共 3 天）</td></tr>
+      <tr><td>5 月上旬</td><td>高三三模/适应性考试；中考报名确认</td></tr>
+      <tr><td>5 月中旬</td><td>校园文化艺术节（5月18–22日）；感恩主题班会</td></tr>
+      <tr><td>5 月下旬</td><td>考前心理辅导；毕业照拍摄</td></tr>
+
+      <tr><td colspan="2" class="month-cell">2016 年 6 月</td></tr>
+      <tr><td>6 月7 日 – 9 日</td><td class="event-exam">全国统一高考</td></tr>
+      <tr><td>6 月中旬</td><td>中考（6月16–18日）；高一高二期末考试<br>高三毕业典礼暨成人仪式</td></tr>
+      <tr><td>6 月下旬</td><td>期末阅卷；暑假安全教育与散学典礼</td></tr>
+      <tr><td>6 月30 日</td><td>学年结束</td></tr>
+    </tbody>
+  </table>
+
+  <div class="cal-note">
+    <strong>说明：</strong><br>
+    1. 本校历以湖南省教育厅核定校历为依据编制，具体安排可能根据上级通知调整。<br>
+    2. 法定节假日按国务院办公厅公布的年度放假安排执行。<br>
+    3. 如遇极端天气或不可抗力因素，学校将另行发布调整通知。<br>
+    4. 高三学生寒暑假时间另有单独安排，以教务处通知为准。
+  </div>
+</div>
+
+<!-- 页脚 -->
+<div class="site-footer">
+  版权所有 &copy; 2015 会同县无生中学 &nbsp;|&nbsp; 地址：湖南省怀化市会同县 &nbsp;|&nbsp;
+  邮箱：wusheng@edu.cn &nbsp;|&nbsp; 电话：0745-1234567
+</div>
+
+<script>
+function loadLogo(){
+  var svg=document.getElementById('calLogoSvg');
+  if(window.LOGO_DATA && LOGO_DATA.svg){ svg.innerHTML=LOGO_DATA.svg; svg.style.width='48px'; svg.style.height='48px'; }
+}
+loadLogo();
+</script>
+<script src="search.js"></script>
+<script src="fragment.js"></script>
+<script src="clue.js"></script>
+<script src="phase.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

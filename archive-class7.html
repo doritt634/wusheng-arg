@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>电子档案馆 · 2006 届 7 班学生档案</title>
+  <link rel="stylesheet" href="archive.css">
+  <script src="symbols.js"></script>
+<style>
+/* ========== 底部免责/版权灰框 ========== */
+  body { display: flex; flex-direction: column; }
+  .arch-wrap { flex: 1 0 auto; }
+  .disclaimer { width: 100%; max-width: none; margin: 0; background: #260808; color: #e9d9c4; text-align: center; padding: 14px 16px 12px; font-family: "宋体", "SimSun", serif; border-top: 1px solid #5a1414; }
+  .disclaimer .dis-text { font-size: 11px; letter-spacing: .5px; color: #c9a24a; }
+  .disclaimer .copy { margin-top: 7px; font-size: 11px; color: #b89a82; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .5px; }
+</style>
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+  <div class="arch-wrap">
+    <div class="arch-head">
+      <div class="arch-seal">档</div>
+      <div class="arch-title">2006 届 7 班</div>
+      <div class="arch-sub">学生档案 · 全班名册</div>
+    </div>
+
+    <div class="arch-note">
+      03级7班，班主任俞丽。全班高考成绩均高于一本线。
+      男生住男生宿舍楼、女生住女生宿舍楼，分楼管理，互不相通。
+      名册中每一份学籍均可点开查阅；标注「已加密」者，须凭授权口令调阅。
+    </div>
+
+    <div class="roster" id="roster"></div>
+
+    <div class="arch-foot">
+      <a class="arch-back" id="backLink" href="archive-class.html">返回 · 班级名册</a>
+      &nbsp;&nbsp;
+      <a class="arch-back" id="homeLink" href="page1.html">离开档案馆</a>
+    </div>
+  </div>
+
+  <script>
+    function carry(u) {
+      var p = new URLSearchParams(location.search);
+      var f = p.get("frag"), k = p.get("known");
+      var add = [];
+      if (f) add.push("frag=" + encodeURIComponent(f));
+      if (k === "1") add.push("known=1");
+      if (!add.length) return u;
+      return u + (u.indexOf("?") > -1 ? "&" : "?") + add.join("&");
+    }
+    document.getElementById("backLink").href = carry("archive-class.html");
+    document.getElementById("homeLink").href = carry("page1.html");
+
+    var STUDENTS = [
+      { id:"baizm", name:"白芷蔓", sex:"女", birth:"1988.03.08", dorm:"女生宿舍楼 622", goal:"一本 · 外语院校 法语", note:"安静清秀，心事多，很少与人说起。", locked:false },
+      { id:"chenj2",name:"陈嘉豪", sex:"男", birth:"1987.11.19", dorm:"男生宿舍楼 613", goal:"一本 · 工科院校 软件工程", note:"计算机社，热衷折腾电脑。", locked:false },
+      { id:"chenj", name:"陈静",   sex:"女", birth:"1987.11.30", dorm:"女生宿舍楼 621", goal:"211 · 师范院校 英语", note:"英语好，常在早读领读。", locked:false },
+      { id:"chenrui",name:"陈瑞",   sex:"男", birth:"1988.02.25", dorm:"男生宿舍楼 613", goal:"一本 · 综合大学 经济学", note:"2005年10月8日意外摔断右腿；原本走体育特长生道路，摔断腿后改走文化高考路线，成绩一路追赶上来。性子仍倔，和班里几个人处不太来。", locked:false },
+      { id:"chenxy",name:"陈鑫垚", sex:"男", birth:"1987.07.04", dorm:"男生宿舍楼 613", goal:"211 · 工科院校 软件工程", note:"计算机社成员，学生会长。曾经和陈瑞走的很近，后来突然就不再接触了。", locked:false },
+      { id:"du",    name:"杜兴",   sex:"男", birth:"1987.12.09", dorm:"男生宿舍楼 611", goal:"一本 · 传媒院校 广播电视", note:"消息传得最快的人，也是最早把那件事说溜嘴的。", locked:false },
+      { id:"gao",   name:"高峻豪", sex:"男", birth:"1987.05.30", dorm:"男生宿舍楼 611", goal:"一本 · 财经院校 工商管理", note:"重组家庭；班主任俞丽是其后妈。2006 年春曾休学一段。", locked:false },
+      { id:"guox",  name:"郭鑫",   sex:"男", birth:"1987.12.30", dorm:"男生宿舍楼 614", goal:"一本 · 财经院校 金融工程", note:"算盘打得精。", locked:false },
+      { id:"he",    name:"何宏宇", sex:"男", birth:"1988.02.18", dorm:"男生宿舍楼 611", goal:"一本 · 医科大学 临床医学", note:"2006 年 6 月 9 日，于旧同善楼坠楼，事故详情未公开。", locked:true,
+        bio:"何宏宇，1988 年 2 月 18 日生，住男生宿舍楼 611。出身留守家庭，自幼沉默懂事，却把心思都用在功课上——成绩常年稳居年级前列，是老师眼里最让人放心的那一类学生。高三上学期，他因在宿舍私自藏匿手机，于 <strong>2005年9月5日</strong> 被宿管查出，按校纪校规记过一次；那之后他更低调了，几乎不再与人提起此事。他有一副清亮的嗓音，生前曾加入学校播音社，在 <strong>广播站</strong> 零星的午间栏目里播过几次音，不少同学都还记得那个干净的声音。2006 届高考结束当天，他于旧同善楼意外坠楼，抢救无效身亡。校方对外始终以「因个人原因退学」一笔带过，事故详情从未公开。" },
+      { id:"huang", name:"黄靖川", sex:"男", birth:"1987.07.21", dorm:"男生宿舍楼 611", goal:"一本 · 师范院校 心理学", note:"开朗、同理心强，宿舍里的和事佬。", locked:false },
+      { id:"hub",   name:"胡斌",   sex:"男", birth:"1987.10.27", dorm:"男生宿舍楼 614", goal:"一本 · 工科院校 自动化", note:"爱捣鼓单片机。", locked:false },
+      { id:"ji",    name:"纪佑泽", sex:"男", birth:"1987.11.03", dorm:"男生宿舍楼 611", goal:"一本 · 北方某大学 计算机系", note:"高二下学期由外校转入。性格沉默，与班级始终隔着一层。", locked:false },
+      { id:"lian",  name:"廉凡",   sex:"男", birth:"1988.01.14", dorm:"男生宿舍楼 611", goal:"一本 · 工科院校 材料", note:"话少，常坐角落，存在感低。", locked:false },
+      { id:"limq",  name:"李梦琪", sex:"女", birth:"1987.08.03", dorm:"女生宿舍楼 621", goal:"一本 · 传媒院校 编导", note:"校广播站，点歌台常客。", locked:false },
+      { id:"linxi", name:"林夕",   sex:"女", birth:"1988.04.12", dorm:"女生宿舍楼 621", goal:"一本 · 外语院校 英语", note:"论坛里爱发言，班里消息多半从她那传开。", locked:false },
+      { id:"linzy", name:"林正元", sex:"男", birth:"1988.03.15", dorm:"男生宿舍楼 614", goal:"211 · 财经院校 会计", note:"家里开厂，手头宽裕，常请客；后来家中生意出了些变故。", locked:false },
+      { id:"liujx", name:"刘佳欣", sex:"女", birth:"1987.10.15", dorm:"女生宿舍楼 622", goal:"一本 · 财经院校 国贸", note:"班长候选人之一，人缘好。", locked:false },
+      { id:"liuy",  name:"刘洋",   sex:"男", birth:"1987.06.11", dorm:"男生宿舍楼 612", goal:"一本 · 海事院校 航海技术", note:"想考海事，性子野。", locked:false },
+      { id:"mach",  name:"马超",   sex:"男", birth:"1988.01.08", dorm:"男生宿舍楼 613", goal:"一本 · 体育院校 田径", note:"短跑快。", locked:false },
+      { id:"suny",  name:"孙悦",   sex:"女", birth:"1988.05.18", dorm:"女生宿舍楼 621", goal:"一本 · 师范院校 音乐", note:"合唱团，声音清亮。", locked:false },
+      { id:"wanglei",name:"王磊",  sex:"男", birth:"1987.08.16", dorm:"男生宿舍楼 612", goal:"一本 · 体育院校 篮球", note:"体育委员，运动会主力。", locked:false },
+      { id:"wangmh",name:"王妙涵", sex:"女", birth:"1987.06.19", dorm:"女生宿舍楼 622", goal:"一本 · 医科大学 护理", note:"文娱委员，爱笑，班里的开心果。", locked:false },
+      { id:"wu",    name:"吴桐",   sex:"女", birth:"1988.06.21", dorm:"女生宿舍楼 621", goal:"一本 · 传媒院校 新闻", note:"校刊编辑，最爱追失踪的八卦。", locked:false },
+      { id:"xuz",   name:"许洲",   sex:"男", birth:"1987.10.02", dorm:"男生宿舍楼 612", goal:"一本 · 体育院校 田径", note:"校运会 1500 米破过纪录。", locked:false },
+      { id:"yangf", name:"杨帆",   sex:"男", birth:"1987.09.28", dorm:"男生宿舍楼 612", goal:"一本 · 工科院校 船舶", note:"航模社主力。", locked:false },
+      { id:"yangy", name:"杨雨彤", sex:"女", birth:"1988.04.26", dorm:"女生宿舍楼 622", goal:"一本 · 艺术院校 美术", note:"宣传委员，板报一把好手。", locked:false },
+      { id:"zhangt",name:"张涛",   sex:"男", birth:"1988.03.22", dorm:"男生宿舍楼 612", goal:"985 · 理科基地 化学", note:"化学课代表。", locked:false },
+      { id:"zhangz",name:"张子涵", sex:"女", birth:"1988.02.09", dorm:"女生宿舍楼 622", goal:"一本 · 师范院校 汉语言", note:"作文常被当范文。", locked:false },
+      { id:"zhaol", name:"赵磊",   sex:"男", birth:"1987.04.07", dorm:"男生宿舍楼 613", goal:"一本 · 体育院校 篮球", note:"校篮球队前锋。", locked:false },
+      { id:"zhou",  name:"周晓彤", sex:"女", birth:"1987.09.09", dorm:"女生宿舍楼 621", goal:"一本 · 外语院校 英语", note:"语文课代表，字写得漂亮。", locked:false }
+    ];
+
+    /* 姓氏首字 → 符号字母（与 symbols.js 的 SYM_ORDER 完全对应） */
+    var SURNAME_INIT = {
+      "纪":"J","何":"H","黄":"H","杜":"D","高":"G","廉":"L","许":"X","王":"W",
+      "张":"Z","刘":"L","杨":"Y","赵":"Z","陈":"C","马":"M","胡":"H",
+      "郭":"G","林":"L","周":"Z","吴":"W","孙":"S","李":"L"
+    };
+    STUDENTS.forEach(function (s) { s.sym = SURNAME_INIT[s.name.charAt(0)] || "?"; });
+
+    var roster = document.getElementById("roster");
+
+    STUDENTS.forEach(function (s) {
+      var row = document.createElement("div");
+      row.className = "stu" + (s.locked ? " locked" : "");
+      row.innerHTML =
+        '<div><span class="name">' + s.name + '</span> ' +
+        '<span class="meta">生日 ' + s.birth + ' · ' + s.dorm + '</span></div>' +
+        '<div class="meta">' + (s.locked ? "已加密" : "可查阅") + '</div>';
+      roster.appendChild(row);
+
+      if (s.locked) {
+        var box = document.createElement("div");
+        box.className = "lockbox";
+        box.innerHTML =
+          '<label>该档案已加密，请输入授权口令：</label><br>' +
+          '<input type="text" id="heKey" placeholder="口令" autocomplete="off">' +
+          '<button type="button" id="heBtn">调阅</button>' +
+          '<div class="lock-msg" id="heMsg"></div>';
+        roster.appendChild(box);
+        row.addEventListener("click", function () {
+          box.classList.toggle("open");
+          if (box.classList.contains("open")) document.getElementById("heKey").focus();
+        });
+        document.getElementById("heBtn").addEventListener("click", function () {
+          var v = document.getElementById("heKey").value.trim();
+          var m = document.getElementById("heMsg");
+          if (v === "20060609") {
+            m.textContent = "口令正确，档案已解密。"; m.className = "lock-msg ok";
+            openDetail(s, row);
+            box.classList.remove("open");
+            row.classList.remove("locked");
+          } else {
+            m.textContent = "口令错误，无法调阅。"; m.className = "lock-msg err";
+          }
+        });
+      } else {
+        var detail = document.createElement("div");
+        detail.className = "detail";
+        detail.innerHTML =
+          '<div class="field"><span class="k">姓名</span><span class="v">' + s.name + '</span></div>' +
+          '<div class="field"><span class="k">性别</span><span class="v">' + s.sex + '</span></div>' +
+          '<div class="field"><span class="k">生日</span><span class="v">' + s.birth + '</span></div>' +
+          '<div class="field"><span class="k">宿舍</span><span class="v">' + s.dorm + '</span></div>' +
+          '<div class="field"><span class="k">去向</span><span class="v">' + s.goal + '</span></div>' +
+          '<div class="mark-seal">' + symSVG(s.sym) + '</div>' +
+          '<div class="clue">备注：' + s.note + '</div>';
+        roster.appendChild(detail);
+        row.addEventListener("click", function () { detail.classList.toggle("open"); });
+      }
+    });
+
+    function openDetail(s, row) {
+      var detail = document.createElement("div");
+      detail.className = "detail open";
+      detail.innerHTML =
+        '<div class="field"><span class="k">姓名</span><span class="v">' + s.name + '</span></div>' +
+        '<div class="field"><span class="k">性别</span><span class="v">' + s.sex + '</span></div>' +
+        '<div class="field"><span class="k">生日</span><span class="v">' + s.birth + '</span></div>' +
+        '<div class="field"><span class="k">宿舍</span><span class="v">' + s.dorm + '</span></div>' +
+        '<div class="field"><span class="k">去向</span><span class="v">' + s.goal + '</span></div>' +
+        '<div class="mark-seal">' + symSVG(s.sym) + '</div>' +
+        '<div class="clue">备注：' + s.note + '</div>' +
+        (s.bio ? '<div class="bio-block"><div class="bio-h">生前概况 · 死亡原因（解密档案）</div><div class="bio-t">' + s.bio + '</div></div>' : '');
+      row.parentNode.insertBefore(detail, row.nextSibling);
+    }
+  </script>
+
+  <script src="phase.js"></script>
+  <script src="logo-data.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

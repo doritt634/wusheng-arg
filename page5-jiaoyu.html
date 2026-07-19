@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>教育教学 - 会同县无生中学</title>
+<script src="logo-data.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"宋体","SimSun",serif;font-size:12px;background: #f5f5f0;color:#333}
+a{color:#333;text-decoration:none}
+a:hover{color:#c93a3a;text-decoration:underline}
+
+/* 地址栏 */
+/* 顶部 */
+.top-bar{background:linear-gradient(to bottom,#3a5a4a,#2d4838);border-bottom:3px solid #edc75a;padding:8px 16px;display:flex;align-items:center;gap:12px}
+.school-logo{width:48px;height:48px;border-radius:50%;border:2px solid #edc75a;overflow:hidden;background:#fff;flex-shrink:0}
+.school-logo img{width:100%;height:100%;object-fit:contain}
+.school-name{color:#fff}
+.school-name .cn { font-family: "华文行楷", "STXingkai", "楷体", "KaiTi", "SimSun", serif; font-size: 26px; font-weight: bold; letter-spacing: 2px; color: #fff; }
+.school-name .en { font-size: 10px; color: #a8c4b8; letter-spacing: 0px; margin-top: 2px; font-family: "Times New Roman", serif; }
+
+/* 导航 */
+.nav-bar{background:linear-gradient(to bottom,#2d4838,#3a5a4a);border-bottom:2px solid #edc75a;padding:0}
+.nav-inner{display:flex;align-items:center}
+.nav-item{padding:8px 14px;color:#fff;font-size:13px;font-family:"黑体","SimHei",sans-serif;cursor:pointer;border-right:1px solid #3a5a4a;white-space:nowrap}
+.nav-item:hover{background:#edc75a;color:#000}
+.nav-item.active{background:#edc75a;color:#000}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;padding-right:8px}
+.search-box{display:flex;align-items:center;background:#fff;border:1px inset #808080;padding:2px}
+.search-box input{border:none;outline:none;font-size:11px;width:100px;padding:1px 4px;font-family:"宋体"}
+.search-btn{background:none;border:none;cursor:pointer;font-size:13px;padding:0 4px;color:#333}
+.hamburger{position:relative;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:18px;height:2px;background:#fff;margin:2px 0}
+.hamburger-menu{display:none;position:absolute;top:100%;right:0;background:#fff;border:2px outset #c0c0c0;min-width:140px;z-index:999;box-shadow:2px 2px 4px rgba(0,0,0,.3)}
+.hamburger-menu a{display:block;padding:6px 12px;font-size:12px;border-bottom:1px solid #ddd;color:#333}
+.hamburger-menu a:hover{background:#3a5a4a;color:#fff}
+.hamburger:hover .hamburger-menu{display:block}
+
+/* 面包屑 */
+.breadcrumb{background:#d4d4d4;border:1px solid #999;padding:6px 16px;font-size:11px;margin:8px 8px;color:#555;font-family:"宋体","SimSun",serif}
+.breadcrumb a{color:#3a5a4a;text-decoration:none}
+.breadcrumb a:hover{color:#c93a3a;text-decoration:underline}
+
+/* 主内容 */
+.main-wrap{display:flex;margin:8px;gap:8px;min-height:calc(100vh - 280px)}
+/* 左侧导航 */
+.left-nav{width:200px;flex-shrink:0;background:#fff;border:2px outset #c0c0c0}
+.left-nav .nav-title{background:linear-gradient(to bottom,#2d4838,#3a5a4a);color:#fff;padding:8px 12px;font-size:14px;font-family:"黑体","SimHei",sans-serif;text-align:center;border-bottom:2px solid #edc75a}
+.left-nav .nav-item2{padding:10px 16px;font-size:13px;cursor:pointer;border-bottom:1px solid #ddd;transition:all .2s}
+.left-nav .nav-item2:hover{background:#eef3ea}
+.left-nav .nav-item2.active{background:#3a5a4a;color:#fff;font-weight:bold;border-left:3px solid #edc75a}
+
+/* 右侧内容 */
+.right-content{flex:1;background:#fff;border:2px outset #c0c0c0;padding:20px;overflow-y:auto;max-height:calc(100vh - 280px)}
+
+/* 板块 */
+.section{display:none}
+.section.active{display:block}
+.section-title{font-size:18px;font-family:"黑体","SimHei",sans-serif;color:#3a5a4a;border-bottom:2px solid #edc75a;padding-bottom:6px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-title .icon{color:#edc75a;font-size:16px}
+.intro-text p{text-indent:2em;line-height:2;margin-bottom:10px;text-align:justify}
+
+/* 通用表 */
+.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
+.data-table td,.data-table th{border:1px solid #999;padding:8px 12px;text-align:left}
+.data-table th{background:#3a5a4a;color:#fff;font-family:"黑体","SimHei",sans-serif;font-weight:normal}
+.data-table tr:nth-child(even) td{background:#f5f7fa}
+.data-table td:first-child{background:#eef3ea;font-weight:bold;white-space:nowrap}
+
+/* 说明/备注框 */
+.note-box{margin-top:18px;border:1px dashed #999;background:#faf5eb;padding:12px 16px;font-size:12px;color:#5a3e2b;line-height:2}
+.note-box .note-title{color:#c93a3a;font-weight:bold;font-family:"黑体","SimHei",sans-serif;margin-bottom:6px}
+.standing-box{margin:16px 0;border:1px solid #edc75a;background:#f3f7fc;padding:14px 18px;font-size:12px;color:#333;line-height:2}
+.standing-box .st-title{font-weight:bold;font-family:"黑体","SimHei",sans-serif;color:#3a5a4a;margin-bottom:6px}
+
+/* 列表 */
+.list-line{list-style:none;margin:12px 0}
+.list-line li{padding:9px 12px;border-bottom:1px dashed #ccc;display:flex;gap:10px;line-height:1.7}
+.list-line li:before{content:"■";color:#c93a3a;font-size:10px;flex-shrink:0;margin-top:4px}
+.list-year{color:#3a5a4a;font-weight:bold;min-width:64px;flex-shrink:0}
+
+/* 页脚 */
+.footer{background:linear-gradient(to bottom,#3a5a4a,#2d4838);border-top:3px solid #edc75a;padding:16px;color:#cfe3d8;font-size:11px;margin-top:8px}
+.footer-inner{display:flex;align-items:center;gap:16px;padding:0 16px}
+.footer-logo{width:40px;height:40px;border-radius:50%;border:1px solid #edc75a;overflow:hidden;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.footer-logo img{width:90%;height:90%;object-fit:contain}
+.footer-info{flex:1}
+.footer-info .cn{font-size:14px;font-weight:bold;color:#fff;font-family:"黑体","SimHei",sans-serif}
+.footer-info .en{font-size:9px;color:#9bbfae;margin-top:2px}
+.footer-links{text-align:right;line-height:1.8}
+.footer-links a{color:#cfe3d8}
+
+/* ========== 底部免责/版权灰框 ========== */
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #ededed; color: #555; text-align: center; padding: 14px 16px 12px; font-family: "宋体", "SimSun", serif; border-top: 1px solid #ddd; }
+.disclaimer .dis-text { font-size: 11px; letter-spacing: .5px; color: #999; }
+.disclaimer .copy { margin-top: 7px; font-size: 11px; color: #999; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .5px; }
+
+body { max-width: 1200px; margin-left: auto; margin-right: auto; }
+</style>
+<link rel="stylesheet" href="reveal.css?v=4">
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+
+
+
+<!-- 顶部 -->
+<div class="top-bar">
+  <div class="school-logo" id="logo1"></div>
+  <div class="school-name">
+    <div class="cn">会同县无生中学</div>
+    <div class="en">HuiTong County WuSheng Middle School</div>
+  </div>
+  <div class="nav-right">
+    <div class="search-box">
+      <input type="text" placeholder="搜索...">
+      <button class="search-btn">🔍</button>
+    </div>
+    <div class="hamburger">
+      <span></span><span></span><span></span>
+      <div class="hamburger-menu">
+        <a href="page9-xuesheng.html">学生天地</a>
+        <a href="page10-zhaosheng.html">招聘招生</a>
+        <a href="page11-luntan.html">校园论坛</a>
+        <a href="page12-guanyu.html">关于我们</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 主导航 -->
+<div class="nav-bar">
+  <div class="nav-inner">
+    <div class="nav-item" onclick="location.href='page1.html'">首页</div>
+    <div class="nav-item" onclick="location.href='page2-about.html'">学校概况</div>
+    <div class="nav-item" onclick="location.href='page3-notice.html'">通知公告</div>
+    <div class="nav-item" onclick="location.href='page4-events.html'">无生大事</div>
+    <div class="nav-item active">教育教学</div>
+    <div class="nav-item" onclick="location.href='page6-mingshi.html'">名师风采</div>
+    <div class="nav-item" onclick="location.href='page7-xiaoyou.html'">校友聚集</div>
+    <div class="nav-item" onclick="location.href='page8-dangjian.html'">党建园地</div>
+  </div>
+</div>
+
+<!-- 面包屑 -->
+<div class="breadcrumb">
+  <a href="page1.html">首页</a> &gt; 教育教学 &gt; <span id="bread-sub">校历安排</span>
+</div>
+
+<!-- 主内容 -->
+<div class="main-wrap">
+  <!-- 左侧导航 -->
+  <div class="left-nav">
+    <div class="nav-title">教育教学</div>
+    <div class="nav-item2 active" onclick="switchTab('calendar',this)">■ 校历安排</div>
+    <div class="nav-item2" onclick="switchTab('course',this)">■ 课程建设</div>
+    <div class="nav-item2" onclick="switchTab('comp',this)">■ 学科竞赛</div>
+    <div class="nav-item2" onclick="switchTab('exam',this)">■ 考试与升学</div>
+  </div>
+
+  <!-- 右侧内容 -->
+  <div class="right-content">
+
+    <!-- 校历安排 -->
+    <div class="section active" id="sec-calendar">
+      <div class="section-title"><span class="icon">■</span> 校历安排</div>
+      <div class="intro-text">
+        <p>学校实行两学期制教学安排。第一学期一般为9月至次年1月，第二学期为2月至7月。以下为本学年主要教学日程，具体以教务处每月下发通知为准。</p>
+      </div>
+
+      <table class="data-table">
+        <tr><th>月份</th><th>周次</th><th>主要教学安排</th></tr>
+        <tr><td>9月</td><td>第1—4周</td><td>开学典礼、校庆日（9月1日）、新生入学教育、学籍注册</td></tr>
+        <tr><td>10月</td><td>第5—8周</td><td>国庆假期、第一次月考、校运动会筹备</td></tr>
+        <tr><td>11月</td><td>第9—12周</td><td>期中考试、家长会</td></tr>
+        <tr><td>12月</td><td>第13—16周</td><td>学科竞赛报名、元旦文艺汇演</td></tr>
+        <tr><td>1月</td><td>第17—20周</td><td>期末考试、寒假开始</td></tr>
+        <tr><td>3月</td><td>第1—4周</td><td>春季开学、学雷锋活动月</td></tr>
+        <tr><td>4月</td><td>第5—8周</td><td>清明节全校默哀（4月4日）、期中考试</td></tr>
+        <tr><td>5月</td><td>第9—12周</td><td>校史研读课校外实践、科技艺术节</td></tr>
+        <tr><td>6月</td><td>第13—16周</td><td>高考、中考、期末复习</td></tr>
+        <tr><td>7月</td><td>第17—20周</td><td>期末考试、暑假开始</td></tr>
+      </table>
+
+      <div class="standing-box">
+        <div class="st-title">▌常设说明</div>
+        <p>一、旧教学楼区域常年处于施工维护状态，<strong>暂不对外开放</strong>，请勿擅自进入。</p>
+        <p>二、每年4月4日清明节，全校于大课间统一默哀一分钟，缅怀建校以来勤勉治学、默默奉献的先辈，系本校延续多年的校史传统。</p>
+        <p>三、《校史研读》校本课定于每周二下午第7—8节，地点在新同善楼地下教研活动室。</p>
+      </div>
+    </div>
+
+    <!-- 课程建设 -->
+    <div class="section" id="sec-course">
+      <div class="section-title"><span class="icon">■</span> 课程建设</div>
+      <div class="intro-text">
+        <p>学校严格执行国家课程方案，开齐开足国家课程，并结合本校实际开发校本课程，形成了国家课程、地方课程、校本课程三位一体的课程体系。近年来，学校重点加强了校史教育与生命教育，引导学生了解学校历史、珍爱生命、健康成长。</p>
+      </div>
+
+      <table class="data-table" id="courseTable">
+        <colgroup>
+          <col class="c-name"><col><col><col class="c-note">
+        </colgroup>
+        <tr><th>课程名称</th><th>开设年级</th><th>负责部门</th><th>备注</th></tr>
+        <tr><td>语文 / 数学 / 英语等基础课程</td><td>初一至高三</td><td>教导处</td><td>按国家课程标准开设</td></tr>
+        <tr><td>《校史研读》</td><td>高二</td><td>政教处</td><td>选修；课程参考资料由校务办公室统一管理，查阅须经审批</td></tr>
+        <tr><td>《生命教育》</td><td>高一</td><td>政教处</td><td>必修校本课程，关注学生心理健康与生命安全</td></tr>
+        <tr><td>书法 / 绘画 / 音乐 / 舞蹈</td><td>各年级</td><td>团委</td><td>社团活动课程，每周二、四下午开展</td></tr>
+        <tr><td>信息技术 / 通用技术</td><td>初二、高二</td><td>教导处</td><td>在多媒体教室与计算机房授课</td></tr>
+      </table>
+
+      <div class="note-box">
+        <div class="note-title">※ 课程安排备注</div>
+        <div>受校园设施维护影响，本学年旧教学楼区域不安排任何课程与考试。相关年级的教学活动统一调整至新同善楼进行。《校史研读》课程所涉早期史料，因年代久远，部分原件尚未完成数字化，故课堂上多以整理后的讲义为准。</div>
+      </div>
+    </div>
+
+    <!-- 学科竞赛 -->
+    <div class="section" id="sec-comp">
+      <div class="section-title"><span class="icon">■</span> 学科竞赛</div>
+      <div class="intro-text">
+        <p>学校鼓励学有余力的学生参加各类学科竞赛，以赛促学。近年来，学生在生物、数学、化学、科技创新等赛事中屡获佳绩。以下为近年部分竞赛获奖记录。</p>
+      </div>
+
+      <ul class="list-line">
+        <li><span class="list-year">2000年</span><span>全国初中数学联赛 市级二等奖 —— 杨帆（初三2班）；县中学生英语演讲 一等奖 —— 陈思（初二1班）</span></li>
+        <li><span class="list-year">2001年</span><span>省中学生物理竞赛 市级一等奖 —— 李伟（高二1班）</span></li>
+        <li><span class="list-year">2002年</span><span>全国中学生化学竞赛 省级三等奖 —— 王磊（高二3班）；县中学生作文竞赛 一等奖 —— 赵敏（高一2班）</span></li>
+        <li><span class="list-year">2003年</span><span>全国青少年科技创新大赛 市级二等奖 —— 孙浩（高一3班）</span></li>
+        <li><span class="list-year">2004年</span><span>省高中数学联赛 市级一等奖 —— 周涛（高三1班）</span></li>
+        <li><span class="list-year">2005年</span><span>全国中学生生物竞赛 市级二等奖 —— <span class="anomaly" data-group="he" data-id="he5">何宏宇（高三7班）</span></span></li>
+        <li><span class="list-year">2006年</span><span>县中学生田径运动会 团体三等奖；全国中小学电脑制作活动 省级三等奖 —— 郑爽（高二1班）</span></li>
+        <li><span class="list-year">2007年</span><span>省英语能力竞赛 市级一等奖 —— 林娜（高三2班）；市化学竞赛 二等奖 —— 黄强（高二3班）</span></li>
+        <li><span class="list-year">2008年</span><span>全国中学生物理竞赛 省级二等奖 —— 徐明（高三1班）</span></li>
+        <li><span class="list-year">2009年</span><span>省高中数学联赛 市级二等奖 —— 罗静（高三1班）</span></li>
+        <li><span class="list-year">2010年</span><span>全国青少年科技创新大赛 市级一等奖 —— 曾凯（高二3班）</span></li>
+        <li><span class="list-year">2011年</span><span>省中学生地理竞赛 市级二等奖 —— 邓超（高一1班）；县语文知识竞赛 一等奖 —— 谢芳（高二2班）</span></li>
+        <li><span class="list-year">2012年</span><span>全国高中数学联赛 省级二等奖 —— 张明（高三1班）；省中学生生物竞赛 市级一等奖 —— 彭丽（高二2班）</span></li>
+        <li><span class="list-year">2013年</span><span>全国中学生化学竞赛 省级三等奖 —— 袁野（高三3班）；市中学生作文竞赛 一等奖 —— 田甜（高一1班）</span></li>
+        <li><span class="list-year">2014年</span><span>全国青少年科技创新大赛 市级一等奖 —— 李华（高二3班）；省中学生物理竞赛 二等奖 —— 范斌（高三1班）</span></li>
+        <li><span class="list-year">2015年</span><span>省高中数学联赛 市级一等奖 —— 石磊（高三2班）；全国中小学电脑制作活动 省级二等奖 —— 潘雨（高二1班）</span></li>
+      </ul>
+
+      <div class="note-box">
+        <div class="note-title">※ 竞赛档案说明</div>
+        <div>2000年以前（含1990届）的竞赛获奖证书，因纸质老化、虫蛀及受潮，因纸质老化、虫蛀及受潮，已由校务办公室统一归档保管，查阅须经审批。2008年以后获奖证书均在校史馆荣誉橱窗公示，可供师生参观。</div>
+      </div>
+    </div>
+
+    <!-- 考试与升学 -->
+    <div class="section" id="sec-exam">
+      <div class="section-title"><span class="icon">■</span> 考试与升学</div>
+      <div class="intro-text">
+        <p>学校坚持"严谨治学、追求卓越"的校训，历年高考成绩稳步提升。以下为近几届高考主要数据，供家长与考生参考。</p>
+      </div>
+
+      <table class="data-table">
+        <tr><th>届别</th><th>报考人数</th><th>毕业人数</th><th>本科上线率</th><th>特控线上线率</th><th>备注</th></tr>
+        <tr><td>2000届</td><td>156</td><td>150</td><td>15%</td><td>1%</td><td>—</td></tr>
+        <tr><td>2001届</td><td>168</td><td>162</td><td>16%</td><td>1%</td><td>—</td></tr>
+        <tr><td>2002届</td><td>182</td><td>176</td><td>17%</td><td>2%</td><td>—</td></tr>
+        <tr><td>2003届</td><td>200</td><td>194</td><td>18%</td><td>2%</td><td>—</td></tr>
+        <tr><td>2004届</td><td>222</td><td>216</td><td>19%</td><td>2%</td><td>—</td></tr>
+        <tr><td>2005届</td><td>248</td><td>242</td><td>20%</td><td>3%</td><td>—</td></tr>
+        <tr><td>2006届</td><td>281</td><td>275</td><td>30%</td><td>12%</td><td>跃升明显（明细未公示）</td></tr>
+        <tr><td>2007届</td><td>290</td><td>284</td><td>38%</td><td>15%</td><td>—</td></tr>
+        <tr><td>2008届</td><td>301</td><td>295</td><td>46%</td><td>18%</td><td>—</td></tr>
+        <tr><td>2009届</td><td>312</td><td>306</td><td>54%</td><td>20%</td><td>—</td></tr>
+        <tr><td>2010届</td><td>320</td><td>314</td><td>61%</td><td>25%</td><td>—</td></tr>
+        <tr><td>2011届</td><td>326</td><td>320</td><td>67%</td><td>30%</td><td>—</td></tr>
+        <tr><td>2012届</td><td>331</td><td>325</td><td>72%</td><td>34%</td><td>—</td></tr>
+        <tr><td>2013届</td><td>335</td><td>329</td><td>76%</td><td>38%</td><td>—</td></tr>
+        <tr><td>2014届</td><td>340</td><td>334</td><td>81%</td><td>42%</td><td>—</td></tr>
+        <tr><td>2015届</td><td>345</td><td>339</td><td>85%</td><td>46%</td><td>创历史新高</td></tr>
+      </table>
+
+      <div class="note-box" style="margin-top:10px">
+        <div class="note-title">※ 教研备注</div>
+        <div>2006届本科上线率由2005届的20%跃升至30%，特控线上线率由3%跃升至12%，跃升明显（明细未公示）；自2007届起特控线上线率逐步抬升，至2009届达20%，本科率同步上升，至2015届本科上线率达85%、特控线上线率达46%。早期（2000—2005届）成绩长期低位，原始成绩单因年代久远部分缺失，校方未作特别说明。</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 页脚 -->
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-logo" id="logo2"></div>
+    <div class="footer-info">
+      <div class="cn">会同县无生中学</div>
+      <div class="en">HuiTong County WuSheng Middle School</div>
+    </div>
+    <div class="footer-links">
+      邮编: 418300 | 电话: 0745-1234567<br>
+      邮箱: wusheng@edu.cn | 地址: 湖南省怀化市会同县
+    </div>
+  </div>
+</div>
+
+<script>
+// 加载校徽
+function loadLogo(){
+  if(typeof LOGO_B64 !== 'undefined'){
+    var els = document.querySelectorAll('#logo1,#logo2');
+    els.forEach(function(el){
+      el.innerHTML = '<img src="'+LOGO_B64+'" alt="校徽">';
+    });
+  }
+}
+loadLogo();
+
+// 切换标签
+function switchTab(tab, el){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active')});
+  document.querySelectorAll('.nav-item2').forEach(function(n){n.classList.remove('active')});
+  document.getElementById('sec-'+tab).classList.add('active');
+  el.classList.add('active');
+  var names = {calendar:'校历安排', course:'课程建设', comp:'学科竞赛', exam:'考试与升学'};
+  document.getElementById('bread-sub').textContent = names[tab] || '';
+}
+
+// 汉堡菜单
+document.querySelector('.hamburger').addEventListener('click', function(e){
+  e.stopPropagation();
+  this.classList.toggle('active');
+});
+document.addEventListener('click', function(){
+  document.querySelector('.hamburger').classList.remove('active');
+});
+</script>
+<script src="fragment.js"></script>
+  <script src="search.js"></script>
+<script src="clue.js"></script>
+<script src="reveal.js?v=4"></script>
+  <script src="phase.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

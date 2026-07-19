@@ -1,0 +1,41 @@
+/* foot.css —— 底部栏 + 版权栏「内容短时贴屏幕最下方、长时随文档流」的可逆布局层
+   核心机制：body 为纵向 flex 且 min-height:100vh；
+   - 直接作为 body 子元素的底部栏用 margin-top:auto 推到最底；
+   - 版权栏永不收缩。
+   不对内容容器施加 flex:1，避免改变长页面内部布局。
+   删除本文件并移除各页 <link rel="stylesheet" href="foot.css"> 即可整体还原。 */
+
+html { height: 100%; }
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* 直接作为 body 子元素的底部栏：margin-top:auto 把自身及之后的版权栏推到屏幕最下方。
+   页面内联底部栏多用 max-width:1200px;margin:0 auto 居中；body 变 flex 后该左右 auto
+   边距会禁用拉伸使其缩成内容宽度（如首页 footer 缩到 607）。故显式 width:100%+max-width:1200px
+   保证满宽居中，与顶部栏一致。 */
+body > .footer,
+body > .site-footer,
+body > .footer-inner {
+  margin-top: auto;
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* 论坛页版权栏(.forum-copy)：本就满宽贴边，保持拉伸不限制宽度 */
+body > .forum-copy { margin-top: auto; flex-shrink: 0; }
+
+/* 版权栏：永不收缩，撑满容器但不超过 1200px 并居中。
+   页面内联 .disclaimer 的 margin:0 auto 在 flex 下会禁用拉伸、缩成文字宽度，
+   这里用 width:100%+max-width:1200px+margin:auto 保证居中且不超宽。 */
+body > .disclaimer {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>资源下载 - 会同县无生中学</title>
+<script src="logo-data.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"宋体","SimSun",serif;font-size:12px;background: #f5f5f0;color:#333}
+a{color:#3a5a4a;text-decoration:none}
+a:hover{color:#c93a3a;text-decoration:underline}
+
+/* ========== 顶部校徽与导航栏 (经典深蓝条) ========== */
+.top-bar {
+  background: linear-gradient(to bottom, #3a5a4a, #2d4838);
+  color: #fff; display: flex; align-items: center;
+  padding: 8px 16px; position: relative;
+  border-bottom: 3px solid #edc75a;
+}
+.school-brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.school-logo {
+  width: 48px; height: 48px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  border: 2px solid #edc75a;
+  overflow: hidden; background: #fff; flex-shrink: 0;
+}
+.school-logo .logo-img { width: 100%; height: 100%; object-fit: cover; }
+.school-name { display: flex; flex-direction: column; }
+.school-name .cn { font-family: "华文行楷", "STXingkai", "楷体", "KaiTi", "SimSun", serif; font-size: 26px; font-weight: bold; letter-spacing: 2px; color: #fff; }
+.school-name .en { font-size: 10px; color: #a8c4b8; letter-spacing: 0px; margin-top: 2px; font-family: "Times New Roman", serif; }
+
+.main-nav { display: flex; margin-left: auto; align-items: center; }
+.main-nav a {
+  color: #fff; text-decoration: none; padding: 8px 14px;
+  display: flex; align-items: center; font-size: 13px;
+  border-right: 1px solid #3a5a4a;
+  white-space: nowrap; font-family: "黑体", "SimHei", sans-serif;
+  cursor: pointer; background: transparent;
+}
+.main-nav a:first-child { border-left: none; }
+.main-nav a:hover { background: #edc75a; color: #000; text-decoration: none; }
+.main-nav a.active { background: #edc75a; color: #000; font-weight: bold; }
+
+.top-right { display: flex; align-items: center; gap: 10px; margin-left: 16px; flex-shrink: 0; }
+.search-box { display: flex; align-items: center; background: #fff; border: 1px inset #808080; padding: 2px; }
+.search-box input { border: none; outline: none; padding: 1px 4px; font-size: 11px; width: 100px; font-family: "宋体", "SimSun", serif; }
+.search-box button {
+  background: none; border: none; cursor: pointer;
+  font-size: 13px; padding: 0 4px; color: #333;
+  display: flex; align-items: center; justify-content: center;
+}
+.hamburger { position: relative; cursor: pointer; padding: 4px; }
+.hamburger .bar { width: 18px; height: 2px; background: #fff; margin: 2px 0; }
+.hamburger-dropdown {
+  display: none; position: absolute; top: 100%; right: 0; background: #fff;
+  border: 2px outset #c0c0c0; min-width: 140px; z-index: 999;
+  box-shadow: 2px 2px 4px rgba(0,0,0,.3);
+}
+.hamburger-dropdown a {
+  display: block; padding: 6px 12px; color: #333; text-decoration: none;
+  font-size: 12px; border-bottom: 1px solid #ddd; font-family: "宋体", "SimSun", sans-serif;
+}
+
+/* 面包屑 */
+.breadcrumb{background:#d4d4d4;border:1px solid #999;padding:6px 16px;font-size:11px;margin:8px 8px;color:#555}
+.breadcrumb a{color:#3a5a4a;text-decoration:none}
+
+/* 主内容 */
+.main-wrap{margin:8px 12px;min-height:calc(100vh - 260px)}
+.page-title{font-size:20px;font-family:"黑体","SimHei",sans-serif;color:#3a5a4a;border-bottom:3px solid #edc75a;padding-bottom:8px;margin-bottom:18px}
+
+/* 下载分类区 */
+.dl-category{margin-bottom:24px}
+.cat-title{font-size:15px;font-family:"黑体","SimHei",sans-serif;color:#fff;background:linear-gradient(to right,#2d4838,#3a5a4a);padding:8px 14px;border-left:5px solid #edc75a;margin-bottom:10px}
+
+/* 文件列表卡片 */
+.file-list{display:flex;flex-direction:column;gap:8px}
+.file-card{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#fff;border:1px solid #ddd;border-radius:4px;transition:all .2s}
+.file-card:hover{box-shadow:0 2px 8px rgba(26,58,108,.12);border-color:#3a5a4a}
+.file-icon{width:36px;height:42px;background:linear-gradient(135deg,#eef3ea,#c5d4ea);border:1px solid #c2d6cc;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#3a5a4a;flex-shrink:0;font-family:"Arial",sans-serif}
+.file-info{flex:1}
+.file-name{font-size:13px;font-weight:bold;color:#3a5a4a}
+.file-desc{font-size:11px;color:#888;margin-top:2px;line-height:1.6}
+.file-meta{font-size:10px;color:#aaa;margin-top:2px}
+.file-action{flex-shrink:0}
+.btn-dl{display:inline-block;padding:6px 18px;background:linear-gradient(to bottom,#909090,#6f6f6f);color:#fff;border:1px solid #5c5c5c;border-radius:3px;font-size:12px;cursor:pointer;text-align:center}
+.btn-dl:hover{background:linear-gradient(to bottom,#a0a0a0,#7f7f7f)}
+.btn-dl-locked{background:linear-gradient(to bottom,#cccccc,#bbbbbb);color:#777;border-color:#aaa;cursor:not-allowed}
+.btn-dl-locked:hover{background:linear-gradient(to bottom,#cccccc,#bbbbbb)}
+
+/* 提示条 */
+.dl-tip{padding:10px 14px;background:#fffbe6;border-left:4px solid #edc75a;font-size:11px;color:#666;margin-top:16px;line-height:1.8}
+
+/* 页脚 */
+.site-footer{background:linear-gradient(to bottom,#3a5a4a,#2d4838);color:#c2d6cc;padding:14px 20px;margin-top:24px;text-align:center;font-size:11px;border-top:3px solid #edc75a}
+
+/* ========== 底部免责/版权灰框 ========== */
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #ededed; color: #555; text-align: center; padding: 14px 16px 12px; font-family: "宋体", "SimSun", serif; border-top: 1px solid #ddd; }
+.disclaimer .dis-text { font-size: 11px; letter-spacing: .5px; color: #999; }
+.disclaimer .copy { margin-top: 7px; font-size: 11px; color: #999; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .5px; }
+
+body { max-width: 1200px; margin-left: auto; margin-right: auto; }
+</style>
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+
+
+<!-- ========== 顶部校徽与导航栏 ========== -->
+<div class="top-bar">
+  <div class="school-brand">
+    <div class="school-logo"></div>
+    <div class="school-name">
+      <div class="cn">会同县无生中学</div>
+      <div class="en">HuiTong County Wusheng Middle School</div>
+    </div>
+  </div>
+  <nav class="main-nav">
+    <a href="page1.html">首页</a>
+    <a href="page2-about.html">学校概况</a>
+    <a href="page3-notice.html">通知公告</a>
+    <a href="page4-events.html">无生大事</a>
+    <a href="page5-jiaoyu.html">教育教学</a>
+    <a href="page6-mingshi.html">名师风采</a>
+    <a href="page7-xiaoyou.html">校友聚集</a>
+    <a href="page8-dangjian.html">党建园地</a>
+  </nav>
+  <div class="top-right">
+    <div class="search-box">
+      <input type="text" id="siteSearch" placeholder="搜索..." onkeydown="if(event.key==='Enter')doSiteSearch(document.getElementById('siteSearch').value)">
+      <button aria-label="搜索" onclick="doSiteSearch(document.getElementById('siteSearch').value)">🔍</button>
+    </div>
+    <div class="hamburger" onclick="this.classList.toggle('active')">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="hamburger-dropdown">
+        <a href="page9-xuesheng.html">学生天地</a>
+        <a href="page10-zhaosheng.html">招聘招生</a>
+        <a href="page11-luntan.html">校园论坛</a>
+        <a href="page12-guanyu.html">关于我们</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 面包屑 -->
+<div class="breadcrumb">
+  <a href="page1.html">首页</a> &gt; <span>资源下载</span>
+</div>
+
+<!-- 主内容 -->
+<div class="main-wrap">
+  <h1 class="page-title"><span style="color:#edc75a;">&#9632;</span> 资源下载中心</h1>
+  <p style="color:#666;font-size:12px;margin-bottom:18px;">以下文件供师生及家长下载使用。部分资源需登录校园内网后方可获取完整版本。</p>
+
+  <!-- 行政管理类 -->
+  <div class="dl-category">
+    <h3 class="cat-title">行政管理</h3>
+    <div class="file-list">
+      <div class="file-card">
+        <div class="file-icon">PDF</div>
+        <div class="file-info">
+          <div class="file-name">2015–2016 学年校历（完整版）</div>
+          <div class="file-desc">含全年教学周安排、法定节假日、考试日程及重要活动节点。</div>
+          <div class="file-meta">大小：186 KB &nbsp;|&nbsp; 更新：2015-08-25 &nbsp;|&nbsp; 下载：1,247 次</div>
+        </div>
+        <div class="file-action"><button class="btn-dl" onclick="alert('文件仅供展示，暂无法下载')">下载</button></div>
+      </div>
+      <div class="file-card">
+        <div class="file-icon">DOC</div>
+        <div class="file-info">
+          <div class="file-name">学生学籍信息登记表</div>
+          <div class="file-desc">新生入学/转学生需填写，含基本信息、监护人、既往学业记录。</div>
+          <div class="file-meta">大小：54 KB &nbsp;|&nbsp; 更新：2015-07-15 &nbsp;|&nbsp; 下载：892 次</div>
+        </div>
+        <div class="file-action"><button class="btn-dl" onclick="alert('文件仅供展示，暂无法下载')">下载</button></div>
+      </div>
+      <div class="file-card">
+        <div class="file-icon">XLS</div>
+        <div class="file-info">
+          <div class="file-name">教职工考勤与请假申请表模板</div>
+          <div class="file-desc">月度考勤汇总、事假病假审批流程说明。</div>
+          <div class="file-meta">大小：38 KB &nbsp;|&nbsp; 更新：2015-09-01 &nbsp;|&nbsp; 下载：456 次</div>
+        </div>
+        <div class="file-action"><button class="btn-dl" onclick="alert('文件仅供展示，暂无法下载')">下载</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 教学教研类 -->
+  <div class="dl-category">
+    <h3 class="cat-title">教学教研</h3>
+    <div class="file-list">
+      <div class="file-card">
+        <div class="file-icon">PDF</div>
+        <div class="file-info">
+          <div class="file-name">各年级课程设置与课时分配方案</div>
+          <div class="file-desc">国家课程、地方课程、校本课程总表及选修模块说明。</div>
+          <div class="file-meta">大小：142 KB &nbsp;|&nbsp; 更新：2015-08-28 &nbsp;|&nbsp; 下载：673 次</div>
+        </div>
+        <div class="file-action"><button class="btn-dl" onclick="alert('文件仅供展示，暂无法下载')">下载</button></div>
+      </div>
+      <div class="file-card">
+        <div class="file-icon">DOC</div>
+        <div class="file-info">
+          <div class="file-name">课堂教学评价标准（试行版）</div>
+          <div class="file-desc">涵盖教学目标、课堂组织、师生互动、作业布置等维度。</div>
+          <div class="file-meta">大小：72 KB &nbsp;|&nbsp; 更新：2015-06-10 &nbsp;|&nbsp; 下载：512 次</div>
+        </div>
+        <div class="file-action"><button class="btn-dl" onclick="alert('文件仅供展示，暂无法下载')">下载</button></div>
+      </div>
+      <div class="file-card" id="dlShengming" data-phase="3">
+        <div class="file-icon">PDF</div>
+        <div class="file-info">
+          <div class="file-name">校本研修课件集——生命教育专题</div>
+          <div class="file-desc">本辑含心理健康、生命教育子系列；其中「静心与沟通」模块附传统仪式体验操作说明。</div>
+          <div class="file-meta">大小：402 KB &nbsp;|&nbsp; 更新：2015-04-20 &nbsp;|&nbsp; 下载：338 次</div>
+        </div>
+        <div class="file-action"><a class="btn-dl" id="dlShengmingBtn" href="downloads/shengming-jiaoyu-fuji.pdf" download target="_blank" rel="noopener">下载</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 学生服务类 -->
+  <div class="dl-category">
+    <h3 class="cat-title">学生服务</h3>
+    <div class="file-list">
+      <div class="file-card">
+        <div class="file-icon">PDF</div>
+        <div class="file-info">
+          <div class="file-name">学生手册 2015–2016 版</div>
+          <div class="file-desc">校规校纪、作息时间、评优办法、奖惩条例、安全须知。</div>
+          <div class="file-meta">大小：2.1 MB &nbsp;|&nbsp; 更新：2015-08-30 &nbsp;|&nbsp; 下载：2,105 次</div>
+        </div>
+        <div class="file-action"><button class="btn-dl" onclick="alert('文件仅供展示，暂无法下载')">下载</button></div>
+      </div>
+      <div class="file-card">
+        <div class="file-icon">DOC</div>
+        <div class="file-info">
+          <div class="file-name">家庭经济困难学生资助申请指南</div>
+          <div class="file-desc">助学金、减免学费、校内勤工助学岗位的申请条件与流程。</div>
+          <div class="file-meta">大小：46 KB &nbsp;|&nbsp; 更新：2015-07-01 &nbsp;|&nbsp; 下载：789 次</div>
+        </div>
+        <div class="file-action"><button class="btn-dl" onclick="alert('文件仅供展示，暂无法下载')">下载</button></div>
+      </div>
+      <div class="file-card">
+        <div class="file-icon">XLS</div>
+        <div class="file-info">
+          <div class="file-name">社团活动报名表（通用）</div>
+          <div class="file-desc">全校各社团统一报名入口，附社团列表与指导老师联系方式。</div>
+          <div class="file-meta">大小：32 KB &nbsp;|&nbsp; 更新：2015-09-05 &nbsp;|&nbsp; 下载：567 次</div>
+        </div>
+        <div class="file-action"><button class="btn-dl" onclick="alert('文件仅供展示，暂无法下载')">下载</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dl-tip">
+    <strong>温馨提示：</strong><br>
+    - 部分内部资料需凭教工账号或学号登录后下载。<br>
+    - 如发现链接失效或文件内容有误，请联系教务处（电话：0745-8824567 转 803）。<br>
+    - 本站所有文档仅供本校师生教育教学使用，请勿外传或用于商业用途。
+  </div>
+</div>
+
+<!-- 页脚 -->
+<div class="site-footer">
+  版权所有 &copy; 2015 会同县无生中学 &nbsp;|&nbsp; 地址：湖南省怀化市会同县 &nbsp;|&nbsp;
+  邮箱：wusheng@edu.cn &nbsp;|&nbsp; 电话：0745-1234567
+</div>
+
+<script>
+function loadLogo(){
+  var svg=document.getElementById('dlLogoSvg');
+  if(window.LOGO_DATA && LOGO_DATA.svg){ svg.innerHTML=LOGO_DATA.svg; svg.style.width='48px'; svg.style.height='48px'; }
+}
+loadLogo();
+</script>
+<script src="search.js"></script>
+<script src="fragment.js"></script>
+<script>
+// 校本研修课件集——生命教育专题：第三章解锁（f3）后方可下载
+(function(){
+  var btn = document.getElementById("dlShengmingBtn");
+  if(!btn) return;
+  var frags = (window.FRAG && window.FRAG.getCollected) ? window.FRAG.getCollected() : [];
+  if(frags.indexOf("f3") >= 0){
+    // 已解锁：点击下载（移动端强制下载，避免跳转离开游戏页导致白屏），并留下标记
+    btn.addEventListener("click", function(e){
+      e.preventDefault();
+      try { localStorage.setItem("wbs_pdf_downloaded_v1","1"); } catch(err){}
+      var url = btn.getAttribute("href");
+      var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                  (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      if(isIOS){
+        // iOS 无法强制下载，新标签页打开预览，游戏页得以保留
+        window.open(url, "_blank", "noopener");
+        return;
+      }
+      // 桌面 / 安卓：用 Blob 真正把文件存到游玩设备，且不跳转、不白屏
+      fetch(url).then(function(r){ return r.blob(); }).then(function(blob){
+        var obj = URL.createObjectURL(blob);
+        var a = document.createElement("a");
+        a.href = obj;
+        a.download = "shengming-jiaoyu-fuji.pdf";
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function(){ URL.revokeObjectURL(obj); }, 5000);
+      }).catch(function(){
+        window.open(url, "_blank", "noopener");
+      });
+    });
+    return;
+  }
+  btn.removeAttribute("href");
+  btn.removeAttribute("download");
+  btn.classList.add("btn-dl-locked");
+  btn.textContent = "未开放";
+  btn.addEventListener("click", function(e){ e.preventDefault(); alert("该资源尚未开放。"); });
+})();
+</script>
+<script src="clue.js"></script>
+<script src="phase.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

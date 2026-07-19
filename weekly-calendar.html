@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>周历 - 会同县无生中学</title>
+<script src="logo-data.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"宋体","SimSun",serif;font-size:12px;background: #f5f5f0;color:#333}
+a{color:#3a5a4a;text-decoration:none}
+a:hover{color:#c93a3a;text-decoration:underline}
+
+/* ========== 顶部校徽与导航栏 (经典深蓝条) ========== */
+.top-bar {
+  background: linear-gradient(to bottom, #3a5a4a, #2d4838);
+  color: #fff; display: flex; align-items: center;
+  padding: 8px 16px; position: relative;
+  border-bottom: 3px solid #edc75a;
+}
+.school-brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.school-logo {
+  width: 48px; height: 48px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  border: 2px solid #edc75a;
+  overflow: hidden; background: #fff; flex-shrink: 0;
+}
+.school-logo .logo-img { width: 100%; height: 100%; object-fit: cover; }
+.school-name { display: flex; flex-direction: column; }
+.school-name .cn { font-family: "华文行楷", "STXingkai", "楷体", "KaiTi", "SimSun", serif; font-size: 26px; font-weight: bold; letter-spacing: 2px; color: #fff; }
+.school-name .en { font-size: 10px; color: #a8c4b8; letter-spacing: 0px; margin-top: 2px; font-family: "Times New Roman", serif; }
+
+.main-nav { display: flex; margin-left: auto; align-items: center; }
+.main-nav a {
+  color: #fff; text-decoration: none; padding: 8px 14px;
+  display: flex; align-items: center; font-size: 13px;
+  border-right: 1px solid #3a5a4a;
+  white-space: nowrap; font-family: "黑体", "SimHei", sans-serif;
+  cursor: pointer; background: transparent;
+}
+.main-nav a:first-child { border-left: none; }
+.main-nav a:hover { background: #edc75a; color: #000; text-decoration: none; }
+.main-nav a.active { background: #edc75a; color: #000; font-weight: bold; }
+
+.top-right { display: flex; align-items: center; gap: 10px; margin-left: 16px; flex-shrink: 0; }
+.search-box { display: flex; align-items: center; background: #fff; border: 1px inset #808080; padding: 2px; }
+.search-box input { border: none; outline: none; padding: 1px 4px; font-size: 11px; width: 100px; font-family: "宋体", "SimSun", serif; }
+.search-box button {
+  background: none; border: none; cursor: pointer;
+  font-size: 13px; padding: 0 4px; color: #333;
+  display: flex; align-items: center; justify-content: center;
+}
+.hamburger { position: relative; cursor: pointer; padding: 4px; }
+.hamburger .bar { width: 18px; height: 2px; background: #fff; margin: 2px 0; }
+.hamburger-dropdown {
+  display: none; position: absolute; top: 100%; right: 0; background: #fff;
+  border: 2px outset #c0c0c0; min-width: 140px; z-index: 999;
+  box-shadow: 2px 2px 4px rgba(0,0,0,.3);
+}
+.hamburger-dropdown a {
+  display: block; padding: 6px 12px; color: #333; text-decoration: none;
+  font-size: 12px; border-bottom: 1px solid #ddd; font-family: "宋体", "SimSun", sans-serif;
+}
+
+/* 面包屑 */
+.breadcrumb{background:#d4d4d4;border:1px solid #999;padding:6px 16px;font-size:11px;margin:8px 8px;color:#555}
+.breadcrumb a{color:#3a5a4a;text-decoration:none}
+
+/* 主内容 */
+.main-wrap{margin:8px 12px;min-height:calc(100vh - 260px)}
+.page-title{font-size:20px;font-family:"黑体","SimHei",sans-serif;color:#3a5a4a;border-bottom:3px solid #edc75a;padding-bottom:8px;margin-bottom:18px}
+.page-subtitle{font-size:13px;color:#666;margin-bottom:16px}
+
+/* 周历表格 */
+.week-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:11px;border:2px solid #3a5a4a}
+.week-table th{background:linear-gradient(to bottom,#2d4838,#3a5a4a);color:#fff;font-family:"黑体","SimHei",sans-serif;padding:10px 6px;border:1px solid #3a5a4a;text-align:center}
+.week-table td{border:1px solid #999;padding:5px 6px;vertical-align:top;line-height:1.75}
+.week-table tr:nth-child(even){background:#eef3ea}
+.week-table .day-head{text-align:center;background:#eef3ea;font-weight:bold;color:#3a5a4a}
+.week-table .period-label{background:#f0f0f0;font-weight:bold;text-align:center;color:#555;width:60px;font-size:10px}
+.week-table .subject{font-weight:bold;color:#3a5a4a}
+.week-table .morning-bg{background:#fffef5}
+.week-table .afternoon-bg{background:#f5fbff}
+.week-table .evening-bg{background:#fafafa}
+
+/* 时间段标签 */
+.period-tag{display:inline-block;padding:1px 6px;border-radius:2px;font-size:10px;margin-bottom:2px}
+.tag-morning{background:#fef3cd;color:#856404}
+.tag-afternoon{background:#cce5ff;color:#004085}
+.tag-evening{background:#e2e3e5;color:#383d41}
+
+/* 说明区 */
+.week-note{margin-top:16px;padding:12px 16px;background:#f9f9f9;border:1px solid #ddd;border-radius:4px;font-size:11px;color:#555;line-height:1.9}
+.week-note h3{font-size:13px;font-family:"黑体","SimHei",sans-serif;color:#3a5a4a;margin-bottom:8px}
+
+/* 页脚 */
+.site-footer{background:linear-gradient(to bottom,#3a5a4a,#2d4838);color:#c2d6cc;padding:14px 20px;margin-top:24px;text-align:center;font-size:11px;border-top:3px solid #edc75a}
+
+/* ========== 底部免责/版权灰框 ========== */
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #ededed; color: #555; text-align: center; padding: 14px 16px 12px; font-family: "宋体", "SimSun", serif; border-top: 1px solid #ddd; }
+.disclaimer .dis-text { font-size: 11px; letter-spacing: .5px; color: #999; }
+.disclaimer .copy { margin-top: 7px; font-size: 11px; color: #999; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .5px; }
+
+body { max-width: 1200px; margin-left: auto; margin-right: auto; }
+</style>
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+
+
+<!-- ========== 顶部校徽与导航栏 ========== -->
+<div class="top-bar">
+  <div class="school-brand">
+    <div class="school-logo"></div>
+    <div class="school-name">
+      <div class="cn">会同县无生中学</div>
+      <div class="en">HuiTong County Wusheng Middle School</div>
+    </div>
+  </div>
+  <nav class="main-nav">
+    <a href="page1.html">首页</a>
+    <a href="page2-about.html">学校概况</a>
+    <a href="page3-notice.html">通知公告</a>
+    <a href="page4-events.html">无生大事</a>
+    <a href="page5-jiaoyu.html">教育教学</a>
+    <a href="page6-mingshi.html">名师风采</a>
+    <a href="page7-xiaoyou.html">校友聚集</a>
+    <a href="page8-dangjian.html">党建园地</a>
+  </nav>
+  <div class="top-right">
+    <div class="search-box">
+      <input type="text" id="siteSearch" placeholder="搜索..." onkeydown="if(event.key==='Enter')doSiteSearch(document.getElementById('siteSearch').value)">
+      <button aria-label="搜索" onclick="doSiteSearch(document.getElementById('siteSearch').value)">🔍</button>
+    </div>
+    <div class="hamburger" onclick="this.classList.toggle('active')">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="hamburger-dropdown">
+        <a href="page9-xuesheng.html">学生天地</a>
+        <a href="page10-zhaosheng.html">招聘招生</a>
+        <a href="page11-luntan.html">校园论坛</a>
+        <a href="page12-guanyu.html">关于我们</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 面包屑 -->
+<div class="breadcrumb">
+  <a href="page1.html">首页</a> &gt; <span>周历安排</span>
+</div>
+
+<!-- 主内容 -->
+<div class="main-wrap">
+  <h1 class="page-title"><span style="color:#edc75a;">&#9632;</span> 会同县无生中学 作息时间表与周课表（参考）</h1>
+  <p class="page-subtitle">以下为学校常规作息安排，具体以各年级实际执行为准。</p>
+
+  <!-- 作息时间 -->
+  <table class="week-table" style="margin-bottom:24px">
+    <thead><tr><th colspan="3">一 日 作 息 时 间 表</th></tr></thead>
+    <tbody>
+      <tr><td class="period-label">起床</td><td colspan="2">06:20 — 起床、洗漱、整理内务</td></tr>
+      <tr class="morning-bg"><td class="period-label">早读</td><td colspan="2">06:50 – 07:25 （35分钟）</td></tr>
+      <tr><td class="period-label">早餐</td><td colspan="2">07:25 – 07:50 （食堂供餐）</td></tr>
+      <tr class="morning-bg"><td class="period-label">第一节</td><td colspan="2">08:00 – 08:45 （45分钟）</td></tr>
+      <tr><td class="period-label">课间</td><td colspan="2">08:45 – 08:55 （眼保健操 / 休息）</td></tr>
+      <tr class="morning-bg"><td class="period-label">第二节</td><td colspan="2">08:55 – 09:40 （45分钟）</td></tr>
+      <tr><td class="period-label">大课间</td><td colspan="2">09:40 – 10:05 （广播操 / 跑操）</td></tr>
+      <tr class="morning-bg"><td class="period-label">第三节</td><td colspan="2">10:05 – 10:50 （45分钟）</td></tr>
+      <tr><td class="period-label">课间</td><td colspan="2">10:50 – 11:00</td></tr>
+      <tr class="morning-bg"><td class="period-label">第四节</td><td colspan="2">11:00 – 11:45 （45分钟）</td></tr>
+      <tr><td class="period-label">午餐</td><td colspan="2">11:45 – 12:30 （食堂供餐）</td></tr>
+      <tr><td class="period-label">午休</td><td colspan="2">12:30 – 13:50 （宿舍午休 / 自习）</td></tr>
+      <tr class="afternoon-bg"><td class="period-label">第五节</td><td colspan="2">14:00 – 14:45 （45分钟）</td></tr>
+      <tr><td class="period-label">课间</td><td colspan="2">14:45 – 14:55</td></tr>
+      <tr class="afternoon-bg"><td class="period-label">第六节</td><td colspan="2">14:55 – 15:40 （45分钟）</td></tr>
+      <tr><td class="period-label">大课间</td><td colspan="2">15:40 – 16:00 （活动 / 休息）</td></tr>
+      <tr class="afternoon-bg"><td class="period-label">第七节</td><td colspan="2">16:00 – 16:45 （45分钟）</td></tr>
+      <tr><td class="period-label">课外活动</td><td colspan="2">16:55 – 17:40 （社团 / 体育 / 兴趣小组）</td></tr>
+      <tr><td class="period-label">晚餐</td><td colspan="2">17:40 – 18:30 （食堂供餐）</td></tr>
+      <tr class="evening-bg"><td class="period-label">晚自习一</td><td colspan="2">18:50 – 19:40 （50分钟）</td></tr>
+      <tr><td class="period-label">休息</td><td colspan="2">19:40 – 19:50</td></tr>
+      <tr class="evening-bg"><td class="period-label">晚自习二</td><td colspan="2">19:50 – 20:40 （50分钟）</td></tr>
+      <tr><td class="period-label">熄灯</td><td colspan="2">22:30 （宿舍统一熄灯就寝）</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 周课表示例 -->
+  <h3 style="font-size:15px;font-family:'黑体','SimHei',sans-serif;color:#3a5a4a;margin:18px 0 10px;border-left:4px solid #edc75a;padding-left:10px;">高一年级周课表示例</h3>
+  <table class="week-table">
+    <thead>
+      <tr>
+        <th width="60">节次</th>
+        <th>周一</th><th>周二</th><th>周三</th><th>周四</th><th>周五</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="morning-bg">
+        <td class="period-label">第1节<br>08:00–08:45</td>
+        <td><span class="subject">语文</span></td>
+        <td><span class="subject">数学</span></td>
+        <td><span class="subject">英语</span></td>
+        <td><span class="subject">物理</span></td>
+        <td><span class="subject">化学</span></td>
+      </tr>
+      <tr class="morning-bg">
+        <td class="period-label">第2节<br>08:55–09:40</td>
+        <td><span class="subject">语文</span></td>
+        <td><span class="subject">数学</span></td>
+        <td><span class="subject">英语</span></td>
+        <td><span class="subject">物理</span></td>
+        <td><span class="subject">化学</span></td>
+      </tr>
+      <tr class="morning-bg">
+        <td class="period-label">第3节<br>10:05–10:50</td>
+        <td><span class="subject">英语</span></td>
+        <td><span class="subject">语文</span></td>
+        <td><span class="subject">数学</span></td>
+        <td><span class="subject">生物</span></td>
+        <td><span class="subject">政治</span></td>
+      </tr>
+      <tr class="morning-bg">
+        <td class="period-label">第4节<br>11:00–11:45</td>
+        <td><span class="subject">英语</span></td>
+        <td><span class="subject">历史</span></td>
+        <td><span class="subject">地理</span></td>
+        <td><span class="subject">生物</span></td>
+        <td><span class="subject">体育</span></td>
+      </tr>
+      <tr class="afternoon-bg">
+        <td class="period-label">第5节<br>14:00–14:45</td>
+        <td><span class="subject">数学</span></td>
+        <td><span class="subject">物理</span></td>
+        <td><span class="subject">化学</span></td>
+        <td><span class="subject">语文</span></td>
+        <td><span class="subject">美术</span></td>
+      </tr>
+      <tr class="afternoon-bg">
+        <td class="period-label">第6节<br>14:55–15:40</td>
+        <td><span class="subject">数学</span></td>
+        <td><span class="subject">物理</span></td>
+        <td><span class="subject">体育</span></td>
+        <td><span class="subject">音乐</span></td>
+        <td><span class="subject">班会</span></td>
+      </tr>
+      <tr class="afternoon-bg">
+        <td class="period-label">第7节<br>16:00–16:45</td>
+        <td><span class="subject">语文</span></td>
+        <td><span class="subject">数学</span></td>
+        <td><span class="subject">社团</span></td>
+        <td><span class="subject">英语</span></td>
+        <td><span class="subject">卫生/劳动</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="week-note">
+    <h3>备注说明</h3>
+    1. 每周一最后一节晚课为<span style="color:#c93a3a;">心理健康教育课</span>，由心理老师主持。<br>
+    2. 周三下午第七节课为<span style="color:#2e8b6a;">社团活动时间</span>，学生根据兴趣选择参加。<br>
+    3. 体育课每周两节，具体时段依年级和班级轮转安排。<br>
+    4. 实验课（理化生）按教学进度在实验室进行，届时另行通知。<br>
+    5. 晚自习期间保持安静，由值班教师巡视管理。
+  </div>
+</div>
+
+<!-- 页脚 -->
+<div class="site-footer">
+  版权所有 &copy; 2015 会同县无生中学 &nbsp;|&nbsp; 地址：湖南省怀化市会同县 &nbsp;|&nbsp;
+  邮箱：wusheng@edu.cn &nbsp;|&nbsp; 电话：0745-1234567
+</div>
+
+<script>
+function loadLogo(){
+  var svg=document.getElementById('wkLogoSvg');
+  if(window.LOGO_DATA && LOGO_DATA.svg){ svg.innerHTML=LOGO_DATA.svg; svg.style.width='48px'; svg.style.height='48px'; }
+}
+loadLogo();
+</script>
+<script src="search.js"></script>
+<script src="fragment.js"></script>
+<script src="clue.js"></script>
+<script src="phase.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

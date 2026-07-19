@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="renderer" content="ie-stand">
+<title>通知公告 - 会同县无生中学</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: "宋体", "SimSun", serif, "PingFang SC", "Hiragino Sans GB", "Heiti SC", sans-serif;
+  background: #f5f5f0;
+  color: #333;
+  font-size: 12px;
+  line-height: 1.5;
+}
+/* ========== 地址栏（纯灰条 + 白色 URL 输入框） ========== */
+/* ========== 顶部栏 ========== */
+.top-bar {
+  background: linear-gradient(to bottom, #3a5a4a, #2d4838);
+  color: #fff; display: flex; align-items: center;
+  padding: 8px 16px; position: relative;
+  border-bottom: 3px solid #edc75a;
+}
+.school-brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.school-logo {
+  width: 48px; height: 48px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  border: 2px solid #edc75a;
+  overflow: hidden; background: #fff; flex-shrink: 0;
+}
+.school-logo .logo-img { width: 100%; height: 100%; object-fit: cover; }
+.school-name { display: flex; flex-direction: column; }
+.school-name .cn { font-family: "华文行楷", "STXingkai", "楷体", "KaiTi", "SimSun", serif; font-size: 26px; font-weight: bold; letter-spacing: 2px; color: #fff; }
+.school-name .en { font-size: 10px; color: #a8c4b8; letter-spacing: 0px; margin-top: 2px; font-family: "Times New Roman", serif; }
+.top-right { display: flex; align-items: center; gap: 8px; margin-left: auto; padding-right: 8px; flex-shrink: 0; }
+.search-box { display: flex; align-items: center; background: #fff; border: 1px inset #808080; padding: 2px; }
+.search-box input { border: none; outline: none; padding: 1px 4px; font-size: 11px; width: 100px; font-family: "宋体", "SimSun", serif; }
+.search-box button {
+  background: none; border: none; cursor: pointer;
+  font-size: 13px; padding: 0 4px; color: #333;
+  display: flex; align-items: center; justify-content: center;
+}
+.hamburger { position: relative; cursor: pointer; padding: 4px; }
+.hamburger .bar { width: 18px; height: 2px; background: #fff; margin: 2px 0; }
+.hamburger-dropdown {
+  display: none; position: absolute; top: 100%; right: 0; background: #fff;
+  border: 2px outset #c0c0c0; min-width: 140px; z-index: 999;
+  box-shadow: 2px 2px 4px rgba(0,0,0,.3);
+}
+.hamburger-dropdown a {
+  display: block; padding: 6px 12px; color: #333; text-decoration: none;
+  font-size: 12px; border-bottom: 1px solid #ddd; font-family: "宋体", "SimSun", sans-serif;
+}
+.hamburger-dropdown a:last-child { border-bottom: none; }
+.hamburger-dropdown a:hover { background: #3a5a4a; color: #fff; }
+.hamburger.active .hamburger-dropdown { display: block; }
+/* ========== 主导航 ========== */
+.nav-bar {
+  background: linear-gradient(to bottom, #2d4838, #3a5a4a);
+  border-bottom: 2px solid #edc75a;
+  padding: 0;
+}
+.nav-inner { display: flex; align-items: center; }
+.nav-inner a {
+  color: #fff; text-decoration: none; padding: 8px 14px;
+  display: flex; align-items: center; font-size: 13px;
+  border-right: 1px solid #3a5a4a;
+  white-space: nowrap; font-family: "黑体", "SimHei", sans-serif;
+  cursor: pointer;
+}
+.nav-inner a:first-child { border-left: none; }
+.nav-inner a:hover { background: #edc75a; color: #000; text-decoration: none; }
+.nav-inner a.active { background: #edc75a; color: #000; font-weight: bold; }
+/* ========== 面包屑 ========== */
+.breadcrumb {
+  background: #d4d4d4; border: 1px solid #999; padding: 6px 16px;
+  font-size: 11px; margin: 8px 8px; color: #555;
+  font-family: "宋体", "SimSun", serif;
+}
+.breadcrumb a { color: #3a5a4a; text-decoration: none; }
+.breadcrumb a:hover { color: #c93a3a; text-decoration: underline; }
+/* ========== 主内容区 ========== */
+.main-wrap {
+  margin: 8px;
+  background: #fff;
+  border: 2px outset #c0c0c0;
+  padding: 20px;
+  min-height: calc(100vh - 280px);
+}
+.section-title {
+  font-size: 18px; font-family: "黑体","SimHei",sans-serif;
+  color: #3a5a4a; border-bottom: 2px solid #edc75a;
+  padding-bottom: 8px; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-title .icon { color: #edc75a; font-size: 16px; }
+/* ========== 公告列表（纯静态） ========== */
+.notice-list { width: 100%; }
+.notice-item {
+  padding: 10px 12px; border-bottom: 1px solid #eee;
+  display: flex; align-items: center; gap: 8px;
+  cursor: pointer; transition: background 0.2s;
+}
+.notice-item:hover { background: #eef3ea; }
+.notice-item .ndate { color: #999; font-size: 11px; white-space: nowrap; font-family: "Arial", sans-serif; }
+.notice-item .text { flex: 1; font-size: 13px; }
+.notice-item .text:hover { color: #3a5a4a; text-decoration: underline; }
+.notice-item.highlight { background: #fff8e1; border-left: 3px solid #c93a3a; padding-left: 9px; }
+.notice-item.highlight .text { color: #c93a3a; font-weight: bold; }
+/* 非重点公告：静态展示、不可点击、无详情页（明确区别于可点链接） */
+.notice-item.plain { cursor: default; }
+.notice-item.plain:hover { background: transparent; }
+.notice-item.plain .text { color: #555; }
+.notice-item.plain .text:hover { color: #555; text-decoration: none; }
+/* ========== 公告详情浮层 ========== */
+.modal-overlay {
+  display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5); z-index: 9999;
+  justify-content: center; align-items: center;
+}
+.modal-overlay.active { display: flex; }
+.modal-box {
+  background: #fff; width: 680px; max-height: 80vh; overflow-y: auto;
+  border: 2px outset #c0c0c0; box-shadow: 4px 4px 12px rgba(0,0,0,0.4);
+}
+.modal-header {
+  background: #3a5a4a; color: #fff; padding: 10px 16px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-family: "黑体","SimHei",sans-serif; font-size: 14px;
+  border-bottom: 2px solid #edc75a;
+}
+.modal-header .close-btn {
+  background: #edc75a; border: 1px outset #edc75a; color: #fff;
+  padding: 2px 8px; cursor: pointer; font-size: 12px; font-family: "黑体", "SimHei", sans-serif;
+}
+.modal-header .close-btn:active { border-style: inset; }
+.modal-meta {
+  background: #f5f5f5; padding: 8px 16px; font-size: 11px;
+  color: #666; border-bottom: 1px solid #ddd;
+  display: flex; gap: 16px;
+}
+.modal-body { padding: 16px 20px; font-size: 13px; line-height: 2; text-align: justify; }
+.modal-body p { text-indent: 2em; margin-bottom: 8px; }
+.modal-body p:last-child { margin-bottom: 0; }
+/* ========== 页脚 ========== */
+.footer {
+  background: #2d4838 url('data:image/gif;base64,R0lGODlhCAAIAPABAAAAAP///yH5BAAAAAAALAAAAAAIAAgAAAIRjI+py+0Po5y02ouz3pxAADs=') repeat-x;
+  color: #cfe3d8; padding: 20px 16px; margin-top: 24px; border-top: 3px solid #edc75a;
+}
+.footer-inner { width: 100%; padding: 0 16px; display: flex; align-items: center; gap: 20px; }
+.footer-brand { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.footer-logo {
+  width: 42px; height: 42px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  border: 2px solid #fff; overflow: hidden; background: #fff;
+}
+.footer-logo .logo-img { width: 100%; height: 100%; object-fit: cover; }
+.footer-name .cn { font-size: 14px; color: #fff; font-weight: bold; }
+.footer-name .en { font-size: 9px; color: #9bbfae; font-family: "Arial", sans-serif; }
+.footer-info { margin-left: auto; font-size: 12px; line-height: 1.8; text-align: right; font-family: "黑体", "SimHei", sans-serif; }
+.footer-info a { color: #9bbfae; text-decoration: none; }
+.footer-info a:hover { color: #fff; text-decoration: underline; }
+/* ========== 滚动条 ========== */
+::-webkit-scrollbar { width: 16px; }
+::-webkit-scrollbar-track { background: #f0f0f0; border: 1px solid #ccc; }
+::-webkit-scrollbar-thumb { background: #c0c0c0; border: 1px outset #c0c0c0; }
+
+/* ========== 底部免责/版权灰框 ========== */
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #ededed; color: #555; text-align: center; padding: 14px 16px 12px; font-family: "宋体", "SimSun", serif; border-top: 1px solid #ddd; }
+.disclaimer .dis-text { font-size: 11px; letter-spacing: .5px; color: #999; }
+.disclaimer .copy { margin-top: 7px; font-size: 11px; color: #999; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .5px; }
+
+body { max-width: 1200px; margin-left: auto; margin-right: auto; }
+</style>
+<link rel="stylesheet" href="reveal.css?v=4">
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+
+<!-- ========== 地址栏 ========== -->
+
+</div>
+
+<!-- ========== 顶部校徽与导航栏 ========== -->
+<div class="top-bar">
+  <div class="school-brand">
+    <div class="school-logo">
+      <img class="logo-img" id="logo1" alt="校徽">
+    </div>
+    <div class="school-name">
+      <div class="cn">会同县无生中学</div>
+      <div class="en">HuiTong County WuSheng Middle School</div>
+    </div>
+  </div>
+  <div class="top-right">
+      <div class="search-box">
+        <input type="text" placeholder="搜索...">
+        <button aria-label="搜索">🔍</button>
+      </div>
+    <div class="hamburger">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="hamburger-dropdown">
+        <a href="page9-xuesheng.html">学生天地</a>
+        <a href="page10-zhaosheng.html">招聘招生</a>
+        <a href="page11-luntan.html">校园论坛</a>
+        <a href="page12-guanyu.html">关于我们</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 主导航 ========== -->
+<div class="nav-bar">
+  <div class="nav-inner">
+    <a href="page1.html">首页</a>
+    <a href="page2-about.html">学校概况</a>
+    <a class="active">通知公告</a>
+    <a href="page4-events.html">无生大事</a>
+    <a href="page5-jiaoyu.html">教育教学</a>
+    <a href="page6-mingshi.html">名师风采</a>
+    <a href="page7-xiaoyou.html">校友聚集</a>
+    <a href="page8-dangjian.html">党建园地</a>
+  </div>
+</div>
+
+<!-- ========== 面包屑 ========== -->
+<div class="breadcrumb">
+  <a href="page1.html">首页</a> &gt; 通知公告
+</div>
+
+<!-- ========== 主内容区（通栏，无左侧导航，无分页） ========== -->
+<div class="main-wrap">
+  <div class="section-title">
+    <span class="icon">■</span> 通知公告
+  </div>
+
+  <div class="notice-list">
+    <!-- 公告1 -->
+    <div class="notice-item highlight" onclick="openModal(1)">
+      <span class="ndate">[2015-08-15]</span>
+      <span class="text">新同善楼落成启用公告</span>
+    </div>
+    <!-- 公告2 -->
+    <div class="notice-item highlight" onclick="openModal(2)">
+      <span class="ndate">[2015-08-20]</span>
+      <span class="text">2015年秋季开学须知</span>
+    </div>
+    <!-- 公告3 -->
+    <div class="notice-item plain">
+      <span class="ndate">[2015-08-10]</span>
+      <span class="text">档案室搬迁通知</span>
+    </div>
+    <!-- 公告4 -->
+    <div class="notice-item plain">
+      <span class="ndate">[2015-08-05]</span>
+      <span class="text">旧教学楼拆除施工公告</span>
+    </div>
+    <!-- 公告5 -->
+    <div class="notice-item plain">
+      <span class="ndate">[2015-07-28]</span>
+      <span class="text">贾义正老师任教十周年纪念</span>
+    </div>
+    <!-- 公告6 -->
+    <div class="notice-item plain">
+      <span class="ndate">[2015-07-20]</span>
+      <span class="text">2015年招生录取工作圆满结束</span>
+    </div>
+    <!-- 公告7 -->
+    <div class="notice-item highlight" onclick="openModal(7)">
+      <span class="ndate">[2015-07-15]</span>
+      <span class="text">关于何宏宇同学相关事宜</span>
+    </div>
+    <!-- 公告8 -->
+    <div class="notice-item plain">
+      <span class="ndate">[2015-07-10]</span>
+      <span class="text">暑假期间校园安全管理通知</span>
+    </div>
+    <!-- 公告9 -->
+    <div class="notice-item plain">
+      <span class="ndate">[2015-06-25]</span>
+      <span class="text">2015届中考、高考成绩通报</span>
+    </div>
+    <!-- 公告10 -->
+    <div class="notice-item plain">
+      <span class="ndate">[2015-06-18]</span>
+      <span class="text">校园足球联赛圆满落幕</span>
+    </div>
+    <!-- 公告11 -->
+    <div class="notice-item plain">
+      <span class="ndate">[2015-06-10]</span>
+      <span class="text">实验室设备更新采购公告</span>
+    </div>
+    <!-- 公告12 -->
+    <div class="notice-item plain">
+      <span class="ndate">[2015-05-28]</span>
+      <span class="text">篮球锦标赛选拔通知</span>
+    </div>
+    <!-- 公告13 -->
+    <div class="notice-item plain">
+      <span class="ndate">[2015-05-15]</span>
+      <span class="text">2014-2015学年优秀教师表彰决定</span>
+    </div>
+    <!-- 公告14 -->
+    <div class="notice-item plain">
+      <span class="ndate">[2015-05-04]</span>
+      <span class="text">校园艺术节活动方案</span>
+    </div>
+    <!-- 公告15 -->
+    <div class="notice-item plain">
+      <span class="ndate">[2015-04-20]</span>
+      <span class="text">安全教育月活动通知</span>
+    </div>
+    <!-- 公告16 -->
+    <div class="notice-item plain">
+      <span class="ndate">[2015-04-05]</span>
+      <span class="text">春季运动会竞赛规程</span>
+    </div>
+    <!-- 公告17 -->
+    <div class="notice-item plain">
+      <span class="ndate">[2015-03-20]</span>
+      <span class="text">学雷锋志愿服务活动总结</span>
+    </div>
+    <!-- 公告18 -->
+    <div class="notice-item plain">
+      <span class="ndate">[2015-03-05]</span>
+      <span class="text">2014年度优秀教师名单公示</span>
+    </div>
+    <!-- 公告19 -->
+    <div class="notice-item plain">
+      <span class="ndate">[2015-01-25]</span>
+      <span class="text">寒假致家长的一封信</span>
+    </div>
+    <!-- 公告20 -->
+    <div class="notice-item plain">
+      <span class="ndate">[2015-01-10]</span>
+      <span class="text">校园网络升级公告</span>
+    </div>
+  </div>
+
+  <style>
+  .hist-archive{margin:18px 0;padding:14px 16px;background:#fafbfd;border:1px dashed #edc75a;border-left:4px solid #edc75a;display:none}
+  .hist-h{font-family:"黑体","SimHei",sans-serif;font-size:15px;color:#2e6db4;margin-bottom:4px}
+  .hist-note{font-size:11px;color:#888;margin-bottom:10px}
+  .hist-archive .notice-item{cursor:default;border-bottom:1px dotted #ddd}
+  .hist-archive .notice-item:hover{background:transparent}
+  </style>
+  <div class="hist-archive">
+    <div class="hist-h">历史公告归档（2005–2006 学年留存）</div>
+    <div class="hist-note">以下为早年公告的留存扫描件，按时间摘录，部分文字已漫漶。</div>
+    <div class="notice-item" style="cursor:default">
+      <span class="ndate">[2005-09-10]</span>
+      <span class="text">关于规范宿舍纪律，严禁占卜、算卦等活动的通知</span>
+    </div>
+    <div class="notice-item" style="cursor:default">
+      <span class="ndate">[2005-10-12]</span>
+      <span class="text">旧教学楼天台临时封闭检修通告（第一次）</span>
+    </div>
+    <div class="notice-item" style="cursor:default">
+      <span class="ndate">[2006-03-08]</span>
+      <span class="text">旧教学楼天台临时封闭检修通告（第二次）</span>
+    </div>
+    <div class="notice-item" style="cursor:default">
+      <span class="ndate">[2005-09-15]</span>
+      <span class="text">关于心理课任课调整的通知（贾义正老师任教）</span>
+    </div>
+    <div class="notice-item" style="cursor:default">
+      <span class="ndate">[2006-05-26]</span>
+      <span class="text">关于高峻豪同学休学及俞丽老师停职的说明</span>
+    </div>
+  </div>
+
+  <!-- 无分页控件 -->
+</div>
+
+<!-- ========== 公告详情浮层 ========== -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <span id="modalTitle">公告标题</span>
+      <button class="close-btn" onclick="closeModal()">关闭 ✕</button>
+    </div>
+    <div class="modal-meta" id="modalMeta"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<!-- ========== 页脚 ========== -->
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <img class="logo-img" id="logo2" alt="校徽">
+      </div>
+      <div class="footer-name">
+        <div class="cn">会同县无生中学</div>
+        <div class="en">HuiTong County WuSheng Middle School</div>
+      </div>
+    </div>
+    <div class="footer-info">
+      邮编: 418300 | 电话: 0745-1234567<br>
+      邮箱: wusheng@edu.cn | 地址: 湖南省怀化市会同县
+    </div>
+  </div>
+</div>
+
+<script>
+// ========== 公告详情数据（仅保留重点公告 1/2/7 的详情页；其余为非重点静态条目，点击无效果） ==========
+var noticeData = {
+  1: {
+    title: "新同善楼落成启用公告",
+    date: "2015-08-15",
+    dept: "校务办公室",
+    content: "<p>经校务会议研究决定，新建教学楼已于2015年8月14日竣工验收，自2015年8月21日起正式投入使用。新同善楼位于校园东侧，建筑面积约8000平方米，地上五层，设有标准教室36间、阶梯教室1间、实验室6间及教师办公室若干。</p><p>新同善楼地下室设有档案室及设备间，档案室存放学校历年重要档案资料，<strong>未经许可不得擅自进入</strong>。阶梯教室可容纳200人，用于年级大会、公开课及学术讲座。</p><p>请各年级组于8月18日至20日完成教室分配及布置工作，确保秋季学期顺利开学。新同善楼启用后，旧教学楼将同步封存待拆。</p>"
+  },
+  2: {
+    title: "2015年秋季开学须知",
+    date: "2015-08-20",
+    dept: "教务处",
+    content: "<p>2015年秋季学期将于9月1日正式开学。现将有关事项通知如下：</p><p>一、高一新生于8月30日、31日报到注册，地点设新同善楼一楼大厅。高二、高三学生于8月31日报到。</p><p>二、<strong>旧教学楼天台目前处于封闭状态</strong>，进行封闭施工，请勿靠近。新同善楼高一年级教室分布：一至三楼为初中部，四至五楼为高中部。</p><p>三、全体寄宿生需在9月1日晚19:00前归校，晚自习正常进行。食堂自9月1日早餐起正常供应。</p><p>四、新学期教材已到位，各班班长于8月31日下午到教务处领取。</p>"
+  },
+  7: {
+    title: "关于何宏宇同学相关事宜",
+    date: "2015-07-15",
+    dept: "政教处",
+    content: "<p>经查证，我校2006届学生何宏宇<span class='anomaly' data-group='he' data-id='he2'>于2006年9月因个人原因办理退学手续，此后未再返校就读</span>。其在校期间的相关档案材料因年代久远，部分记录已不完整。</p><p>近日有师生反映，在旧教学楼天台靠近楼梯间区域偶尔听到异常声响。政教处已安排人员排查，初步判断为管道老化及风压变化所致。施工期间该区域已封闭，请师生切勿靠近。</p><p>如有何宏宇同学的任何信息或线索，请联系政教处陈国强副主任，电话：0745-8824567转802。学校将依法依规处理相关事宜。</p>"
+  }
+};
+
+function openModal(id) {
+  var data = noticeData[id];
+  if (!data) return;
+  document.getElementById('modalTitle').textContent = data.title;
+  document.getElementById('modalMeta').innerHTML =
+    '<span>发布日期：' + data.date + '</span>' +
+    '<span>发布部门：' + data.dept + '</span>' +
+    '<span>浏览次数：' + (Math.floor(Math.random() * 200) + 50) + '</span>';
+  document.getElementById('modalBody').innerHTML = data.content;
+  // 弹窗内容含 .anomaly（如 he2），注入后通知 reveal.js 重新套用已捕获/已揭示状态
+  try { document.dispatchEvent(new Event('reveal:refresh')); } catch (e) {}
+  document.getElementById('modalOverlay').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('active');
+}
+
+// ESC 关闭
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
+
+// 汉堡菜单
+document.querySelector('.hamburger').addEventListener('click', function(e) {
+  e.stopPropagation();
+  this.classList.toggle('active');
+});
+</script>
+<script src="logo-data.js"></script>
+<script>
+// 校徽链接
+document.getElementById('logo1').src = LOGO_B64;
+document.getElementById('logo2').src = LOGO_B64;
+
+document.addEventListener('click', function() {
+  document.querySelector('.hamburger').classList.remove('active');
+});
+</script>
+
+<script src="fragment.js"></script>
+  <script src="search.js"></script>
+<script src="clue.js"></script>
+<script src="reveal.js?v=4"></script>
+<script>
+/* 历史公告归档：默认隐藏，需何宏宇、俞丽两组矛盾点均已解锁（真相浮现）后才显现 */
+(function(){
+  function updateArchive(){
+    var box = document.querySelector('.hist-archive');
+    if(!box) return;
+    var ok = (typeof window.revealIsGroupRevealed === 'function')
+             && window.revealIsGroupRevealed('he')
+             && window.revealIsGroupRevealed('yu');
+    box.style.display = ok ? 'block' : 'none';
+  }
+  document.addEventListener('reveal:refresh', updateArchive);
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', updateArchive);
+  } else {
+    updateArchive();
+  }
+  setTimeout(updateArchive, 0);   // 兜底：确保 reveal.js 已执行完
+})();
+</script>
+  <script src="phase.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>

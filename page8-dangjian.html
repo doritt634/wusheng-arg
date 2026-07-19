@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>党建园地 - 会同县无生中学</title>
+<script src="logo-data.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"宋体","SimSun",serif;font-size:12px;background: #f5f5f0;color:#333}
+a{color:#333;text-decoration:none}
+a:hover{color:#c93a3a;text-decoration:underline}
+
+/* 地址栏 */
+/* 顶部 */
+.top-bar{background:linear-gradient(to bottom,#3a5a4a,#2d4838);border-bottom:3px solid #edc75a;padding:8px 16px;display:flex;align-items:center;gap:12px}
+.school-logo{width:48px;height:48px;border-radius:50%;border:2px solid #edc75a;overflow:hidden;background:#fff;flex-shrink:0}
+.school-logo img{width:100%;height:100%;object-fit:contain}
+.school-name{color:#fff}
+.school-name .cn { font-family: "华文行楷", "STXingkai", "楷体", "KaiTi", "SimSun", serif; font-size: 26px; font-weight: bold; letter-spacing: 2px; color: #fff; }
+.school-name .en { font-size: 10px; color: #a8c4b8; letter-spacing: 0px; margin-top: 2px; font-family: "Times New Roman", serif; }
+
+/* 导航 */
+.nav-bar{background:linear-gradient(to bottom,#2d4838,#3a5a4a);border-bottom:2px solid #edc75a;padding:0}
+.nav-inner{display:flex;align-items:center}
+.nav-item{padding:8px 14px;color:#fff;font-size:13px;font-family:"黑体","SimHei",sans-serif;cursor:pointer;border-right:1px solid #3a5a4a;white-space:nowrap}
+.nav-item:hover{background:#edc75a;color:#000}
+.nav-item.active{background:#edc75a;color:#000}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;padding-right:8px}
+.search-box{display:flex;align-items:center;background:#fff;border:1px inset #808080;padding:2px}
+.search-box input{border:none;outline:none;font-size:11px;width:100px;padding:1px 4px;font-family:"宋体"}
+.search-btn{background:none;border:none;cursor:pointer;font-size:13px;padding:0 4px;color:#333}
+.hamburger{position:relative;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:18px;height:2px;background:#fff;margin:2px 0}
+.hamburger-menu{display:none;position:absolute;top:100%;right:0;background:#fff;border:2px outset #c0c0c0;min-width:140px;z-index:999;box-shadow:2px 2px 4px rgba(0,0,0,.3)}
+.hamburger-menu a{display:block;padding:6px 12px;font-size:12px;border-bottom:1px solid #ddd;color:#333}
+.hamburger-menu a:hover{background:#3a5a4a;color:#fff}
+.hamburger:hover .hamburger-menu{display:block}
+
+/* 面包屑 */
+.breadcrumb{background:#d4d4d4;border:1px solid #999;padding:6px 16px;font-size:11px;margin:8px 8px;color:#555;font-family:"宋体","SimSun",serif}
+.breadcrumb a{color:#3a5a4a;text-decoration:none}
+.breadcrumb a:hover{color:#c93a3a;text-decoration:underline}
+
+/* 主内容 */
+.main-wrap{display:block;margin:8px}
+.content-box{background:#fff;border:2px outset #c0c0c0;padding:20px}
+
+/* 板块 */
+.section-title{font-size:18px;font-family:"黑体","SimHei",sans-serif;color:#3a5a4a;border-bottom:2px solid #edc75a;padding-bottom:6px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.section-title .icon{color:#edc75a;font-size:16px}
+.intro-text p{text-indent:2em;line-height:2;margin-bottom:10px;text-align:justify}
+
+/* 通用表 */
+.data-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:12px}
+.data-table td,.data-table th{border:1px solid #999;padding:8px 12px;text-align:left}
+.data-table th{background:#3a5a4a;color:#fff;font-family:"黑体","SimHei",sans-serif;font-weight:normal}
+.data-table tr:nth-child(even) td{background:#f5f7fa}
+.data-table td:first-child{background:#eef3ea;font-weight:bold;white-space:nowrap}
+
+/* 列表 */
+.list-line{list-style:none;margin:12px 0}
+.list-line li{padding:9px 12px;border-bottom:1px dashed #ccc;display:flex;gap:10px;line-height:1.7}
+.list-line li:before{content:"■";color:#c93a3a;font-size:10px;flex-shrink:0;margin-top:4px}
+.list-year{color:#3a5a4a;font-weight:bold;min-width:90px;flex-shrink:0}
+
+/* 说明框 */
+.note-box{margin-top:20px;border:1px solid #edc75a;background:#faf5eb;padding:14px 18px;font-size:12px;color:#333;line-height:2}
+.note-box .note-title{font-weight:bold;font-family:"黑体","SimHei",sans-serif;color:#3a5a4a;margin-bottom:6px}
+
+/* 页脚 */
+.footer{background:linear-gradient(to bottom,#3a5a4a,#2d4838);border-top:3px solid #edc75a;padding:16px;color:#cfe3d8;font-size:11px;margin-top:8px}
+.footer-inner{display:flex;align-items:center;gap:16px;padding:0 16px}
+.footer-logo{width:40px;height:40px;border-radius:50%;border:1px solid #edc75a;overflow:hidden;background:#fff;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.footer-logo img{width:90%;height:90%;object-fit:contain}
+.footer-info{flex:1}
+.footer-info .cn{font-size:14px;font-weight:bold;color:#fff;font-family:"黑体","SimHei",sans-serif}
+.footer-info .en{font-size:9px;color:#9bbfae;margin-top:2px}
+.footer-links{text-align:right;line-height:1.8}
+.footer-links a{color:#cfe3d8}
+
+/* ========== 底部免责/版权灰框 ========== */
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #ededed; color: #555; text-align: center; padding: 14px 16px 12px; font-family: "宋体", "SimSun", serif; border-top: 1px solid #ddd; }
+.disclaimer .dis-text { font-size: 11px; letter-spacing: .5px; color: #999; }
+.disclaimer .copy { margin-top: 7px; font-size: 11px; color: #999; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .5px; }
+
+body { max-width: 1200px; margin-left: auto; margin-right: auto; }
+</style>
+  <link rel="stylesheet" href="foot.css">
+</head>
+<body>
+
+
+
+<!-- 顶部 -->
+<div class="top-bar">
+  <div class="school-logo" id="logo1"></div>
+  <div class="school-name">
+    <div class="cn">会同县无生中学</div>
+    <div class="en">HuiTong County WuSheng Middle School</div>
+  </div>
+  <div class="nav-right">
+    <div class="search-box">
+      <input type="text" placeholder="搜索...">
+      <button class="search-btn">🔍</button>
+    </div>
+    <div class="hamburger">
+      <span></span><span></span><span></span>
+      <div class="hamburger-menu">
+        <a href="page9-xuesheng.html">学生天地</a>
+        <a href="page10-zhaosheng.html">招聘招生</a>
+        <a href="page11-luntan.html">校园论坛</a>
+        <a href="page12-guanyu.html">关于我们</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 主导航 -->
+<div class="nav-bar">
+  <div class="nav-inner">
+    <div class="nav-item" onclick="location.href='page1.html'">首页</div>
+    <div class="nav-item" onclick="location.href='page2-about.html'">学校概况</div>
+    <div class="nav-item" onclick="location.href='page3-notice.html'">通知公告</div>
+    <div class="nav-item" onclick="location.href='page4-events.html'">无生大事</div>
+    <div class="nav-item" onclick="location.href='page5-jiaoyu.html'">教育教学</div>
+    <div class="nav-item" onclick="location.href='page6-mingshi.html'">名师风采</div>
+    <div class="nav-item" onclick="location.href='page7-xiaoyou.html'">校友聚集</div>
+    <div class="nav-item active">党建园地</div>
+  </div>
+</div>
+
+<!-- 面包屑 -->
+<div class="breadcrumb">
+  <a href="page1.html">首页</a> &gt; 党建园地
+</div>
+
+<!-- 主内容 -->
+<div class="main-wrap">
+  <div class="content-box">
+    <div class="section-title"><span class="icon">■</span> 党建园地</div>
+    <div class="intro-text">
+      <p>学校党组织自建校起即同步建立，始终发挥政治核心作用，把方向、管大局、保落实，引领学校坚持社会主义办学方向。多年来，学校党支部（总支）团结带领全体党员和教职工，落实立德树人根本任务，推动学校各项事业健康发展。</p>
+    </div>
+
+    <div class="section-title" style="margin-top:24px"><span class="icon">■</span> 党组织沿革</div>
+    <table class="data-table">
+      <tr><th>时间</th><th>事项</th></tr>
+      <tr><td>1976年</td><td>建校同时成立中共无生中学支部，首批党员9人，创办人贾一方任支部书记</td></tr>
+      <tr><td>1991年</td><td>党员队伍发展壮大，支部升格为总支</td></tr>
+      <tr><td>2008年</td><td>随学校升格完全中学，党总支进一步充实支委班子</td></tr>
+      <tr><td>2015年</td><td>党员活动室一并迁至新同善楼</td></tr>
+    </table>
+
+    <div class="section-title" style="margin-top:24px"><span class="icon">■</span> 主要党建活动</div>
+    <ul class="list-line">
+      <li><span class="list-year">清明祭扫</span><span>每年清明节组织党员赴校史纪念园祭扫，缅怀为学校发展作出贡献的先辈，与全校默哀传统一脉相承。</span></li>
+      <li><span class="list-year">主题党日</span><span>每月开展主题党日活动，学习党的教育方针与师德师风建设要求。</span></li>
+      <li><span class="list-year">结对帮扶</span><span>党员教师与家庭困难学生"一对一"结对，落实控辍保学责任。</span></li>
+    </ul>
+
+    <div class="note-box">
+      <div class="note-title">▌党员名册与早期资料</div>
+      <p style="text-indent:2em">支部成立之初，党员曾在旧教学楼东侧第一间集中办公。早期党员名册（1976—1990）及建校初期党务文书，现存于校史馆。</p>
+      <p style="text-indent:2em;margin-top:6px">创办人贾一方同志在校史与党建史料中均有记载，其办学事迹收录于《无生中学校史（1976—2005）》，校史馆仅展出整理后的图文节选。</p>
+    </div>
+  </div>
+</div>
+
+<!-- 页脚 -->
+<div class="footer">
+  <div class="footer-inner">
+    <div class="footer-logo" id="logo2"></div>
+    <div class="footer-info">
+      <div class="cn">会同县无生中学</div>
+      <div class="en">HuiTong County WuSheng Middle School</div>
+    </div>
+    <div class="footer-links">
+      邮编: 418300 | 电话: 0745-1234567<br>
+      邮箱: wusheng@edu.cn | 地址: 湖南省怀化市会同县
+    </div>
+  </div>
+</div>
+
+<script>
+function loadLogo(){
+  if(typeof LOGO_B64 !== 'undefined'){
+    var els = document.querySelectorAll('#logo1,#logo2');
+    els.forEach(function(el){
+      el.innerHTML = '<img src="'+LOGO_B64+'" alt="校徽">';
+    });
+  }
+}
+loadLogo();
+document.querySelector('.hamburger').addEventListener('click', function(e){
+  e.stopPropagation();
+  this.classList.toggle('active');
+});
+document.addEventListener('click', function(){
+  document.querySelector('.hamburger').classList.remove('active');
+});
+</script>
+<script src="fragment.js"></script>
+  <script src="search.js"></script>
+<script src="clue.js"></script>
+<script src="phase.js"></script>
+
+<!-- ========== 底部免责声明 / 版权灰框 ========== -->
+<div class="disclaimer">
+  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+  <div class="copy">Copyright © 十个化石 版权所有</div>
+</div>
+  <script src="pagenum.js"></script>
+</body>
+</html>
