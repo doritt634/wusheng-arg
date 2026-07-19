@@ -318,7 +318,7 @@
     box.setAttribute('role', 'alert');
     box.innerHTML =
       '<div class="jn-head">' +
-        '<div class="jn-av"><img src="jiayizheng.png" alt="贾义正" onerror="this.parentNode.textContent=\'贾\'"></div>' +
+        '<div class="jn-av"><img src="jiayizheng.webp" alt="贾义正" onerror="this.parentNode.textContent=\'贾\'"></div>' +
         '<div class="jn-who"><div class="jn-name"><span class="jn-dot" style="display:inline-block"></span>贾义正</div>' +
         '<div class="jn-sub">无生中学 · 招生咨询　现在</div></div>' +
         '<div class="jn-close" title="关闭">×</div>' +
