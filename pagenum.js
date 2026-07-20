@@ -1,12 +1,13 @@
 /* pagenum.js —— 全站页脚「页码文字」图层
  *
- * 功能：在每个游戏页面底部版权栏的右下角，以纯文字形式显示页码「第 n / 总页数」，
+ * 功能：在每个游戏页面底部版权栏的同一行右侧，以紧凑纯文字形式显示页码「n/总页数」，
  *       n 取自「推荐游玩顺序」（见 无生中学游玩攻略.md 第一/二层）。
  *
  * 设计要点：
- *  - 不再使用 position:fixed 浮标（iOS Safari 在 body overflow-x:hidden 下会退化、移动端不可见）。
+ *  - 不使用 position:fixed 浮标（iOS Safari 在 body overflow-x:hidden 下会退化、移动端不可见）。
  *  - 改为把页码作为文档流的一部分，插入到页面底部版权栏
- *    （.copy / .site-footer / .forum-footer / <footer> / .footer）内，右对齐显示；
+ *    （.copy / .site-footer / .forum-footer / <footer> / .footer）内，
+ *    用 position:absolute 钉在「同一行」的右侧，保留版权文字原有居中布局；
  *    移动端随页滚动到底部必然可见，彻底避开 fixed 定位问题。
  *  - 若页面没有可识别的版权栏，则在 body 末尾兜底创建一个，保证页码始终存在。
  *
@@ -70,19 +71,18 @@
     return m || 'page1.html';
   }
 
-  // 注入页码文字样式（文档流、靠右对齐，移动端可见）
+  // 注入页码文字样式（文档流、钉在版权栏同一行右侧，移动端可见，字体紧凑）
   function injectStyle() {
     if (document.getElementById('pageNumStyle')) return;
     var s = document.createElement('style');
     s.id = 'pageNumStyle';
     s.textContent =
       '.pageNumText{' +
-      'display:block;width:100%;text-align:right;' +
-      'margin-top:6px;' +
-      'font:12px/1.5 "Courier New",monospace;letter-spacing:1px;' +
+      'position:absolute;right:10px;top:50%;transform:translateY(-50%);' +
+      'font:11px/1 "Courier New",monospace;letter-spacing:.5px;' +
       'color:#8a8a8a;user-select:none;pointer-events:none;' +
       '}' +
-      '@media (max-width:820px){.pageNumText{font-size:11px;}}';
+      '@media (max-width:820px){.pageNumText{font-size:10px;right:8px;}}';
     document.head.appendChild(s);
   }
 
@@ -112,16 +112,21 @@
       // 兜底：页面无版权栏时，在 body 末尾创建一个，保证页码始终存在
       host = document.createElement('div');
       host.className = 'copy';
-      host.style.cssText = 'text-align:center;padding:14px 12px;color:#8a8a8a;font-size:12px;';
+      host.style.cssText = 'position:relative;text-align:center;padding:14px 12px;color:#8a8a8a;font-size:12px;';
       host.innerHTML = 'Copyright &copy; 十个化石 版权所有';
       document.body.appendChild(host);
     }
 
     if (host.querySelector('.pageNumText')) return;   // 防重复插入
 
-    var el = document.createElement('div');
+    // 让页码相对版权栏定位（钉在同一行右侧）
+    if (getComputedStyle(host).position === 'static') {
+      host.style.position = 'relative';
+    }
+
+    var el = document.createElement('span');
     el.className = 'pageNumText';
-    el.textContent = '第 ' + n + ' / ' + total + ' 页';
+    el.textContent = n + '/' + total;
     host.appendChild(el);
   }
 
