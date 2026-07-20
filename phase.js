@@ -195,6 +195,16 @@
     return pf > currentPhase();
   }
 
+  // 文件名归一化：兼容 URL 带/不带 .html 后缀、含 query/hash、访问根路径等情况，
+  // 确保与 NAV_PAGES / PHASE_OF 的 key 一致，避免 markVisited 因文件名对不上而永不执行。
+  function normFile(raw) {
+    var f = (raw || "").toString().toLowerCase();
+    f = f.split("?")[0].split("#")[0];                 // 去 query / hash
+    if (f === "" || f === "/" || f === "index" || f === "index.html") return "index.html";
+    if (!/\.[a-z0-9]+$/.test(f)) f += ".html";         // 补 .html（clean URL 不带后缀时）
+    return f;
+  }
+
   function cn(n) { return ["零", "一", "二", "三"][n] || n; }
 
   function showToast(msg, variant) {
@@ -223,7 +233,7 @@
   // 改为显示一个友好的“未解锁”提示屏，并保留“返回首页 / 返回上页”通道。
   function blockLockedContent() {
     try {
-      var f = (location.pathname.split("/").pop() || "").toLowerCase();
+      var f = normFile(location.pathname.split("/").pop() || "");
       var need = (window.PHASE_OF && window.PHASE_OF[f]) || 0;
       var ph = currentPhase();
 
@@ -260,7 +270,7 @@
       Array.prototype.forEach.call(links, function (a) {
         var href = (a.getAttribute("href") || "").trim();
         if (!href || /^(#|javascript:)/i.test(href)) return;
-        var m = href.split("/").pop().split("?")[0].split("#")[0].toLowerCase();
+        var m = normFile(href.split("/").pop());
         if (NAV_PAGES.indexOf(m) >= 0) return;   // 常驻导航页永远可点，不拦截（仅页内 data-phase 深层内容受阶段门禁）
         var need = (window.PHASE_OF && window.PHASE_OF[m]) || 0;
         if (!need || need <= ph) return;
@@ -296,7 +306,7 @@
       (document.body || document.documentElement).appendChild(warnEl);
     }
 
-    var f = (location.pathname.split("/").pop() || "").toLowerCase();
+    var f = normFile(location.pathname.split("/").pop() || "");
 
     // 统一拦截指向未解锁页的链接（如论坛里点开阶段2以后的热帖），点击即提示、不跳转
     interceptLockedLinks();
