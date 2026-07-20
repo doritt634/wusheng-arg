@@ -1,0 +1,2232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会同县无生中学 — 1991问坛重案推演卷宗</title>
+    <!-- Tailwind CSS -->
+    <script src="tailwind-play.js"></script>
+    <!-- Google Fonts for Gothic & Serif Style -->
+    <link href="https://gs.jurieo.com/gemini/fonts-googleapis/css2?family=Special+Elite&family=Noto+Serif+SC:wght@400;700&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Noto Serif SC', serif;
+            background-color: #0c0a09; 
+            color: #d1c7bd; 
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Occult ambient vignette - restricted strictly to the stage viewport so it NEVER darkens sidebars */
+        .stage-vignette {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 50%, transparent 45%, rgba(12, 10, 9, 0.96) 100%);
+            pointer-events: none;
+            z-index: 10;
+            transition: background 1.2s ease;
+        }
+
+        .body-night .stage-vignette {
+            background: radial-gradient(circle at 50% 50%, transparent 35%, rgba(38, 8, 8, 0.98) 100%) !important;
+            animation: bloodPulse 8s infinite ease-in-out;
+        }
+
+        @keyframes bloodPulse {
+            0%, 100% { opacity: 0.9; }
+            50% { opacity: 1; filter: contrast(1.15) brightness(0.9); }
+        }
+
+        /* Custom Grungy and Old Parchment style components */
+        .grunge-panel {
+            border: 2px solid #3e2723;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.95), inset 0 0 20px rgba(62, 39, 35, 0.4);
+            background: #15110f;
+        }
+
+        .old-paper {
+            background-color: #241c18;
+            border: 1px solid #4a3525;
+            box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.6);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .old-paper:hover {
+            border-color: #a83232;
+            box-shadow: inset 0 0 15px rgba(168, 50, 50, 0.2), 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Stage Area (Virtual size scaled up to 1080x640 for larger viewing space) */
+        .stage-container {
+            width: 1080px;
+            height: 640px;
+            position: relative;
+            background: #120e0c;
+            border: 3px double #3e2723;
+            border-radius: 4px;
+            overflow: hidden;
+            transform-origin: center center;
+        }
+
+        /* Interactive object styles */
+        .box {
+            position: absolute;
+            border-radius: 3px;
+            transition: filter 0.25s, transform 0.25s, border-color 0.25s;
+            cursor: pointer;
+            user-select: none;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 6px;
+            box-shadow: 3px 3px 8px rgba(0,0,0,0.7);
+        }
+        .box:hover {
+            filter: brightness(1.15) contrast(1.1);
+            transform: scale(1.02);
+        }
+
+        /* Specific interaction visual themes */
+        .act-inspect {
+            background: #2e241f;
+            border: 1px solid #543f33;
+            color: #dfd3c3;
+        }
+        .act-drawer {
+            background: #1e1511;
+            border: 1px solid #3c2a20;
+            color: #bd9b7e;
+            border-bottom: 6px solid #2d1e18;
+        }
+        .act-drag {
+            background: #1c1a19;
+            border: 1px dashed #5a4134;
+            color: #a38c7f;
+            cursor: move;
+        }
+        .act-push {
+            background: #2a201b;
+            border: 1px solid #4d3629;
+            color: #af9789;
+        }
+        .act-talk {
+            background: #1e241b;
+            border: 1px solid #364a2f;
+            color: #abbfa6;
+            position: relative;
+        }
+        .act-talk::after {
+            content: "✦";
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 10px;
+            background: #3c1414;
+            color: #e07a5f;
+            border: 1px solid #6e1c1c;
+            border-radius: 50%;
+            padding: 1px 4px;
+        }
+
+        /* Drawer Slide States */
+        .drawer-open {
+            transform: translateY(-8px);
+            background: #423026 !important;
+            border-bottom-width: 2px !important;
+        }
+
+        .room-rug {
+            position: absolute;
+            border: 1px dashed rgba(168, 50, 50, 0.25);
+            background: rgba(168, 50, 50, 0.03);
+            pointer-events: none;
+        }
+
+        /* Eerie flashlight spotlight overlay on Night mode - restricted inside invStage only */
+        .stage-night::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            pointer-events: none;
+            background: radial-gradient(circle 240px at var(--mouse-x, 50%) var(--mouse-y, 50%), transparent 85%, rgba(6, 4, 3, 0.99) 100%);
+            z-index: 45;
+            animation: lanternFlicker 15s infinite ease-in-out;
+        }
+
+        @keyframes lanternFlicker {
+            0%, 100%, 14.99%, 17.01%, 45.99%, 47.01%, 48.99%, 52.01% { opacity: 1; }
+            15%, 17%, 46%, 47%, 49%, 52% { opacity: 0.35; filter: contrast(0.9); }
+            16%, 46.5%, 50% { opacity: 0.75; }
+        }
+
+        /* Smooth fly-in effect */
+        .fade-in {
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Physical scrap fly effect */
+        @keyframes flyToClue {
+            0% {
+                transform: translate(var(--start-x), var(--start-y)) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: translate(calc((var(--start-x) + var(--end-x))/2), calc((var(--start-y) + var(--end-y))/2 - 120px)) scale(0.7) rotate(-10deg);
+                opacity: 0.85;
+            }
+            100% {
+                transform: translate(var(--end-x), var(--end-y)) scale(0.15) rotate(-20deg);
+                opacity: 0;
+            }
+        }
+        .fly-clone {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+            background: #2e1a14 !important;
+            border: 1px solid #a83232 !important;
+            color: #dfcebf !important;
+            animation: flyToClue 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        /* Old-school paper scrollbar */
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #110e0c;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3e2a20;
+            border: 1px solid #1c1410;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a83232;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col justify-between overflow-hidden">
+
+    <!-- ========== HEADER ========== -->
+    <header class="h-16 bg-[#18120e] border-b-2 border-[#2d1f18] px-6 flex items-center justify-between z-50 shadow-lg select-none">
+        <div class="flex items-center gap-3">
+            <a href="contact-us.html" class="text-[10px] bg-[#421515] text-[#ff9999] border border-[#6b1e1e] px-2.5 py-1 rounded-sm font-bold tracking-widest font-mono hover:bg-[#6b1e1e] transition">返回页面</a>
+            <h1 class="text-xs md:text-sm font-bold tracking-widest text-[#ebdcd0] uppercase font-serif" id="gameTitle">
+                会同县·无生中学
+            </h1>
+        </div>
+
+        <div class="flex items-center gap-4 text-xs">
+            <!-- Active Equipped Prop Slot -->
+            <div id="activeItemBar" class="hidden items-center gap-2 bg-[#2d1410] px-3 py-1 border border-[#6e2217] rounded-sm text-red-300 animate-pulse font-serif">
+                <span class="flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    已装配：
+                </span>
+                <span id="activeItemName" class="font-bold underline text-[#ffbda8]">无</span>
+                <button onclick="unequipItem()" class="text-[9px] bg-[#4e1610] hover:bg-[#85251a] text-white px-2 py-0.5 ml-1.5 rounded transition">退装</button>
+            </div>
+
+            <!-- Custom Help Manual Trigger -->
+            <button onclick="openManual()" class="px-2.5 py-1 bg-[#261f1a] hover:bg-[#3d3129] text-[#dfcdbe] border border-[#4d3a2f] rounded-sm transition font-serif cursor-pointer flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                搜证指南
+            </button>
+
+            <!-- Reset Button (Purged confirm) -->
+            <button onclick="requestHardReset()" class="px-2.5 py-1 bg-[#2e1414] hover:bg-[#4a1818] text-[#f2adad] border border-[#522121] rounded-sm transition font-serif cursor-pointer flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-16v1a3 3 0 003 3h10M4 7h16"/></svg>
+                销毁当前搜证
+            </button>
+            
+            <!-- Day & Night Time Machine -->
+            <div class="flex items-center bg-[#110e0c] border border-[#2d1f18] rounded-sm p-0.5">
+                <button id="btnDay" onclick="setNightMode(false)" class="px-3 py-1.5 rounded-sm font-bold transition duration-300 text-xs flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
+                    白日
+                </button>
+                <button id="btnNight" onclick="setNightMode(true)" class="px-3 py-1.5 rounded-sm font-bold transition duration-300 text-xs flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                    子夜
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========== MAIN GRID LAYOUT ========== -->
+    <main class="flex-1 flex overflow-hidden relative">
+        
+        <!-- LEFT SIDEBAR: CASE DOSSIER & INVENTORY & FUSION -->
+        <aside class="w-80 bg-[#120d0a] border-r border-[#221711] flex flex-col justify-between z-30 select-none">
+            
+            <!-- Top section: Scraps and Fusion Tab -->
+            <div class="p-4 flex-1 flex flex-col overflow-hidden">
+                <!-- Tab Controls -->
+                <div class="flex border-b border-[#32231b] mb-3 text-xs font-serif font-bold">
+                    <button id="tabBtnBag" onclick="switchSidebarTab('bag')" class="flex-1 pb-2 border-b-2 border-red-500 text-red-200 text-center flex items-center justify-center gap-1">
+                        <svg class="w-3.5 h-3.5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+                        搜集证物 (<span id="invCount">0</span>)
+                    </button>
+                    <button id="tabBtnSynth" onclick="switchSidebarTab('synth')" class="flex-1 pb-2 text-[#806f64] text-center hover:text-red-300 transition flex items-center justify-center gap-1">
+                        <svg class="w-3.5 h-3.5 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+                        跨案融合
+                    </button>
+                </div>
+
+                <!-- Tab 1: Collected Items Panel -->
+                <div id="panelBag" class="flex-1 flex flex-col overflow-hidden">
+                    <div class="flex items-center justify-between pb-1.5 mb-2 text-[10px] text-[#8c7365] border-b border-[#241a14] font-serif">
+                        <span>点击以下证物可“查阅”或“装配”在场景中互动：</span>
+                    </div>
+                    <div id="cbItems" class="flex-1 overflow-y-auto grid grid-cols-1 gap-2.5 content-start pb-4 pr-1">
+                        <!-- Dynamic generated bag cards -->
+                    </div>
+                </div>
+
+                <!-- Tab 2: Clue Fusion Panel -->
+                <div id="panelSynth" class="flex-1 flex flex-col overflow-hidden hidden">
+                    <div class="flex items-center justify-between pb-1.5 mb-2 text-[10px] text-[#8c7365] border-b border-[#241a14] font-serif">
+                        <span>选取两项关联性极强的残简开展交叉对证：</span>
+                    </div>
+                    
+                    <!-- Synthesize slots -->
+                    <div class="bg-[#0e0907] border border-[#302018] p-3 rounded-sm mb-3">
+                        <div class="flex justify-between gap-2 mb-2.5 font-serif">
+                            <div id="fuseSlot1" class="flex-1 h-16 bg-[#1a110d] border border-dashed border-[#5a3a28] hover:border-[#a83232] flex items-center justify-center text-[10px] text-[#735e50] text-center p-2 rounded-sm cursor-pointer transition" onclick="ejectFuseSlot(1)">（线索一）</div>
+                            <div class="flex items-center justify-center text-red-600 font-bold">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                            </div>
+                            <div id="fuseSlot2" class="flex-1 h-16 bg-[#1a110d] border border-dashed border-[#5a3a28] hover:border-[#a83232] flex items-center justify-center text-[10px] text-[#735e50] text-center p-2 rounded-sm cursor-pointer transition" onclick="ejectFuseSlot(2)">（线索二）</div>
+                        </div>
+                        <button onclick="attemptClueFusion()" class="w-full py-2 bg-[#4c1613] hover:bg-[#6e221c] border border-[#802a24] text-[#ebdcd0] text-[11px] font-bold font-serif rounded-sm transition flex items-center justify-center gap-1.5">
+                            <svg class="w-3.5 h-3.5 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m0 0l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M6 6l2 1m-2-1v2.5M4 14l2-1m0 0l2 1m-2-1v2.5m14 3.5l-2-1m0 0l-2 1m-2-1v2.5M12 21l-2-1-2 1"/></svg>
+                            开展逻辑合成交叉印证
+                        </button>
+                    </div>
+
+                    <div class="text-[10px] text-[#857265] font-serif mb-1.5 uppercase tracking-wider">包内关联残简列表：</div>
+                    <div id="fuseList" class="flex-1 overflow-y-auto space-y-2 pr-1 pb-2">
+                        <!-- Mergeable elements will stream here -->
+                    </div>
+                </div>
+
+                <!-- Bottom Trigger: Key Brass Core synthesis status -->
+                <div class="pt-2 border-t border-[#32231b] flex justify-between items-center">
+                    <span class="text-[11px] font-bold text-[#bfa18a] font-serif flex items-center gap-1">
+                        <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                        黄铜锁锁闭进度：
+                    </span>
+                    <button onclick="openSynth()" id="cbSynth" class="text-xs bg-[#401f13] hover:bg-[#5a2a19] text-[#ffc89e] border border-[#5a2818] px-3 py-1.5 rounded-sm font-bold transition font-serif animate-pulse flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m-2-2a2 2 0 00-2 2m2-2V5a2 2 0 10-4 0v2m4 0h3.5a1.5 1.5 0 011.5 1.5v3a1.5 1.5 0 01-1.5 1.5H15M9 15l-2 2m0 0l-2-2m2 2V9a3 3 0 013-3h.5m0 0V5a1.5 1.5 0 00-1.5-1.5H9a3 3 0 00-3 3v2.5M9 15h.5"/></svg>
+                        校准问坛铜芯锁
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bottom Section: Continuous dynamic log -->
+            <div class="h-44 bg-[#0c0907] border-t border-[#221711] p-3 flex flex-col justify-between">
+                <span class="text-[10px] text-[#786150] block uppercase tracking-widest pb-1 border-b border-[#22150e] font-serif flex items-center gap-1">
+                    <svg class="w-3.5 h-3.5 text-[#a83232]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                    同善乩案搜证实操记录
+                </span>
+                <div id="cbLog" class="flex-1 overflow-y-auto text-[10px] leading-relaxed py-1.5 font-mono text-[#bfa18f]/75 space-y-2">
+                    <!-- Dynamic Log lines -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- CENTER AREA: DETAILED STAGE VIEWPORT WITH AUTO-SCALING -->
+        <section id="interactArea" class="flex-grow flex flex-col items-center justify-center p-4 bg-[#0a0807] relative overflow-hidden select-none">
+            
+            <!-- Atmospheric horror vignette localized to this interaction zone only -->
+            <div class="stage-vignette"></div>
+
+            <!-- STAGE SCALE WRAPPER -->
+            <div id="stageScaler" class="flex items-center justify-center transition-transform duration-300">
+                
+                <!-- HUB MAP CONTAINER -->
+                <div id="hubView" class="w-[1080px] h-[640px] flex flex-col items-center justify-between fade-in p-2">
+                    <div class="text-center mb-1">
+                        <h2 class="text-base font-bold text-[#bfa38e] font-serif tracking-widest">会同县·无生中学老区校舍地图</h2>
+                        <p class="text-[11px] text-[#7a6454]">点击斑驳的废墟旧址进行探访。部分建筑物包含多层校舍空间。</p>
+                    </div>
+
+                    <!-- Grungy hand drawn vector schematic backdrop -->
+                    <div class="relative w-full h-[570px] bg-[#16120f] border-2 border-[#3e2723] rounded-sm shadow-2xl overflow-hidden flex items-center justify-center">
+                        <svg class="absolute inset-0 w-full h-full opacity-10 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <pattern id="old-blueprint-grid" width="50" height="50" patternUnits="userSpaceOnUse">
+                                    <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#8a5e3e" stroke-width="0.8"/>
+                                </pattern>
+                            </defs>
+                            <rect width="100%" height="100%" fill="url(#old-blueprint-grid)" />
+                            <path d="M50 285 H1030 M540 50 V520 M200 120 L880 450" stroke="#a83232" stroke-width="1.5" stroke-dasharray="6 3" fill="none"/>
+                        </svg>
+
+                        <!-- Plaza (Square) -->
+                        <div onclick="enterRoom('guangchang')" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-52 h-34 bg-[#1f1713] hover:bg-[#2d1a10] hover:scale-[1.03] border-2 border-[#4a3427] hover:border-[#a83232] cursor-pointer rounded-sm flex flex-col items-center justify-center transition p-3 text-center group shadow-lg z-20">
+                            <span class="text-xs font-bold text-[#e1cfbe] group-hover:text-[#ffecd8] font-serif flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                1F 校前纪念广场
+                            </span>
+                            <span class="text-[9px] text-[#806b5a] mt-1 font-serif">Central Plaza (1F)</span>
+                            <span class="text-[10px] text-red-800 group-hover:text-red-500 font-bold mt-1.5 flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>
+                                浮雕方位校验点
+                            </span>
+                        </div>
+
+                        <!-- Clinic (Weisheng) -->
+                        <div onclick="enterRoom('weisheng')" class="absolute left-16 top-12 w-52 h-32 bg-[#1f1713] hover:bg-[#182618] hover:scale-[1.03] border-2 border-[#4a3427] hover:border-[#3d703d] cursor-pointer rounded-sm flex flex-col items-center justify-center transition p-3 text-center group shadow-lg z-20">
+                            <span class="text-xs font-bold text-[#b0c4b0] group-hover:text-[#d3e8d3] font-serif flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 10.5h-5.5V5h-3v5.5H5v3h5.5V19h3v-5.5H19v-3z"/></svg>
+                                2层 镇卫生院旧址
+                            </span>
+                            <span class="text-[9px] text-[#5b6e5b] mt-1 font-serif">Health Clinic (F1-F2)</span>
+                            <span class="text-[10px] text-red-800 group-hover:text-red-500 font-bold mt-1.5 flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>
+                                时辰校验/折断古乩笔
+                            </span>
+                        </div>
+
+                        <!-- Police Office (Paichusuo) -->
+                        <div onclick="enterRoom('paichusuo')" class="absolute right-16 top-12 w-52 h-32 bg-[#1f1713] hover:bg-[#14202c] hover:scale-[1.03] border-2 border-[#4a3427] hover:border-[#385e82] cursor-pointer rounded-sm flex flex-col items-center justify-center transition p-3 text-center group shadow-lg z-20">
+                            <span class="text-xs font-bold text-[#acbcce] group-hover:text-[#dae8f7] font-serif flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                                2层 荒废派出所
+                            </span>
+                            <span class="text-[9px] text-[#5c6e80] mt-1 font-serif">Police Station (F1-F2)</span>
+                            <span class="text-[10px] text-red-800 group-hover:text-red-500 font-bold mt-1.5 flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                吴总务法坛日记/照片
+                            </span>
+                        </div>
+
+                        <!-- Bus Station (Chezhan) -->
+                        <div onclick="enterRoom('chezhan')" class="absolute left-16 bottom-12 w-52 h-32 bg-[#1f1713] hover:bg-[#2e2612] hover:scale-[1.03] border-2 border-[#4a3427] hover:border-[#806927] cursor-pointer rounded-sm flex flex-col items-center justify-center transition p-3 text-center group shadow-lg z-20">
+                            <span class="text-xs font-bold text-[#ccc39f] group-hover:text-[#ede2bd] font-serif flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                                1F 荒芜客运汽车站
+                            </span>
+                            <span class="text-[9px] text-[#7d7355] mt-1 font-serif">Bus Station (1F)</span>
+                            <span class="text-[10px] text-red-800 group-hover:text-red-500 font-bold mt-1.5 flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                贾义正隔门目击证词
+                            </span>
+                        </div>
+
+                        <!-- Tea House (Chaguan) -->
+                        <div onclick="enterRoom('chaguan')" class="absolute right-16 bottom-12 w-52 h-32 bg-[#1f1713] hover:bg-[#2e1d14] hover:scale-[1.03] border-2 border-[#4a3427] hover:border-[#a84c24] cursor-pointer rounded-sm flex flex-col items-center justify-center transition p-3 text-center group shadow-lg z-20">
+                            <span class="text-xs font-bold text-[#cca891] group-hover:text-[#ecc4aa] font-serif flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg>
+                                2层 荒野老茶馆
+                            </span>
+                            <span class="text-[9px] text-[#806554] mt-1 font-serif">Old Tea House (F1-F2)</span>
+                            <span class="text-[10px] text-red-800 group-hover:text-red-500 font-bold mt-1.5 flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                                镇法朱砂粉/周慎之家书
+                            </span>
+                        </div>
+
+                        <!-- Library (Yuelan) -->
+                        <div onclick="enterRoom('yuelan')" class="absolute left-1/2 bottom-8 -translate-x-1/2 w-52 h-26 bg-[#1f1713] hover:bg-[#25182e] hover:scale-[1.03] border-2 border-[#4a3427] hover:border-[#6a388a] cursor-pointer rounded-sm flex flex-col items-center justify-center transition p-3 text-center group shadow-lg z-20">
+                            <span class="text-xs font-bold text-[#bfaccc] group-hover:text-[#e4ccf5] font-serif flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                                1F 封闭校区阅览室
+                            </span>
+                            <span class="text-[9px] text-[#715c80] mt-1 font-serif">Library Room (1F)</span>
+                            <span class="text-[10px] text-red-800 group-hover:text-red-500 font-bold mt-1.5 flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>
+                                保险保管柜毁灭码
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DETAIL ROOM CONTAINER -->
+                <div id="roomView" class="w-[1080px] h-[640px] flex flex-col justify-between hidden fade-in">
+                    <!-- Room Header Details -->
+                    <div class="flex items-center justify-between mb-1">
+                        <div class="flex items-center gap-3">
+                            <button onclick="backToHub()" class="px-3 py-1.5 bg-[#241c18] hover:bg-[#3d3027] text-[#d4c4b0] border border-[#4d3629] rounded-sm text-xs transition font-serif cursor-pointer flex items-center gap-1">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z"/></svg>
+                                盖上此卷 (退回地图)
+                            </button>
+                            <h2 id="roomName" class="text-sm font-bold text-[#ebdcd0] font-serif">载入中...</h2>
+                        </div>
+
+                        <!-- Floor Switcher -->
+                        <div id="floorTabs" class="flex gap-1.5 bg-[#110e0c] p-1 rounded-sm border border-[#2d1e16]">
+                            <!-- Appended dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Immersive Room Stage Board -->
+                    <div class="stage-wrap w-full flex-grow flex items-center justify-center bg-[#070505] p-2 border border-[#3e2723] rounded-sm relative shadow-inner">
+                        <div id="invStage" class="stage-container relative">
+                            <!-- Items elements rendered here -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- ========== BOTTOM VISUAL NOVEL DIALOGUE BOARD ========== -->
+    <footer id="invDialog" class="h-44 bg-[#1a120e] border-t-2 border-[#a83232] px-8 py-4 flex flex-col justify-between relative hidden z-50 shadow-2xl">
+        <div class="flex justify-between items-center border-b border-[#322016] pb-1.5 mb-1">
+            <span id="dialogSpeaker" class="text-xs font-bold text-red-400 tracking-widest bg-[#2d1212] border border-[#6b1e1e] px-3 py-0.5 rounded-sm font-serif">1991重案实录</span>
+            <button onclick="closeDialogue()" class="text-xs text-[#8c7464] hover:text-red-400 transition font-serif flex items-center gap-1">
+                收起笔录
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        
+        <!-- Typewriter Container -->
+        <div class="flex-1 flex items-start overflow-y-auto">
+            <p id="dialogText" class="text-xs md:text-[13px] text-[#ebdcd0] leading-relaxed font-serif whitespace-pre-line tracking-wide">
+                ...
+            </p>
+        </div>
+
+        <!-- Dialogue Choice buttons -->
+        <div id="dialogChoices" class="flex justify-end gap-3 mt-2 h-9 select-none">
+            <!-- Appended dynamically -->
+        </div>
+    </footer>
+
+    <!-- ========== CUSTOM SUSPENDED ALERTS (No native alert window allowed) ========== -->
+    <!-- 1. Custom Alert Overlay -->
+    <div id="customAlert" class="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-[100] hidden">
+        <div class="w-96 bg-[#1f1511] border-2 border-red-950 p-6 rounded-sm text-center font-serif grunge-panel shadow-2xl animate-pulse">
+            <h3 class="text-xs text-red-500 font-bold mb-3 tracking-widest uppercase flex items-center justify-center gap-1">
+                <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                阴气阻滞·同善谶语
+            </h3>
+            <p id="customAlertText" class="text-xs text-[#ebdcd0] mb-5 leading-relaxed text-left whitespace-pre-line px-2"></p>
+            <button onclick="dismissCustomAlert()" class="w-full py-1.5 bg-[#421511] hover:bg-red-800 text-[#ebdcd0] border border-[#6b1e1e] text-xs font-bold transition">
+                退开
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. Custom Confirm Reset Overlay -->
+    <div id="customConfirm" class="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-[100] hidden">
+        <div class="w-[420px] bg-[#1a110e] border-2 border-red-950 p-6 rounded-sm text-center font-serif grunge-panel shadow-2xl">
+            <h3 class="text-xs text-red-500 font-bold mb-3 tracking-widest uppercase flex items-center justify-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-16v1a3 3 0 003 3h10M4 7h16"/></svg>
+                销毁搜证警告
+            </h3>
+            <p class="text-xs text-[#ebdcd0] mb-5 leading-relaxed text-left">
+                你确定要烧毁当前所得的所有 1991 教工证物、问坛日志以及天台锁芯破解进度吗？此举会导致所有证据线索彻底湮灭在历史余烬中，数据将永远无法挽回！
+            </p>
+            <div class="flex gap-3">
+                <button onclick="dismissCustomConfirm(true)" class="flex-1 py-1.5 bg-[#5e1a1a] hover:bg-red-800 text-white text-xs font-bold border border-[#a83232] transition">
+                    确定烧毁
+                </button>
+                <button onclick="dismissCustomConfirm(false)" class="flex-1 py-1.5 bg-[#2d1e18] hover:bg-[#3d2c23] text-gray-400 text-xs border border-[#4d3a2f] transition">
+                    容我再想
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2.5 Manual View Warning Overlay -->
+    <div id="manualConfirmModal" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center z-[100] hidden">
+        <div class="w-96 bg-[#1f1511] border-2 border-red-950 p-6 rounded-sm text-center font-serif grunge-panel shadow-2xl">
+            <h3 class="text-xs text-red-500 font-bold mb-3 tracking-widest uppercase flex items-center justify-center gap-1">
+                <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                同善谶语 · 阅前须知
+            </h3>
+            <p class="text-xs text-[#ebdcd0] mb-5 leading-relaxed text-left">
+                你即将翻阅《无生中学1991重案·探查大纲》。<br><br>
+                此大纲内嵌了极高价值的破局要旨与通关锁眼指引。<b>提前阅览指南可能会在一定程度上损害你的自主推理乐趣与案卷探查的沉浸体验。</b><br><br>
+                你确定要现在强行翻看大纲吗？
+            </p>
+            <div class="flex gap-3">
+                <button onclick="confirmOpenManual(true)" class="flex-1 py-1.5 bg-[#5e1a1a] hover:bg-red-800 text-[#ebdcd0] border border-[#a83232] text-xs font-bold transition cursor-pointer">
+                    执意翻阅
+                </button>
+                <button onclick="confirmOpenManual(false)" class="flex-1 py-1.5 bg-[#2d1e18] hover:bg-[#3d2c23] text-gray-400 text-xs border border-[#4d3a2f] transition cursor-pointer">
+                    暂且作罢
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Immersive Help Manual Overlay -->
+    <div id="manualModal" class="fixed inset-0 bg-black/95 backdrop-blur-md flex items-center justify-center z-[100] hidden">
+        <div class="w-[500px] bg-[#1e1511] border-2 border-[#5a3a28] p-6 rounded-sm font-serif grunge-panel shadow-2xl relative">
+            <button onclick="closeManual()" class="absolute top-4 right-4 text-[#8c7464] hover:text-red-400 transition flex items-center gap-1 text-xs">
+                阖上
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <h3 class="text-sm font-bold text-[#dfc3a9] mb-3 border-b border-[#3e2723] pb-2 text-center flex items-center justify-center gap-1">
+                <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                无生中学1991重案·探查大纲
+            </h3>
+            <div class="text-xs text-[#a89382] space-y-3 leading-relaxed overflow-y-auto max-h-96 pr-2">
+                <p class="font-bold text-[#bfa18a]">如何获取三大黄铜锁芯？</p>
+                <ol class="list-decimal pl-4 space-y-1.5">
+                    <li><span class="text-red-400">极北方位断章：</span>在老茶馆一楼抽屉中寻得“朱砂粉包”并装备它。返回纪念广场一楼，将其涂抹在广场正北方的“地面铜牌浮雕”上。</li>
+                    <li><span class="text-red-400">柜锁绝密码：</span>在卫生院一楼拖移轮椅寻得“折断的古乩笔”，装备它。前往社区阅览室一楼，对“三号保险柜”使用笔尖暴力撬开锁扣。</li>
+                    <li><span class="text-red-400">时辰熔解断章：</span>校史显示同善大祭发生于1991年。在子夜（深夜模式）下，前往卫生院二楼启动值班电脑，输入“1991”解开终端保护。</li>
+                </ol>
+                <p class="font-bold text-[#bfa18a] pt-1">跨案线索如何进行逻辑合成？</p>
+                <p>将获得的碎片道具在“跨案融合”页装载两个槽位，可以印证出更高级的背景结论：</p>
+                <ul class="list-disc pl-4 space-y-1">
+                    <li><span class="text-orange-400">教工胸卡</span> 与 <span class="text-orange-400">吴总务备忘</span> 能推演出承受反噬的 <span class="text-red-400">乩首</span> 真实身份。</li>
+                    <li><span class="text-orange-400">督办电文</span> 与 <span class="text-orange-400">15岁贾义正日记</span> 能印证当晚 <span class="text-red-400">监坛者</span> 的披袍真容。</li>
+                    <li><span class="text-orange-400">手书家书</span> 与 <span class="text-orange-400">黄裱纸契约</span> 能揭露是谁暗中修改了沙盘从而酿成灾祸的 <span class="text-red-400">涂改者</span>。</li>
+                </ul>
+                <p class="text-[10px] text-[#806554] italic text-center pt-2">仔细研读合成结论，回答考问方能打开密室大铁门。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. XP Computer Lock (Terminal Overlay) -->
+    <div id="yearLockModal" class="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-[90] hidden">
+        <div class="w-80 bg-[#1f1511] border-2 border-red-950 p-5 rounded-sm text-center font-serif grunge-panel shadow-2xl">
+            <h3 class="text-xs text-red-500 font-bold mb-2 flex items-center justify-center gap-1">
+                <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                管理员XP系统验证锁
+            </h3>
+            <p class="text-[10px] text-[#a18a7c] mb-4 leading-relaxed">系统发生电频波动，请输入1990年代同善大祭发生大反噬的“四位年份数字”进行越权解锁：</p>
+            <input type="text" id="yearInput" class="w-full bg-black border border-[#523528] text-center text-red-500 font-bold tracking-widest py-1.5 rounded-sm mb-4 outline-none focus:border-red-600 font-mono" placeholder="YYYY">
+            <div class="flex gap-2 text-xs">
+                <button onclick="submitYearPassword()" class="flex-1 py-1.5 bg-[#421511] hover:bg-red-800 text-[#ebdcd0] font-bold border border-[#6b1e1e] transition">解锁终端</button>
+                <button onclick="closeYearLock()" class="flex-1 py-1.5 bg-[#2d1e18] hover:bg-[#3d2c23] text-gray-400 transition">闭门退档</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== SYNTHESIS MODAL (Final quiz gate) ========== -->
+    <div id="synthModal" class="fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+        <div class="w-[540px] bg-[#1a1310] border-2 border-[#a83232] rounded-sm p-6 flex flex-col items-center relative font-serif grunge-panel shadow-2xl">
+            <button onclick="closeSynth()" class="absolute top-4 right-4 text-[#8c7464] hover:text-red-400 transition text-xs flex items-center gap-0.5">
+                阖上
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            
+            <h3 class="text-sm font-bold text-red-500 uppercase tracking-widest mb-1">1991遗存·同善天台密室黄铜锁芯</h3>
+            <p class="text-[10px] text-[#8c7365] mb-4 text-center">唯有凑齐并校准三大断章，回答出扶乩祭盘大考问，方能熔融铜匙推开密室铁门。</p>
+
+            <!-- 3 Brass core state slots -->
+            <div class="flex justify-around w-full gap-3 mb-5">
+                <!-- Slot 1 -->
+                <div id="slot_fangwei" class="w-36 h-24 bg-[#1f1612] border-2 border-dashed border-[#5a3e2e] rounded-sm flex flex-col items-center justify-center text-center p-2 transition">
+                    <span class="text-[9px] text-[#8c7365] uppercase block mb-1 font-bold">1. 极北方位</span>
+                    <span id="slot_fangwei_text" class="text-[10px] text-red-400 font-bold">（空缺：极北方位浮雕）</span>
+                </div>
+                <!-- Slot 2 -->
+                <div id="slot_bianhao" class="w-36 h-24 bg-[#1f1612] border-2 border-dashed border-[#5a3e2e] rounded-sm flex flex-col items-center justify-center text-center p-2 transition">
+                    <span class="text-[9px] text-[#8c7365] uppercase block mb-1 font-bold">2. 柜锁绝密码</span>
+                    <span id="slot_bianhao_text" class="text-[10px] text-red-400 font-bold">（空缺：叁号保险柜字条）</span>
+                </div>
+                <!-- Slot 3 -->
+                <div id="slot_shichen" class="w-36 h-24 bg-[#1f1612] border-2 border-dashed border-[#5a3e2e] rounded-sm flex flex-col items-center justify-center text-center p-2 transition">
+                    <span class="text-[9px] text-[#8c7365] uppercase block mb-1 font-bold">3. 问坛阴阳时辰</span>
+                    <span id="slot_shichen_text" class="text-[10px] text-red-400 font-bold">（空缺：子时熔解断章）</span>
+                </div>
+            </div>
+
+            <!-- DEDUCTION QUIZ PANEL -->
+            <div id="deductionQuizSection" class="w-full bg-[#110907] border border-[#5e2216] p-4 rounded-sm mb-4">
+                <span class="text-[10px] text-red-500 block font-bold uppercase tracking-wider mb-2.5 text-center">1991扶乩仙人对证考问 (依靠逻辑融合卷宗推理)</span>
+                
+                <div class="space-y-3.5 text-[11px]">
+                    <!-- Question 1 -->
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[#cbb3a1] font-semibold">1. 1991年大灾当晚，承受了通盘血印大反噬而脑死亡瘫痪的「乩首（承担人）」是？</label>
+                        <select id="quiz_ans1" class="bg-black border border-[#4d2f23] text-[#dfcdbe] py-1 px-2 outline-none text-xs rounded-sm focus:border-red-600 cursor-pointer">
+                            <option value="">-- 请点此选择承受反噬的教员 --</option>
+                            <option value="jiayifang">贾一方 (校长)</option>
+                            <option value="zhoushenzhi">周慎之 (国文老师)</option>
+                            <option value="sany">沈迂 (教员/教务)</option>
+                            <option value="suwan">苏晚 (音乐老师)</option>
+                        </select>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[#cbb3a1] font-semibold">2. 谁因质疑迷信，在深夜中偷偷用手指涂抹了沙盘字迹、打破能量平衡引发剧烈反弹？</label>
+                        <select id="quiz_ans2" class="bg-black border border-[#4d2f23] text-[#dfcdbe] py-1 px-2 outline-none text-xs rounded-sm focus:border-red-600 cursor-pointer">
+                            <option value="">-- 请选择暗中涂改沙盘的教员 --</option>
+                            <option value="zhoushenzhi">周慎之 (国文老师)</option>
+                            <option value="sany">沈迂 (数学/教员)</option>
+                            <option value="wuzongwu">吴总务 (老工友)</option>
+                            <option value="jiayifang">贾一方 (校长)</option>
+                        </select>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="flex flex-col gap-1">
+                        <label class="text-[#cbb3a1] font-semibold">3. 15岁的小少年当年扒在密室门框下，亲眼目睹哪位披红戴黄法衣的人在居高监察法台？</label>
+                        <select id="quiz_ans3" class="bg-black border border-[#4d2f23] text-[#dfcdbe] py-1 px-2 outline-none text-xs rounded-sm focus:border-red-600 cursor-pointer">
+                            <option value="">-- 请选择门缝中坐镇监坛的执事 --</option>
+                            <option value="jiayifang">贾一方 (校长)</option>
+                            <option value="zhoushenzhi">周慎之 (国文老师)</option>
+                            <option value="wuzongwu">吴总务 (老工友)</option>
+                            <option value="sany">沈迂 (数学/教员)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Melt Button -->
+            <button onclick="synthesizeKey()" id="btnStartSynth" class="w-full py-2 bg-[#421313] hover:bg-[#6e1c1c] text-[#f2adad] font-bold border border-[#6e1e1e] rounded-sm transition">
+                重压拧旋古铜锁
+            </button>
+
+            <!-- Final Victory Frame (Hidden originally) -->
+            <div id="synthSuccess" class="absolute inset-0 bg-[#0c0807] flex flex-col items-center justify-center p-6 hidden z-50">
+                <div class="text-[#e05a47] text-6xl mb-4 animate-bounce">
+                    <svg class="w-16 h-16 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 7a2 2 0 012 2m-2-2a2 2 0 00-2 2m2-2V5a2 2 0 10-4 0v2m4 0h3.5a1.5 1.5 0 011.5 1.5v3a1.5 1.5 0 01-1.5 1.5H15M9 15l-2 2m0 0l-2-2m2 2V9a3 3 0 013-3h.5m0 0V5a1.5 1.5 0 00-1.5-1.5H9a3 3 0 00-3 3v2.5M9 15h.5"/></svg>
+                </div>
+                <h4 class="text-sm font-bold text-red-400 uppercase tracking-wider mb-2.5">密道天大门锁在剧烈的雷鸣声中砰然坍倒！</h4>
+                <p class="text-xs text-[#a89587] text-center px-4 leading-relaxed mb-6 font-serif">
+                    “生锈生绿的黄铜锁芯中汩汩溢出了仿佛掺着油脂和血浆的黑色黏胶。十五年来禁阻死守的顶层天台密闭储藏室……被推开了。”
+                </p>
+                <button onclick="winGameRedirect()" class="px-6 py-2.5 bg-[#421313] hover:bg-[#731a1a] border border-[#9c2525] text-[#ebdcd0] font-bold rounded-sm transition flex items-center gap-1.5">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg>
+                    步入同善楼天台密室 (翻开1991血契卷宗终局)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         SCRIPT AREA: DATABASE AND EVENT SYSTEMS
+         ========================================== -->
+    <script>
+        // ==========================================
+        // retro synthetic spooky audio synthesizer
+        // ==========================================
+        const OccultAudio = {
+            ctx: null,
+            init() {
+                if (!this.ctx) {
+                    this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            },
+            playClue() {
+                this.init();
+                const now = this.ctx.currentTime;
+                const osc1 = this.ctx.createOscillator();
+                const osc2 = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                
+                osc1.type = 'sine';
+                osc1.frequency.setValueAtTime(660, now);
+                osc1.frequency.exponentialRampToValueAtTime(880, now + 0.3);
+                
+                osc2.type = 'triangle';
+                osc2.frequency.setValueAtTime(990, now);
+                osc2.frequency.exponentialRampToValueAtTime(1320, now + 0.5);
+                
+                gain.gain.setValueAtTime(0.12, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+                
+                osc1.connect(gain);
+                osc2.connect(gain);
+                gain.connect(this.ctx.destination);
+                
+                osc1.start(now);
+                osc2.start(now);
+                osc1.stop(now + 1.2);
+                osc2.stop(now + 1.2);
+            },
+            playTalk() {
+                this.init();
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(65, now);
+                osc.frequency.setValueAtTime(55, now + 0.08);
+                
+                gain.gain.setValueAtTime(0.05, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.15);
+                
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+                
+                osc.start(now);
+                osc.stop(now + 0.15);
+            },
+            playUnlock() {
+                this.init();
+                const now = this.ctx.currentTime;
+                const osc1 = this.ctx.createOscillator();
+                const osc2 = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                
+                osc1.type = 'square';
+                osc1.frequency.setValueAtTime(130, now);
+                osc1.frequency.linearRampToValueAtTime(75, now + 0.9);
+                
+                osc2.type = 'sawtooth';
+                osc2.frequency.setValueAtTime(195, now);
+                osc2.frequency.exponentialRampToValueAtTime(37, now + 0.9);
+                
+                gain.gain.setValueAtTime(0.18, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 1.0);
+                
+                osc1.connect(gain);
+                osc2.connect(gain);
+                gain.connect(this.ctx.destination);
+                
+                osc1.start(now);
+                osc2.start(now);
+                osc1.stop(now + 1.0);
+                osc2.stop(now + 1.0);
+            },
+            playFail() {
+                this.init();
+                const now = this.ctx.currentTime;
+                const osc1 = this.ctx.createOscillator();
+                const osc2 = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                
+                osc1.type = 'sawtooth';
+                osc1.frequency.setValueAtTime(80, now);
+                osc2.type = 'sawtooth';
+                osc2.frequency.setValueAtTime(113, now); // Spooky Tritonous chord
+                
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+                
+                osc1.connect(gain);
+                osc2.connect(gain);
+                gain.connect(this.ctx.destination);
+                
+                osc1.start(now);
+                osc2.start(now);
+                osc1.stop(now + 0.9);
+                osc2.stop(now + 0.9);
+            }
+        };
+
+        // ==========================================
+        // 1991 DATABASE CONFIGURATION
+        // ==========================================
+        const INV_DATA = {
+            "guangchang": {
+                "name": "纪念广场旧址 (1F)",
+                "floors": [
+                    {
+                        "id": "f1",
+                        "name": "地表广场",
+                        "items": [
+                            { "id": "gc_monument", "name": "无生纪念碑", "x": 420, "y": 180, "w": 160, "h": 120, "act": "inspect", "desc": "无生纪念碑耸立于此，基座处被人用指甲深深抠出多道黑褐色血印。" },
+                            { "id": "gc_statue", "name": "创校五人合影石雕", "x": 150, "y": 80, "w": 100, "h": 100, "act": "inspect", "desc": "雕像记录了1976年的五名创始教工。除校长贾一方脸部被故意凿毁外，周慎之和苏晚的石雕双眼处都布满狂乱划破的爪痕。" },
+                            { "id": "gc_bench_l", "name": "腐坏的长木排椅", "x": 120, "y": 380, "w": 130, "h": 50, "act": "drag", "drag": { "reveal": "gc_keycard" }, "desc": "一排散发着湿冷尸气 and 暗色斑痕的极重长排椅。你可以用手点按住并拖拽开它..." },
+                            { "id": "gc_keycard", "name": "周慎之教工胸卡", "x": 160, "y": 395, "w": 50, "h": 25, "act": "inspect", "collect": true, "hidden": true, "parent": "gc_bench_l", "desc": "卡角沾满干结的黑血，写有：‘国文：周慎之’。反面写有：‘1991.6.9 子时 执乩天台’。可以与其他教工线索合并分析。", "canCombine": true },
+                            { "id": "gc_bench_r", "name": "断裂的槐木椅", "x": 760, "y": 380, "w": 120, "h": 50, "act": "inspect", "desc": "裂缝中卡满大量死人头发与腥黑蜡泥的破椅。" },
+                            { "id": "gc_bin_l", "name": "废弃大垃圾箱", "x": 30, "y": 240, "w": 50, "h": 65, "act": "push", "push": { "to": [-35, 0], "reveal": "gc_newspaper" }, "desc": "脱漆的铸铁大箱子。里面沉重无比，尝试用力向左【推开】它..." },
+                            { "id": "gc_newspaper", "name": "贾一方督办电报", "x": 40, "y": 260, "w": 35, "h": 25, "act": "inspect", "collect": true, "hidden": true, "parent": "gc_bin_l", "desc": "1991年6月的一份传真残留：‘...十五载周天大祭绝非迷信。首期大礼，我将亲临主礼、监坛，各执事务必按期履约...’ 适合与当晚在现场的人证合并推演。", "canCombine": true },
+                            { "id": "gc_bin_r", "name": "倾倒废品铁盒", "x": 920, "y": 240, "w": 50, "h": 60, "act": "inspect", "desc": "粘有干涸红色油脂和绷带屑的铁废弃桶。" },
+                            { 
+                                "id": "gc_engrave", 
+                                "name": "地面铜牌浮雕", 
+                                "x": 460, 
+                                "y": 420, 
+                                "w": 80, 
+                                "h": 40, 
+                                "act": "inspect", 
+                                "collect": false, 
+                                "desc": "【机关拼图点】镶嵌在地面极北方位。浮雕磨损殆尽，看不出字样。需要在此处【装配】并敷洒红色「朱砂粉」方能读取印文。",
+                                "useTarget": true,
+                                "requiredItem": "cg_vermilion", 
+                                "revealClueId": "gc_engrave_revealed"
+                            },
+                            { "id": "gc_kiosk", "name": "荒废报刊亭", "x": 760, "y": 80, "w": 140, "h": 90, "act": "drawer", "drawer": { "child": "gc_kiosk_note" }, "desc": "落满重灰的报纸零售亭。一侧的锈铜柜抽屉微微掀起。可以拉开【抽屉】。" },
+                            { "id": "gc_kiosk_note", "name": "退教工安置书", "x": 800, "y": 110, "w": 60, "h": 30, "act": "inspect", "collect": true, "hidden": true, "parent": "gc_kiosk", "desc": "‘...鉴于十五周年变故重大，苏晚教工、周慎之老师均已无法返回原岗位，转介安置...’" },
+                            { "id": "gc_guard", "name": "保安老王", "x": 640, "y": 280, "w": 50, "h": 70, "act": "talk", "talk": {
+                                "lines": [
+                                    "“后生，你怎么在这转悠... 1991年6月9日子的那个晚上，那是极恶的凶煞天。”",
+                                    "“当年那批老先生上了顶楼，天台的大门就被里头插销锁死。”",
+                                    "“贾一方校长穿着神职法衣服亲自监坛... 还有他年仅15岁的小儿子趴在垃圾管道门缝上偷瞄了整场...”"
+                                ],
+                                "choices": [
+                                    { "q": "小儿子是谁？", "a": "“那就是后来的贾义正呀！他在隔壁车站扔过一本当年亲眼目睹的恐怖日记，不知道还在不在。”" },
+                                    { "q": "如何开启天台大门？", "a": "“当年吴总务把这桩案的秘密、密码箱全埋在大图书馆里头。锁给锁死了，没极坚固的钢器砸不破。”" }
+                                ]
+                            }, "desc": "枯坐在一旁的老保安，翻着鱼死网破般的苍白瞳仁。" }
+                        ]
+                    }
+                ]
+            },
+            "weisheng": {
+                "name": "镇卫生院旧址 (2F)",
+                "floors": [
+                    {
+                        "id": "f1",
+                        "name": "1F 候诊区",
+                        "items": [
+                            { "id": "ws_desk", "name": "水泥分诊台", "x": 400, "y": 180, "w": 200, "h": 80, "act": "inspect", "desc": "冰冷的前厅水泥桌，缝隙溢出黑水，积留着多个黑泥血掌印。" },
+                            { "id": "ws_cabinet", "name": "药百眼防腐中药柜", "x": 100, "y": 50, "w": 180, "h": 100, "act": "drawer", "drawer": { "child": "ws_med_box" }, "desc": "一个贴满泛黄白色咒符的药柜，拉开‘附子’和‘砒霜’抽屉能闻到浓重的死老鼠气味。" },
+                            { "id": "ws_med_box", "name": "苏晚1991诊疗卡", "x": 160, "y": 80, "w": 50, "h": 30, "act": "inspect", "collect": true, "hidden": true, "parent": "ws_cabinet", "desc": "‘患者：苏晚（音乐师）。送医日期：1991.6.10。神志丧失、癫狂并极度痉挛，口中乱呓先师咎、十五载之类，判定为无法逆转的癔病。’" },
+                            { "id": "ws_wheelchair", "name": "生锈斑驳轮椅", "x": 750, "y": 420, "w": 80, "h": 80, "act": "drag", "drag": { "reveal": "ws_scalpel" }, "desc": "金属支架斑斑锈痕的轮椅，后梁卡着一个闪亮铁质坚韧物。请用手拖拽移开它..." },
+                            { "id": "ws_scalpel", "name": "同善折断古乩笔", "x": 775, "y": 450, "w": 40, "h": 15, "act": "inspect", "collect": true, "hidden": true, "parent": "ws_wheelchair", "desc": "半截精铜与老竹打造、裂隙沾满血香香灰的法乩笔。其尖端极度尖硬，是【别开、暴力撬动】阅览室老式保险箱铁搭扣的硬质神物。" },
+                            { "id": "ws_bench1", "name": "等候排椅", "x": 150, "y": 380, "w": 250, "h": 60, "act": "inspect", "desc": "几排生有红色血沫状点斑的候诊椅。" }
+                        ]
+                    },
+                    {
+                        "id": "f2",
+                        "name": "2F 观察死寂室",
+                        "items": [
+                            { "id": "ws_bed1", "name": "有锁链的1号铁床", "x": 100, "y": 120, "w": 160, "h": 90, "act": "push", "push": { "to": [0, 80], "reveal": "ws_under_bed" }, "desc": "绑满沉重麻绳与皮索的床。请双手发力把它【推开】..." },
+                            { "id": "ws_under_bed", "name": "沈迂的算命算盘草纸", "x": 140, "y": 135, "w": 60, "h": 40, "act": "inspect", "collect": true, "hidden": true, "parent": "ws_bed1", "desc": "一张带血算草纸：‘...贾一方要把大债分摊在我们后生学生头上，我偏不。今夜子时，我当偷偷抹去沙盘里的生卦，将宿命调个个儿。’" },
+                            { "id": "ws_bed2", "name": "渗血斑迹2号床", "x": 420, "y": 120, "w": 160, "h": 90, "act": "inspect", "desc": "被子中央渗出一个庞大的人形凹形血影。" },
+                            { "id": "ws_dr_desk", "name": "医生老诊台", "x": 750, "y": 320, "w": 180, "h": 100, "act": "drawer", "drawer": { "child": "ws_case_history" }, "desc": "放有一瓶干涸黑褐色药水的台子。可以拉开大柜..." },
+                            { "id": "ws_case_history", "name": "周慎之1991高烧记录", "x": 800, "y": 350, "w": 60, "h": 30, "act": "inspect", "collect": true, "hidden": true, "parent": "ws_dr_desk", "desc": "‘患者周慎之（国文师）。1991年6月10日。神志严重脑死亡，双眼流脓高烧，彻底丧失理智和记忆。’适宜与胸卡、老保安言论结合。", "canCombine": true },
+                            { 
+                                "id": "ws_pc", 
+                                "name": "闪烁斑驳的终端电脑", 
+                                "x": 420, 
+                                "y": 450, 
+                                "w": 140, 
+                                "h": 100, 
+                                "act": "inspect", 
+                                "collect": false, 
+                                "night": true, 
+                                "desc": "【时段机制：必须子夜调查】闪烁绿色冷光的Windows系统电脑。屏幕闪烁：‘管理员权限保护，请输入同善反噬事故大惨剧发生的四位数字年代：’",
+                                "passwordVerifiedClue": "ws_pc_unlocked"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "paichusuo": {
+                "name": "派出所荒废区 (2F)",
+                "floors": [
+                    {
+                        "id": "f1",
+                        "name": "1F 大接警堂",
+                        "items": [
+                            { "id": "ps_desk", "name": "办公前铁桌", "x": 300, "y": 200, "w": 400, "h": 90, "act": "drawer", "drawer": { "child": "ps_notebook" }, "desc": "长条警用铁皮案桌。拉开中间最凹陷的屉..." },
+                            { "id": "ps_notebook", "name": "1991警值班笔录本", "x": 460, "y": 225, "w": 80, "h": 35, "act": "inspect", "collect": true, "hidden": true, "parent": "ps_desk", "desc": "‘...6月10日晨，同善天台出特大癔症惨变。老周和苏老师一疯一傻被紧急抢救。贾一方校长强力担保，称此事系学术仪式失常，后强行撤案调任。’" },
+                            { "id": "ps_cop", "name": "警员老刘", "x": 840, "y": 320, "w": 60, "h": 80, "act": "talk", "talk": {
+                                "lines": [
+                                    "“别查了... 1991年那晚电闪雷鸣，周慎之和苏老师是被大卡车拉去医院的。”",
+                                    "“老周和那个数学老师沈迂都深信那套。但沈迂是个怪才，他总是想改沙盘里的公式。”",
+                                    "“老周替周天承了死煞，才沦为活死人。这帮执意搞仪式的老师都被校长记在内勤更衣柜了。”"
+                                ],
+                                "choices": [
+                                    { "q": "如何获取更衣柜秘密？", "a": "“二楼的密封文件架太厚。多叫俩人用力【推开】架子，里面有大祭的现场高清照片和乩沙盘实录。”" }
+                                ]
+                            }, "desc": "披着破警服的中年男影，右手呈诡异的反关节弯曲折叠。" }
+                        ]
+                    },
+                    {
+                        "id": "f2",
+                        "name": "2F 档案保管间",
+                        "items": [
+                            { "id": "ps_shelf_a", "name": "重型档案密集架", "x": 120, "y": 80, "w": 180, "h": 220, "act": "push", "push": { "to": [110, 0], "reveal": "ps_conf_file" }, "desc": "一排沾满霉苔的重型机动文件铁排架。用力把它【推开】..." },
+                            { "id": "ps_conf_file", "name": "1991乩坛现场黑白照", "x": 130, "y": 145, "w": 50, "h": 35, "act": "inspect", "collect": true, "hidden": true, "parent": "ps_shelf_a", "desc": "‘同善天台大案1号附图。黄铜香案上有一本教职社员契约册子。黄裱纸残卷被撕裂成两半，写满师徒咎数。’" },
+                            { "id": "ps_cabinet_c", "name": "锈皮三连衣柜", "x": 780, "y": 260, "w": 120, "h": 180, "act": "drawer", "drawer": { "child": "ps_uniform" }, "desc": "角落里的更衣柜，其中一门歪倒着。可以拉开..." },
+                            { "id": "ps_uniform", "name": "吴总务大祭执备本", "x": 810, "y": 310, "w": 60, "h": 80, "act": "inspect", "collect": true, "hidden": true, "parent": "ps_cabinet_c", "desc": "‘...苏老师发疯抓破了1991名册，周慎之先生手里那截折断乩笔当场断作两半，我将它们偷偷埋了，一个在轮椅底下，一个和名册页在一起。’可与国文卡合并融合。", "canCombine": true }
+                        ]
+                    }
+                ]
+            },
+            "chezhan": {
+                "name": "荒废车站 (1F)",
+                "floors": [
+                    {
+                        "id": "f1",
+                        "name": "荒废客运大厅",
+                        "items": [
+                            { "id": "cz_bench_2", "name": "长霉候车大椅", "x": 80, "y": 380, "w": 320, "h": 60, "act": "push", "push": { "to": [0, 40], "reveal": "cz_luggage_lost" }, "desc": "一排排倾斜的长木凳。其铁底缝隙里，有一个油布书包，尝试用力【推开】排椅..." },
+                            { "id": "cz_luggage_lost", "name": "15岁贾义正隔门日记", "x": 160, "y": 400, "w": 80, "h": 35, "act": "inspect", "collect": true, "hidden": true, "parent": "cz_bench_2", "desc": "‘1991年6月9日。我爸贾一方今晚在大密室穿着法衣监坛，我趴在垃圾口看见周慎之老师疯狂呕血，苏晚老师手在空气里乱摆。爸爸盯着他们像盯着羊一样...我吓傻了，跑出来把本子扔在这儿。’可合并还原谁是幕后推手。", "canCombine": true },
+                            { "id": "cz_extinguisher", "name": "消火老红铁箱", "x": 850, "y": 480, "w": 80, "h": 80, "act": "drawer", "drawer": { "child": "cz_key_ring" }, "desc": "一个生满血斑大锈的红铁柜。拉开..." },
+                            { "id": "cz_key_ring", "name": "1991大祭核心契约名页", "x": 870, "y": 505, "w": 40, "h": 30, "act": "inspect", "collect": true, "hidden": true, "parent": "cz_extinguisher", "desc": "‘1991年同善大祭名单：乩首(承受者):周慎之；监理(主理监坛):贾一方；外勤兼改运：沈迂。’" },
+                            { "id": "cz_cashier", "name": "售票刘姐", "x": 530, "y": 320, "w": 60, "h": 80, "act": "talk", "talk": {
+                                "lines": [
+                                    "“小伙，1991年的那趟班车早就开出了。再没人见过贾一方出来...”",
+                                    "“大图书馆里的三号锁箱极其结实，只有吴总务丢在医院轮椅骨架下的那根乩笔，其尖硬程度才撬得动。”",
+                                    "“老茶馆的掌柜那里藏有一包可以填抹极北铜匾的朱砂法泥。你去拉拉他的老抽屉。”"
+                                ],
+                                "choices": [
+                                    { "q": "怎么得到朱砂泥？", "a": "“老赵的抽屉生了胶，白天气血散了不好用，只有子夜邪门大开，才容易起开。”" },
+                                    { "q": "如何开启天台大门？", "a": "“当年吴总务把这桩案的秘密、密码箱全埋在大图书馆里头。锁给锁死了，没极坚固的钢器砸不破。”" }
+                                ]
+                            }, "desc": "提着一个布娃娃、面无神气的中年售票员。" },
+                            { "id": "cz_bin", "name": "翻倒的废铁大缸", "x": 920, "y": 380, "w": 60, "h": 80, "act": "drag", "drag": { "reveal": "cz_coin" }, "desc": "黑褐色的铸铁大箱，尝试【拖开】它..." },
+                            { "id": "cz_coin", "name": "同善15周年金章", "x": 940, "y": 410, "w": 25, "h": 25, "act": "inspect", "collect": true, "hidden": true, "parent": "cz_bin", "desc": "‘大祭起灵紀念·1991’。" }
+                        ]
+                    }
+                ]
+            },
+            "chaguan": {
+                "name": "老茶馆雅间 (2F)",
+                "floors": [
+                    {
+                        "id": "f1",
+                        "name": "1F 乱八仙桌大堂",
+                        "items": [
+                            { "id": "cg_counter", "name": "霉烂账本老桌柜", "x": 100, "y": 320, "w": 160, "h": 120, "act": "drawer", "drawer": { "child": "cg_vermilion" }, "desc": "账台。侧下方一个用黄色胶纸贴死、长满暗垢的重拉屉。可以拉开【抽屉】。" },
+                            { "id": "cg_vermilion", "name": "同善起灵朱砂粉包", "x": 150, "y": 355, "w": 60, "h": 35, "act": "inspect", "collect": true, "hidden": true, "parent": "cg_counter", "desc": "一包油亮、鲜红如血的朱砂矿物颜料粉包。这是同善社画符开光、起乩涂底用的法粉。将其【装备】后，或许可以去【广场】尝试涂染那面磨损的铜牌，让文字显形？", "isSceneUsable": true },
+                            { "id": "cg_table2", "name": "竹藤散乱茶桌", "x": 680, "y": 140, "w": 140, "h": 120, "act": "push", "push": { "to": [0, -50], "reveal": "cg_tea_box" }, "desc": "翻滚倒塌在蜘蛛网深处的老破竹藤桌。用力把它【推开】..." },
+                            { "id": "cg_tea_box", "name": "茶罐藏谶语碎叶", "x": 730, "y": 175, "w": 45, "h": 45, "act": "inspect", "collect": true, "hidden": true, "parent": "cg_table2", "desc": "一张带朱砂碎末的黄表纸碎屑：‘同字多一划，运当扭转... 先师偿，后生无虞。’" },
+                            { "id": "cg_boss", "name": "老掌柜老赵", "x": 850, "y": 350, "w": 60, "h": 80, "act": "talk", "talk": {
+                                "lines": [
+                                    "“老周（周慎之）出事头几天，就在二楼多宝阁柜子的隔层藏了一封手写家信。”",
+                                    "“那封信是【必须深夜子时】才能取出来的。信里写了沈迂在沙盘中改字的邪举，直接导致仪式大反击。”"
+                                ],
+                                "choices": [
+                                    { "q": "沈迂改字是怎么回事？", "a": "“沈老师嫌老仪式害娃娃，想偷天换日把大限移到先师自己身上，可惜神算不如天算，当场大反噬...”" }
+                                ]
+                            }, "desc": "敲着烟袋锅的老汉，他吐出的青烟隐隐聚成人脸。 " }
+                        ]
+                    },
+                    {
+                        "id": "f2",
+                        "name": "2F 多宝雅阁",
+                        "items": [
+                            { "id": "cg_screen", "name": "断裂红木大屏风", "x": 420, "y": 80, "w": 160, "h": 200, "act": "drag", "drag": { "reveal": "cg_hidden_safe" }, "desc": "一扇巨沉的红木百鬼画屏风。请用鼠标/手指点按【拖拽开】它..." },
+                            { "id": "cg_hidden_safe", "name": "墙中藏匿暗黄符纸", "x": 480, "y": 140, "w": 50, "h": 40, "act": "inspect", "collect": true, "hidden": true, "parent": "cg_screen", "desc": "白灰剥脱的洞眼内露出一枚黄色血纸镇符：‘1991 同善社印’。" },
+                            { "id": "cg_cabinet", "name": "黑漆红里多宝架", "x": 780, "y": 260, "w": 140, "h": 180, "act": "drawer", "drawer": { "child": "cg_letter" }, "desc": "摆放瓦罐茶炉的多层博古老架子。拉开底门..." },
+                            { "id": "cg_letter", "name": "周慎之1991深夜血家书", "x": 820, "y": 320, "w": 50, "h": 35, "act": "inspect", "collect": true, "night": true, "hidden": true, "parent": "cg_cabinet", "desc": "【时段机制：必须子夜调查】‘...沈教员把沙里同仙字给涂坏了。他以为是江湖障眼法，却不料触怒了灵阵。第一个大期必须由师辈血祭方能了，我大限将至...’ 适合与黄裱残谶融合分析。", "canCombine": true }
+                        ]
+                    }
+                ]
+            },
+            "yuelan": {
+                "name": "阅览室 (1F)",
+                "floors": [
+                    {
+                        "id": "f1",
+                        "name": "废旧借书大厅",
+                        "items": [
+                            { "id": "yl_shelf_2", "name": "老木框图书架", "x": 100, "y": 280, "w": 180, "h": 140, "act": "push", "push": { "to": [40, 0], "reveal": "yl_secret_box" }, "desc": "樟木大书架，死气沉沉卡在墙面。全力把它【推开】..." },
+                            { "id": "yl_secret_box", "name": "夹缝残缺黄裱谶文", "x": 140, "y": 320, "w": 50, "h": 35, "act": "inspect", "collect": true, "hidden": true, "parent": "yl_shelf_2", "desc": "半张破损极薄、满是干朱砂泥的纸卷：‘同字缺一划，大运错盘。十五载尽，转于生。师者受其变，生者承其责。’ 适合与深夜家信合并跨案融合分析。", "canCombine": true },
+                            { 
+                                "id": "yl_box_3", 
+                                "name": "三号重型铁保管箱", 
+                                "x": 250, "y": 480, "w": 80, "h": 100, 
+                                "act": "inspect", 
+                                "collect": false,
+                                "desc": "【机关拼图点】铸铁打造、焊有锈字‘3’的保险手提柜。柜锁扣被血锈焊成一体。必须在背包【装配】极端尖硬的「折断古乩笔」当撬棍猛撬才可大开！",
+                                "useTarget": true,
+                                "requiredItem": "ws_scalpel",
+                                "revealClueId": "yl_safe_note"
+                            },
+                            { "id": "yl_librarian", "name": "管理员刘大爷", "x": 820, "y": 320, "w": 60, "h": 80, "act": "talk", "talk": {
+                                "lines": [
+                                    "“后生，老阅览室关了十五年了。1991年出事当天的一麻袋退信全烂在大库底下了。”",
+                                    "“周慎之那封带血血书是他的最后遗存，里面详细记了沈迂在沙里改字算计的事。”"
+                                ],
+                                "choices": [
+                                    { "q": "沈老师为什么要算计？", "a": "“沈迂心气高不信邪，为了阻断剥削故意涂改，反倒害的老周承受了通盘血煞成废人...他自己连夜被专车送到医院，当场高烧发疯了。”" }
+                                ]
+                            }, "desc": "老刘大爷眼珠竟是两枚缝上的发黑黄铜扣。" },
+                            { "id": "yl_globe", "name": "大霉地球仪", "x": 580, "y": 450, "w": 80, "h": 100, "act": "drag", "drag": { "reveal": "yl_stamp" }, "desc": "落满霉花尘的大地球仪。用鼠标【拖动】开它..." },
+                            { "id": "yl_stamp", "name": "1991退件红泥邮戳", "x": 600, "y": 475, "w": 35, "h": 35, "act": "inspect", "collect": true, "hidden": true, "parent": "yl_globe", "desc": "退信戳红油：‘同善大祭退件 1991.6.9 拒收’。" }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        // Extra generated puzzle nodes unlocked dynamically
+        const DYNAMIC_CLUES = {
+            "gc_engrave_revealed": {
+                "id": "gc_engrave_revealed",
+                "name": "极北方位浮雕断章",
+                "desc": "【关键黄铜锁芯】敷抹了朱砂红粉后，金属凹痕终于暴露出殷红的古老密匙符篆：‘天位正北，门设无生。此为极北定位！’ 这是黄铜锁芯【极北方位】断章！",
+                "keyClue": "fangwei"
+            },
+            "yl_safe_note": {
+                "id": "yl_safe_note",
+                "name": "叁号保险柜字条",
+                "desc": "【关键黄铜锁芯】用乩笔别断铁锈耳扣，箱口赫然滚出一行血墨黑字：‘欲破此天大关窍，需扭转密毁数字【609】！此为毁灭之码。’ 这是黄铜锁芯【绝密码】断章！",
+                "keyClue": "bianhao"
+            },
+            "ws_pc_unlocked": {
+                "id": "ws_pc_unlocked",
+                "name": "子时熔解断章",
+                "desc": "【关键黄铜锁芯】越权进入系统后，加密盘吐出一段执事文件：‘...终局之会必须定于【六月九日之子时】，阴阳逆流。生者与死者换灵...’ 这是黄铜锁芯【时辰】断章！",
+                "keyClue": "shichen"
+            },
+            // Fused results
+            "clue_bandi": {
+                "id": "clue_bandi",
+                "name": "【重组：同善班底反噬行迹】",
+                "desc": "【跨案融合推演记录】\n你将「周慎之教工胸卡」与「吴总务大祭执备本」交叉合围对证，推理得知：在1991年仪式全面失控反攻现场，替整个学校师生顶住了天大血煞诅咒、导致大脑严重烧坏变成瘫痪呆子的「首代乩媒（乩首）」正是——国文老师「周慎之」！",
+                "fused": true
+            },
+            "clue_father_son": {
+                "id": "clue_father_son",
+                "name": "【重组：贾氏神坛因果录】",
+                "desc": "【跨案融合推演记录】\n你对证了「贾一方督办电文」与「15岁小儿子贾义正的日记」，拼凑出残酷细节：在1991年仪式发生当晚，穿着庄严道士大袍、在台桌居高临下监察众人并强签责任契约书的「主理监坛者」，正是创校校长——「贾一方」！这一幕成为了其子贾义正日后回校试图延续祭坛仪式的心理起点。",
+                "fused": true
+            },
+            "clue_yellow_curse": {
+                "id": "clue_yellow_curse",
+                "name": "【重组：重组的黄裱纸谶文】",
+                "desc": "【跨案融合推演记录】\n你对比了周慎之临终手书家信与碎谶碎叶，解开了反噬之谜：当夜，教务教员「沈迂」极端质疑仪式的神威与真实性。为了打破剥削天堑，他在深夜于乩沙盘内偷偷修改了‘同’字的一划，企图将契约大限倒流回创办师辈自己头上。不料改字失常引发诅咒大逆涌，这才是当场让周慎之脑死、苏晚发疯的‘沙盘涂改异见者’！",
+                "fused": true
+            }
+        };
+
+        // ==========================================
+        // STATE INITIALIZER
+        // ==========================================
+        let gameState = {
+            currentSite: null,
+            currentFloor: "f1",
+            obtainedItems: [],      
+            revealedItems: {},      
+            synthesizedClues: [],   
+            activeItemId: null,     
+            clueLogs: [],
+            isNight: false,
+            keyFound: false,
+            manualWarned: false,
+            // fusion slots
+            fuseSlot1: null,
+            fuseSlot2: null,
+            currentSidebarTab: 'bag',
+            activeConfirmCallback: null
+        };
+
+        function initGameState() {
+            gameState.obtainedItems = JSON.parse(localStorage.getItem('wbs_obtained_v2')) || [];
+            gameState.clueLogs = JSON.parse(localStorage.getItem('wbs_logs_v2')) || [];
+            gameState.revealedItems = JSON.parse(localStorage.getItem('wbs_revealed_v2')) || {};
+            gameState.synthesizedClues = JSON.parse(localStorage.getItem('wbs_synclues_v2')) || [];
+            gameState.isNight = localStorage.getItem('wbs_night_v2') === '1';
+            gameState.keyFound = localStorage.getItem('wbs_keyfound_v2') === '1';
+            gameState.manualWarned = localStorage.getItem('wbs_manual_warned_v2') === '1';
+
+            // Scale system
+            window.addEventListener('resize', adjustStageScale);
+            adjustStageScale();
+
+            setNightMode(gameState.isNight);
+            refreshClueBox();
+            showView('hub');
+
+            if (gameState.clueLogs.length === 0) {
+                addLogSystem("档案加载", "成功拉取1991年无生中学同善重案复查卷宗。请利用搜证手册开始深入探测老区。");
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem('wbs_obtained_v2', JSON.stringify(gameState.obtainedItems));
+            localStorage.setItem('wbs_logs_v2', JSON.stringify(gameState.clueLogs));
+            localStorage.setItem('wbs_revealed_v2', JSON.stringify(gameState.revealedItems));
+            localStorage.setItem('wbs_synclues_v2', JSON.stringify(gameState.synthesizedClues));
+            localStorage.setItem('wbs_night_v2', gameState.isNight ? '1' : '0');
+            localStorage.setItem('wbs_keyfound_v2', gameState.keyFound ? '1' : '0');
+            localStorage.setItem('wbs_manual_warned_v2', gameState.manualWarned ? '1' : '0');
+        }
+
+        // Auto Scaling algorithm for immersive viewport fit (Adjusted for larger 1080x640 resolution)
+        function adjustStageScale() {
+            const scaler = document.getElementById('stageScaler');
+            const parent = document.getElementById('interactArea');
+            if (!scaler || !parent) return;
+
+            const pw = parent.clientWidth;
+            const ph = parent.clientHeight;
+            
+            // Design size is 1080 x 640
+            const scaleX = pw / 1100;
+            const scaleY = ph / 660;
+            const scale = Math.min(scaleX, scaleY, 1); // Clamp to 1 max to avoid blur
+
+            scaler.style.transform = `scale(${scale})`;
+        }
+
+        // ==========================================
+        // CUSTOM NO-ALERT COMPONENT DRIVERS
+        // ==========================================
+        function customAlert(text) {
+            OccultAudio.playFail();
+            document.getElementById('customAlertText').innerText = text;
+            document.getElementById('customAlert').classList.remove('hidden');
+        }
+
+        function dismissCustomAlert() {
+            document.getElementById('customAlert').classList.add('hidden');
+        }
+
+        function requestHardReset() {
+            OccultAudio.playFail();
+            document.getElementById('customConfirm').classList.remove('hidden');
+            gameState.activeConfirmCallback = (yes) => {
+                if (yes) {
+                    ['wbs_obtained_v2','wbs_logs_v2','wbs_revealed_v2','wbs_synclues_v2','wbs_night_v2','wbs_keyfound_v2','wbs_manual_warned_v2','wbs_egg_1991_v1'].forEach(function(k){ try{localStorage.removeItem(k);}catch(e){} });
+                    window.location.reload();
+                }
+            };
+        }
+
+        function dismissCustomConfirm(choice) {
+            document.getElementById('customConfirm').classList.add('hidden');
+            if (gameState.activeConfirmCallback) {
+                gameState.activeConfirmCallback(choice);
+                gameState.activeConfirmCallback = null;
+            }
+        }
+
+        function openManual() {
+            OccultAudio.playTalk();
+            if (gameState.manualWarned) {
+                document.getElementById('manualModal').classList.remove('hidden');
+            } else {
+                document.getElementById('manualConfirmModal').classList.remove('hidden');
+            }
+        }
+
+        function confirmOpenManual(confirmed) {
+            OccultAudio.playTalk();
+            document.getElementById('manualConfirmModal').classList.add('hidden');
+            if (confirmed) {
+                gameState.manualWarned = true;
+                saveState();
+                document.getElementById('manualModal').classList.remove('hidden');
+            }
+        }
+
+        function closeManual() {
+            document.getElementById('manualModal').classList.add('hidden');
+        }
+
+        // ==========================================
+        // UI PANELS ROUTER
+        // ==========================================
+        function showView(view) {
+            const hub = document.getElementById('hubView');
+            const room = document.getElementById('roomView');
+            if (view === 'hub') {
+                hub.classList.remove('hidden');
+                room.classList.add('hidden');
+                document.getElementById('gameTitle').innerText = "会同县·无生中学";
+                closeDialogue();
+            } else {
+                hub.classList.add('hidden');
+                room.classList.remove('hidden');
+            }
+        }
+
+        function enterRoom(siteId) {
+            OccultAudio.playTalk();
+            gameState.currentSite = siteId;
+            gameState.currentFloor = "f1";
+            showView('room');
+            renderRoom();
+        }
+
+        function backToHub() {
+            OccultAudio.playTalk();
+            gameState.currentSite = null;
+            showView('hub');
+        }
+
+        function switchSidebarTab(tab) {
+            OccultAudio.playTalk();
+            gameState.currentSidebarTab = tab;
+            const tabBag = document.getElementById('tabBtnBag');
+            const tabSynth = document.getElementById('tabBtnSynth');
+            const panelBag = document.getElementById('panelBag');
+            const panelSynth = document.getElementById('panelSynth');
+
+            if (tab === 'bag') {
+                tabBag.className = "flex-1 pb-2 border-b-2 border-red-500 text-red-200 text-center flex items-center justify-center gap-1";
+                tabSynth.className = "flex-1 pb-2 text-[#806f64] text-center hover:text-red-300 transition flex items-center justify-center gap-1";
+                panelBag.classList.remove('hidden');
+                panelSynth.classList.add('hidden');
+            } else {
+                tabSynth.className = "flex-1 pb-2 border-b-2 border-red-500 text-red-200 text-center flex items-center justify-center gap-1";
+                tabBag.className = "flex-1 pb-2 text-[#806f64] text-center hover:text-red-300 transition flex items-center justify-center gap-1";
+                panelSynth.classList.remove('hidden');
+                panelBag.classList.add('hidden');
+                renderClueFusionList();
+            }
+        }
+
+        // ==========================================
+        // TIME OF DAY STATE CHANGERS
+        // ==========================================
+        function setNightMode(isNight) {
+            gameState.isNight = isNight;
+            saveState();
+
+            const btnDay = document.getElementById('btnDay');
+            const btnNight = document.getElementById('btnNight');
+            const stage = document.getElementById('invStage');
+
+            if (isNight) {
+                btnNight.className = "px-3 py-1.5 rounded-sm font-bold bg-[#4a1212] text-[#f2adad] border border-[#a83232] shadow-lg text-xs flex items-center gap-1";
+                btnDay.className = "px-3 py-1.5 rounded-sm font-bold text-[#6b584a] hover:text-[#c4b1a1] text-xs flex items-center gap-1";
+                if (stage) stage.classList.add('stage-night');
+                document.body.classList.add('body-night');
+                document.body.style.backgroundColor = "#070505";
+                addLogSystem("时空变焦", "子夜来临... 1991年阴森电波重度耦合，老配电网磁场活跃。部分隐藏物证已就位。");
+                OccultAudio.playUnlock();
+            } else {
+                btnDay.className = "px-3 py-1.5 rounded-sm font-bold bg-[#3e2b20] text-[#ebdcd0] border border-[#5a4231] shadow-lg text-xs flex items-center gap-1";
+                btnNight.className = "px-3 py-1.5 rounded-sm font-bold text-[#6b584a] hover:text-[#c4b1a1] text-xs flex items-center gap-1";
+                if (stage) stage.classList.remove('stage-night');
+                document.body.classList.remove('body-night');
+                document.body.style.backgroundColor = "#0c0a09";
+                addLogSystem("时空变焦", "艳阳高照。乩案阴森磁场暂退，子夜特殊物资隐形消失。");
+                OccultAudio.playTalk();
+            }
+
+            if (gameState.currentSite) {
+                renderRoom();
+            }
+        }
+
+        // ==========================================
+        // RENDER SITE STAGES
+        // ==========================================
+        function renderRoom() {
+            const site = INV_DATA[gameState.currentSite];
+            if (!site) return;
+
+            document.getElementById('roomName').innerText = `案发重现：${site.name}`;
+            document.getElementById('gameTitle').innerText = `探案搜证中: ${site.name}`;
+
+            const tabsContainer = document.getElementById('floorTabs');
+            tabsContainer.innerHTML = "";
+            site.floors.forEach(f => {
+                const btn = document.createElement('button');
+                btn.className = `px-3 py-1.5 rounded-sm text-xs font-serif transition cursor-pointer ${gameState.currentFloor === f.id ? 'bg-[#421b13] border border-[#a83232] text-[#ebdcd0] font-bold' : 'text-[#8c7464] hover:text-[#ebdcd0]'}`;
+                btn.innerText = f.name;
+                btn.onclick = () => {
+                    OccultAudio.playTalk();
+                    gameState.currentFloor = f.id;
+                    renderRoom();
+                };
+                tabsContainer.appendChild(btn);
+            });
+
+            const floorData = site.floors.find(f => f.id === gameState.currentFloor);
+            const stage = document.getElementById('invStage');
+            
+            stage.innerHTML = "";
+            
+            if (gameState.isNight) {
+                stage.classList.add('stage-night');
+                stage.onmousemove = (e) => {
+                    const rect = stage.getBoundingClientRect();
+                    const x = (e.clientX - rect.left) / (rect.width / 1080);
+                    const y = (e.clientY - rect.top) / (rect.height / 640);
+                    stage.style.setProperty('--mouse-x', `${x}px`);
+                    stage.style.setProperty('--mouse-y', `${y}px`);
+                };
+            } else {
+                stage.classList.remove('stage-night');
+                stage.onmousemove = null;
+            }
+
+            // Draw architectural blueprints
+            drawFloorBlueprint(gameState.currentSite, gameState.currentFloor, stage);
+
+            floorData.items.forEach(it => {
+                // Handle hidden drawer/push reveal locks
+                if (it.hidden && !gameState.revealedItems[it.id]) {
+                    return;
+                }
+
+                const el = document.createElement('div');
+                el.id = `item_${it.id}`;
+                el.className = `box act-${it.act}`;
+                el.style.left = `${it.x}px`;
+                el.style.top = `${it.y}px`;
+                el.style.width = `${it.w}px`;
+                el.style.height = `${it.h}px`;
+                el.innerText = it.name;
+
+                // Mark already collected
+                if (gameState.obtainedItems.includes(it.id)) {
+                    el.style.opacity = "0.2";
+                    el.style.textDecoration = "line-through";
+                    el.style.pointerEvents = "none";
+                }
+
+                el.onclick = (e) => {
+                    e.stopPropagation();
+                    triggerInteraction(it, el);
+                };
+
+                // Apply physics binds
+                if (it.act === 'drag' && !gameState.obtainedItems.includes(it.id)) {
+                    bindDragPhysics(el, it);
+                } else if (it.act === 'drawer' && gameState.revealedItems[it.drawer.child]) {
+                    el.classList.add('drawer-open');
+                }
+
+                stage.appendChild(el);
+            });
+        }
+
+        function drawFloorBlueprint(siteId, floorId, container) {
+            const blueprint = document.createElement('div');
+            blueprint.className = "room-rug";
+            blueprint.style.left = "400px"; blueprint.style.top = "160px"; blueprint.style.width = "280px"; blueprint.style.height = "180px";
+            blueprint.style.display = "flex"; blueprint.style.alignItems = "center"; blueprint.style.justifyContent = "center";
+            blueprint.style.textAlign = "center"; blueprint.style.color = "rgba(168, 50, 50, 0.15)";
+            blueprint.style.fontSize = "10px";
+
+            if (siteId === 'guangchang') {
+                blueprint.innerHTML = `
+                    <div class="flex flex-col items-center">
+                        <svg class="w-8 h-8 text-[#a83232]/25 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+                        <span>1991 · 校前纪念法阵中心广场</span>
+                    </div>
+                `;
+                container.appendChild(blueprint);
+            } else if (siteId === 'weisheng' && floorId === 'f1') {
+                blueprint.innerHTML = `
+                    <div class="flex flex-col items-center">
+                        <svg class="w-8 h-8 text-[#a83232]/25 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 10.5h-5.5V5h-3v5.5H5v3h5.5V19h3v-5.5H19v-3z"/></svg>
+                        <span>镇卫生院首代执事狂乱隔离房</span>
+                    </div>
+                `;
+                container.appendChild(blueprint);
+            }
+        }
+
+        // ==========================================
+        // DRAG AND PUSH PHYSICS
+        // ==========================================
+        function bindDragPhysics(el, item) {
+            let isDragging = false;
+            let startX, startY;
+            let currentX = 0, currentY = 0;
+
+            const onStart = (e) => {
+                if (gameState.obtainedItems.includes(item.id)) return;
+                isDragging = true;
+                el.setPointerCapture(e.pointerId);
+                startX = e.clientX - currentX;
+                startY = e.clientY - currentY;
+                el.style.zIndex = "100";
+                el.style.cursor = "grabbing";
+                el.style.borderColor = "#a83232";
+                OccultAudio.playTalk();
+            };
+
+            const onMove = (e) => {
+                if (!isDragging) return;
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+
+                // Constrain drag distance dynamically
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 100) {
+                    currentX = dx;
+                    currentY = dy;
+                } else {
+                    currentX = (dx / dist) * 100;
+                    currentY = (dy / dist) * 100;
+                }
+                
+                el.style.transform = `translate(${currentX}px, ${currentY}px)`;
+
+                // Threshold reveal trigger
+                if (dist > 50 && item.drag && item.drag.reveal) {
+                    revealHiddenChild(item.drag.reveal);
+                }
+            };
+
+            const onEnd = () => {
+                if (!isDragging) return;
+                isDragging = false;
+                el.style.zIndex = "";
+                el.style.cursor = "move";
+                el.style.borderColor = "";
+                toast("移开了重物，露出灰尘下的隐秘痕迹...");
+                OccultAudio.playUnlock();
+            };
+
+            el.addEventListener('pointerdown', onStart);
+            el.addEventListener('pointermove', onMove);
+            el.addEventListener('pointerup', onEnd);
+            el.addEventListener('pointercancel', onEnd);
+        }
+
+        function triggerPush(item, el) {
+            if (gameState.obtainedItems.includes(item.id)) return;
+            
+            const tx = item.push.to[0];
+            const ty = item.push.to[1];
+            
+            el.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
+            el.style.transform = `translate(${tx}px, ${ty}px)`;
+            
+            setTimeout(() => {
+                if (item.push.reveal) {
+                    revealHiddenChild(item.push.reveal);
+                }
+                toast("沉重地推开了卡死在原位的木箱...");
+                OccultAudio.playUnlock();
+            }, 600);
+        }
+
+        function revealHiddenChild(childId) {
+            if (gameState.revealedItems[childId]) return;
+            gameState.revealedItems[childId] = true;
+            saveState();
+            addLogSystem("发掘线索", `移开障碍，发现了暗藏的文证：${getItemNameById(childId)}`);
+            renderRoom();
+        }
+
+        // ==========================================
+        // COMPLEX INTERACTIONS SYSTEMS
+        // ==========================================
+        function triggerInteraction(it, el) {
+            // Clock/Night validation
+            if (it.night && !gameState.isNight) {
+                customAlert(`“白日阳和太高，大祭灵光不显。请在深夜（子夜模式）时前来摸索提取。”`);
+                return;
+            }
+
+            // Target Active Prop validation
+            if (gameState.activeItemId && it.useTarget) {
+                handleItemUseOnTarget(it, el);
+                return;
+            }
+
+            // Terminal year verify trigger
+            if (it.id === 'ws_pc' && !gameState.synthesizedClues.includes('ws_pc_unlocked')) {
+                OccultAudio.playTalk();
+                openYearLockModal();
+                return;
+            }
+
+            // Already gathered trigger
+            if (gameState.obtainedItems.includes(it.id)) {
+                OccultAudio.playTalk();
+                showDialogue(it.name, `【此段档案已录入在案】\n${it.desc}`);
+                return;
+            }
+
+            switch(it.act) {
+                case "inspect":
+                    OccultAudio.playTalk();
+                    if (it.useTarget && !it.isUnlocked) {
+                        showDialogue(it.name, `${it.desc}\n\n（提示：当前浮雕被岁月封死，需要装备特定道具进行融合联动。）`);
+                    } else {
+                        showDialogue(it.name, it.desc);
+                        if (it.collect !== false) {
+                            triggerClueFlight(el, it);
+                        }
+                    }
+                    break;
+                case "drawer":
+                    OccultAudio.playUnlock();
+                    el.classList.toggle('drawer-open');
+                    if (el.classList.contains('drawer-open')) {
+                        addLogSystem("起箱开屉", `拉开了老抽屉「${it.name}」，发出一阵牙酸的金属摩擦声。`);
+                        if (it.drawer && it.drawer.child) {
+                            revealHiddenChild(it.drawer.child);
+                        }
+                    }
+                    break;
+                case "drag":
+                    OccultAudio.playTalk();
+                    showDialogue(it.name, `${it.desc}\n\n【提示：双手按住它，往周围推拽移动，腾出隐藏空间。】`);
+                    break;
+                case "push":
+                    OccultAudio.playTalk();
+                    triggerPush(it, el);
+                    showDialogue(it.name, `${it.desc}\n\n【你已用身体将其横推。】`);
+                    break;
+                case "talk":
+                    OccultAudio.playTalk();
+                    openDialogue(it);
+                    break;
+            }
+        }
+
+        // ==========================================
+        // BAG PROP EQUIP & SELECTION
+        // ==========================================
+        function selectItem(itemId) {
+            const it = getItemObjById(itemId);
+            if (!it) return;
+
+            if (gameState.activeItemId === itemId) {
+                unequipItem();
+                return;
+            }
+
+            OccultAudio.playUnlock();
+            gameState.activeItemId = itemId;
+            
+            const activeBar = document.getElementById('activeItemBar');
+            const activeName = document.getElementById('activeItemName');
+            activeBar.classList.remove('hidden');
+            activeBar.classList.add('flex');
+            activeName.innerText = it.name;
+
+            addLogSystem("装配神物", `成功装配 [${it.name}]。请寻找对应的法阵扣、保险铁柜进行点击触发。`);
+            refreshClueBox();
+        }
+
+        function unequipItem() {
+            OccultAudio.playTalk();
+            gameState.activeItemId = null;
+            const activeBar = document.getElementById('activeItemBar');
+            activeBar.classList.add('hidden');
+            activeBar.classList.remove('flex');
+            refreshClueBox();
+        }
+
+        // Apply Equipped active items to the corresponding puzzle target
+        function handleItemUseOnTarget(targetItem, targetEl) {
+            const usedItemId = gameState.activeItemId;
+            if (!usedItemId) return;
+
+            if (targetItem.requiredItem === usedItemId) {
+                // SUCCESS MATCH
+                OccultAudio.playUnlock();
+                unequipItem();
+                
+                const bonusClueId = targetItem.revealClueId;
+                if (bonusClueId && !gameState.synthesizedClues.includes(bonusClueId)) {
+                    gameState.synthesizedClues.push(bonusClueId);
+                    
+                    // Consume the used item for gameplay realism
+                    gameState.obtainedItems = gameState.obtainedItems.filter(id => id !== usedItemId);
+                    saveState();
+
+                    const bonusData = DYNAMIC_CLUES[bonusClueId];
+                    showDialogue(`机关耦合成功：${bonusData.name}`, `你利落地将【${getItemNameById(usedItemId)}】契合在【${targetItem.name}】上！\n\n描述：${bonusData.desc}`);
+                    
+                    addLogSystem("机关解除", `应用 [${getItemNameById(usedItemId)}] 解开了 [${targetItem.name}]，获得了天门关键铜刻：${bonusData.name}`);
+                    
+                    // Style target
+                    targetEl.style.border = "2px solid #a83232";
+                    targetEl.style.boxShadow = "0 0 20px rgba(168, 50, 50, 0.7)";
+                    targetItem.isUnlocked = true;
+
+                    triggerDynamicClueFlight(targetEl, bonusData);
+                }
+            } else {
+                OccultAudio.playFail();
+                customAlert(`“法道抗性排斥！\n【${getItemNameById(usedItemId)}】与【${targetItem.name}】无法产生任何物理或法门反响。请阅读搜证手册寻找出路！”`);
+                unequipItem();
+            }
+        }
+
+        // ==========================================
+        // XP TERMINAL CODE SUBMISSION
+        // ==========================================
+        function openYearLockModal() {
+            document.getElementById('yearLockModal').classList.remove('hidden');
+        }
+
+        function closeYearLock() {
+            document.getElementById('yearLockModal').classList.add('hidden');
+        }
+
+        function submitYearPassword() {
+            const val = document.getElementById('yearInput').value.trim();
+            if (val === '1991') {
+                OccultAudio.playUnlock();
+                closeYearLock();
+                const bonusClueId = 'ws_pc_unlocked';
+                if (!gameState.synthesizedClues.includes(bonusClueId)) {
+                    gameState.synthesizedClues.push(bonusClueId);
+                    saveState();
+                    const bonusData = DYNAMIC_CLUES[bonusClueId];
+                    showDialogue(`终端破密解封成功`, `你输入大限惨剧之年份：[1991]\n\n文档解析出：${bonusData.desc}`);
+                    addLogSystem("终端破密", "绕开XP系统越权成功！成功导出天台时辰关键底单。");
+                    
+                    const pcEl = document.getElementById('item_ws_pc');
+                    if (pcEl) {
+                        triggerDynamicClueFlight(pcEl, bonusData);
+                    }
+                }
+            } else {
+                OccultAudio.playFail();
+                customAlert(`“终端警告：年份校验失败。\n输入的年代与同善天台发生大案的磁场不吻合，档案无法解锁。”`);
+            }
+        }
+
+        // ==========================================
+        // CROSS CORRELATION FUSION WORKSPACE
+        // ==========================================
+        function renderClueFusionList() {
+            const container = document.getElementById('fuseList');
+            container.innerHTML = "";
+
+            let mergeableList = [];
+
+            // Add combine-ready physical item scraps
+            gameState.obtainedItems.forEach(itemId => {
+                const item = getItemObjById(itemId);
+                if (item && item.canCombine) {
+                    mergeableList.push({ id: item.id, name: item.name, isPhysical: true });
+                }
+            });
+
+            // Add merge-ready synthesized items
+            gameState.synthesizedClues.forEach(clueId => {
+                const cData = DYNAMIC_CLUES[clueId];
+                if (cData && !cData.fused && !INV_KEYCLUES.includes(cData.keyClue)) { 
+                    mergeableList.push({ id: cData.id, name: cData.name, isPhysical: false });
+                }
+            });
+
+            // Prevent selecting currently fitted slots
+            mergeableList = mergeableList.filter(it => it.id !== gameState.fuseSlot1 && it.id !== gameState.fuseSlot2);
+
+            if (mergeableList.length === 0) {
+                container.innerHTML = `<span class="text-[11px] text-[#5c473a] block text-center py-6 font-serif">包内暂无带有『canCombine』融合标识的底稿残页。请先去探索校舍寻找。</span>`;
+                return;
+            }
+
+            mergeableList.forEach(it => {
+                const card = document.createElement('div');
+                card.className = "p-2 bg-[#19110d] hover:bg-[#2e1d13] border border-[#3e2b20] hover:border-red-400 rounded-sm text-[11px] text-[#dfcdbe] flex justify-between items-center cursor-pointer font-serif select-none transition";
+                card.onclick = () => {
+                    selectForFuse(it.id, it.name);
+                };
+
+                const title = document.createElement('span');
+                title.className = "flex items-center gap-1";
+                title.innerHTML = `
+                    <svg class="w-3.5 h-3.5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    <span>${it.name}</span>
+                `;
+                
+                const selectBtn = document.createElement('span');
+                selectBtn.className = "text-[9px] bg-[#3e1b12] text-red-300 px-2 py-0.5 border border-[#5d2719] rounded-sm font-bold flex items-center gap-0.5";
+                selectBtn.innerHTML = `
+                    <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    装填
+                `;
+
+                card.appendChild(title);
+                card.appendChild(selectBtn);
+                container.appendChild(card);
+            });
+        }
+
+        const INV_KEYCLUES = ["fangwei", "bianhao", "shichen"];
+
+        function selectForFuse(id, name) {
+            OccultAudio.playUnlock();
+            if (!gameState.fuseSlot1) {
+                gameState.fuseSlot1 = id;
+                const slot = document.getElementById('fuseSlot1');
+                slot.innerText = name;
+                slot.classList.remove('text-[#735e50]');
+                slot.classList.add('text-red-400', 'font-bold');
+            } else if (!gameState.fuseSlot2) {
+                gameState.fuseSlot2 = id;
+                const slot = document.getElementById('fuseSlot2');
+                slot.innerText = name;
+                slot.classList.remove('text-[#735e50]');
+                slot.classList.add('text-red-400', 'font-bold');
+            } else {
+                toast("推演舱装载已满，点击退弹重新选择！");
+            }
+            renderClueFusionList();
+        }
+
+        function ejectFuseSlot(slotNum) {
+            OccultAudio.playTalk();
+            if (slotNum === 1) {
+                gameState.fuseSlot1 = null;
+                const slot = document.getElementById('fuseSlot1');
+                slot.innerText = "（线索一）";
+                slot.classList.add('text-[#735e50]');
+                slot.classList.remove('text-red-400', 'font-bold');
+            } else {
+                gameState.fuseSlot2 = null;
+                const slot = document.getElementById('fuseSlot2');
+                slot.innerText = "（线索二）";
+                slot.classList.add('text-[#735e50]');
+                slot.classList.remove('text-red-400', 'font-bold');
+            }
+            renderClueFusionList();
+        }
+
+        // Deductive Synthesis solver
+        function attemptClueFusion() {
+            const s1 = gameState.fuseSlot1;
+            const s2 = gameState.fuseSlot2;
+
+            if (!s1 || !s2) {
+                OccultAudio.playFail();
+                customAlert("“跨案推演失败：请点击下方未装载的纸简，在槽位内填满两个对证端。”");
+                return;
+            }
+
+            // Target Fusion pairs config
+            const pairs = [
+                { ids: ["gc_keycard", "ps_uniform"], reveal: "clue_bandi" }, // 周慎之教工卡 + 吴总务更衣柜日记
+                { ids: ["gc_newspaper", "cz_luggage_lost"], reveal: "clue_father_son" }, // 贾一方督办电报 + 贾义正日记
+                { ids: ["cg_letter", "yl_secret_box"], reveal: "clue_yellow_curse" } // 周慎之家书 + 借阅室谶文残页
+            ];
+
+            let foundMatch = null;
+            for (let p of pairs) {
+                if ((p.ids[0] === s1 && p.ids[1] === s2) || (p.ids[1] === s1 && p.ids[0] === s2)) {
+                    foundMatch = p;
+                    break;
+                }
+            }
+
+            if (foundMatch) {
+                OccultAudio.playUnlock();
+                const bonusId = foundMatch.reveal;
+                if (!gameState.synthesizedClues.includes(bonusId)) {
+                    gameState.synthesizedClues.push(bonusId);
+                    
+                    // Consume the components
+                    gameState.obtainedItems = gameState.obtainedItems.filter(id => id !== s1 && id !== s2);
+                    gameState.synthesizedClues = gameState.synthesizedClues.filter(id => id !== s1 && id !== s2);
+                    
+                    gameState.fuseSlot1 = null;
+                    gameState.fuseSlot2 = null;
+                    saveState();
+
+                    const bonusData = DYNAMIC_CLUES[bonusId];
+                    showDialogue(`逻辑融汇解锁：${bonusData.name}`, bonusData.desc);
+                    addLogSystem("深度推演", `成功拼合了两个案卷废片，导出了高级档案：${bonusData.name}`);
+
+                    // Clean visually
+                    document.getElementById('fuseSlot1').innerText = "（线索一）";
+                    document.getElementById('fuseSlot1').className = "flex-1 h-16 bg-[#1a110d] border border-dashed border-[#5a3a28] hover:border-[#a83232] flex items-center justify-center text-[10px] text-[#735e50] text-center p-2 rounded-sm cursor-pointer transition";
+                    document.getElementById('fuseSlot2').innerText = "（线索二）";
+                    document.getElementById('fuseSlot2').className = "flex-1 h-16 bg-[#1a110d] border border-dashed border-[#5a3a28] hover:border-[#a83232] flex items-center justify-center text-[10px] text-[#735e50] text-center p-2 rounded-sm cursor-pointer transition";
+
+                    refreshClueBox();
+                    renderClueFusionList();
+                }
+            } else {
+                OccultAudio.playFail();
+                customAlert("“印证失败：\n两张纸屑的内容、字迹完全没有任何暗藏联系，属于断章。请仔细查阅描述中的签名人或行迹！”");
+            }
+        }
+
+        // ==========================================
+        // GRAPHICAL NARRATIVE CLUE FLIGHT EFFECTS
+        // ==========================================
+        function triggerClueFlight(el, item) {
+            if (gameState.obtainedItems.includes(item.id)) return;
+
+            gameState.obtainedItems.push(item.id);
+            saveState();
+
+            OccultAudio.playClue();
+            addLogSystem("档案收入", `【收存物证：${item.name}】: ${item.desc.substring(0, 30)}...`);
+
+            const srcRect = el.getBoundingClientRect();
+            const destPanel = document.getElementById('cbItems');
+            const destRect = destPanel.getBoundingClientRect();
+
+            const clone = document.createElement('div');
+            clone.className = "fly-clone font-serif text-center border-2 border-[#a83232] bg-[#2d1e18] text-[#ebdcd0] text-xs flex items-center justify-center p-2 rounded-sm shadow-2xl";
+            clone.style.width = `${srcRect.width}px`;
+            clone.style.height = `${srcRect.height}px`;
+            clone.style.left = "0px";
+            clone.style.top = "0px";
+            clone.innerText = item.name;
+
+            clone.style.setProperty('--start-x', `${srcRect.left}px`);
+            clone.style.setProperty('--start-y', `${srcRect.top}px`);
+            clone.style.setProperty('--end-x', `${destRect.left + 40}px`);
+            clone.style.setProperty('--end-y', `${destRect.top + 100}px`);
+
+            document.body.appendChild(clone);
+
+            clone.addEventListener('animationend', () => {
+                clone.remove();
+                refreshClueBox();
+                renderRoom(); 
+            });
+        }
+
+        function triggerDynamicClueFlight(sourceEl, clueData) {
+            const srcRect = sourceEl.getBoundingClientRect();
+            const destPanel = document.getElementById('cbItems');
+            const destRect = destPanel.getBoundingClientRect();
+
+            const clone = document.createElement('div');
+            clone.className = "fly-clone font-serif text-center border-2 border-red-500 bg-[#421b13] text-[#ebdcd0] text-[10px] flex items-center justify-center p-2 rounded-sm shadow-2xl";
+            clone.style.width = `120px`;
+            clone.style.height = `45px`;
+            clone.style.left = "0px";
+            clone.style.top = "0px";
+            clone.innerText = clueData.name;
+
+            clone.style.setProperty('--start-x', `${srcRect.left}px`);
+            clone.style.setProperty('--start-y', `${srcRect.top}px`);
+            clone.style.setProperty('--end-x', `${destRect.left + 40}px`);
+            clone.style.setProperty('--end-y', `${destRect.top + 100}px`);
+
+            document.body.appendChild(clone);
+
+            clone.addEventListener('animationend', () => {
+                clone.remove();
+                refreshClueBox();
+                if (gameState.currentSite) renderRoom(); 
+            });
+        }
+
+        // ==========================================
+        // DIALOGUE VISUAL NOVEL TYPEWRITER SYSTEM
+        // ==========================================
+        let typingTimer = null;
+        function openDialogue(npcItem) {
+            const footer = document.getElementById('invDialog');
+            footer.classList.remove('hidden');
+
+            const speaker = document.getElementById('dialogSpeaker');
+            const textEl = document.getElementById('dialogText');
+            const choicesEl = document.getElementById('dialogChoices');
+
+            speaker.innerText = npcItem.name;
+            choicesEl.innerHTML = "";
+
+            let currentLineIdx = 0;
+            const lines = npcItem.talk.lines;
+
+            function runTypewriter(textStr, callback) {
+                textEl.innerHTML = "";
+                let i = 0;
+                clearInterval(typingTimer);
+                typingTimer = setInterval(() => {
+                    if (i < textStr.length) {
+                        textEl.innerHTML += textStr.charAt(i);
+                        OccultAudio.playTalk();
+                        i++;
+                    } else {
+                        clearInterval(typingTimer);
+                        if(callback) callback();
+                    }
+                }, 20);
+            }
+
+            function displayNextLine() {
+                if (currentLineIdx < lines.length) {
+                    runTypewriter(lines[currentLineIdx], () => {
+                        currentLineIdx++;
+                        const nextBtn = document.createElement('button');
+                        nextBtn.className = "px-4 py-1 bg-[#2e1d15] hover:bg-[#4a2e20] border border-[#5d3f31] text-[#ebdcd0] text-xs rounded-sm transition font-serif cursor-pointer flex items-center gap-1";
+                        nextBtn.innerHTML = `
+                            <span>${currentLineIdx === lines.length ? "探究传闻" : "细听下文"}</span>
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                        `;
+                        nextBtn.onclick = () => {
+                            nextBtn.remove();
+                            if (currentLineIdx === lines.length) {
+                                showChoices();
+                            } else {
+                                displayNextLine();
+                            }
+                        };
+                        choicesEl.appendChild(nextBtn);
+                    });
+                }
+            }
+
+            function showChoices() {
+                choicesEl.innerHTML = "";
+                npcItem.talk.choices.forEach(ch => {
+                    const btn = document.createElement('button');
+                    btn.className = "px-3 py-1 bg-[#1a110a] hover:bg-[#3e1a10] border border-[#502e1c] hover:border-[#a83232] text-[#dfcdbe] text-xs rounded-sm transition text-left truncate max-w-xs font-serif cursor-pointer flex items-center gap-1";
+                    btn.innerHTML = `
+                        <svg class="w-3 h-3 text-[#a83232]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span>${ch.q}</span>
+                    `;
+                    btn.onclick = () => {
+                        choicesEl.innerHTML = "";
+                        runTypewriter(ch.a, () => {
+                            const closeBtn = document.createElement('button');
+                            closeBtn.className = "px-4 py-1 bg-[#4e1610] hover:bg-red-800 border border-[#a83232] text-red-100 text-xs rounded-sm transition font-serif cursor-pointer flex items-center gap-0.5";
+                            closeBtn.innerHTML = `
+                                <span>收存此问录</span>
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                            `;
+                            closeBtn.onclick = () => {
+                                closeDialogue();
+                                addLogSystem("获取传闻", `完成对「${npcItem.name}」的深度盘问对证。`);
+                            };
+                            choicesEl.appendChild(closeBtn);
+                        });
+                    };
+                    choicesEl.appendChild(btn);
+                });
+            }
+
+            displayNextLine();
+        }
+
+        function showDialogue(title, desc) {
+            const footer = document.getElementById('invDialog');
+            footer.classList.remove('hidden');
+
+            const speaker = document.getElementById('dialogSpeaker');
+            const textEl = document.getElementById('dialogText');
+            const choicesEl = document.getElementById('dialogChoices');
+
+            speaker.innerText = title;
+            textEl.innerText = desc;
+            choicesEl.innerHTML = "";
+
+            const okBtn = document.createElement('button');
+            okBtn.className = "px-5 py-1 bg-[#2b1f1a] hover:bg-[#4a1818] border border-[#4d3a2f] text-[#ebdcd0] text-xs rounded-sm transition font-serif cursor-pointer flex items-center gap-1";
+            okBtn.innerHTML = `
+                <span>阖上笔录</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            `;
+            okBtn.onclick = () => footer.classList.add('hidden');
+            choicesEl.appendChild(okBtn);
+        }
+
+        function closeDialogue() {
+            document.getElementById('invDialog').classList.add('hidden');
+            clearInterval(typingTimer);
+        }
+
+        // ==========================================
+        // DATABASE RETRIEVERS & VISUAL REFRESHERS
+        // ==========================================
+        function refreshClueBox() {
+            const container = document.getElementById('cbItems');
+            container.innerHTML = "";
+            
+            let count = 0;
+
+            // Render physical elements
+            gameState.obtainedItems.forEach(itemId => {
+                const it = getItemObjById(itemId);
+                if (!it) return;
+                count++;
+
+                const card = document.createElement('div');
+                const isSelected = gameState.activeItemId === itemId;
+                
+                card.className = `p-2.5 rounded-sm flex flex-col justify-between h-24 cursor-pointer select-none transition old-paper ${isSelected ? 'border-2 border-red-500 bg-[#3d2116] scale-[0.98]' : 'border border-[#3d2d24]'}`;
+                
+                // Allow selecting either for detail show or equip
+                card.onclick = () => {
+                    selectItem(itemId);
+                };
+
+                const title = document.createElement('span');
+                title.className = "text-[11px] font-bold font-serif text-[#ebdcd0] flex justify-between items-center";
+                title.innerHTML = `
+                    <span class="flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 4v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2h6l4 4z"/></svg>
+                        <span>${it.name}</span>
+                    </span> 
+                    <span class="text-[9px] text-[#806b5a] font-normal italic">${it.canCombine ? '可合成' : it.isSceneUsable ? '可装配场景' : '线索残件'}</span>
+                `;
+
+                const brief = document.createElement('span');
+                brief.className = "text-[10px] text-[#9c8473] line-clamp-2 mt-1.5 font-serif leading-relaxed";
+                brief.innerText = it.desc;
+
+                card.appendChild(title);
+                card.appendChild(brief);
+                container.appendChild(card);
+            });
+
+            // Render unlocked dynamic key-clues or advanced fusion files
+            gameState.synthesizedClues.forEach(clueId => {
+                const clue = DYNAMIC_CLUES[clueId];
+                if (!clue) return;
+                count++;
+
+                const card = document.createElement('div');
+                card.className = "bg-[#18110e] border border-[#5c1c11] p-2.5 rounded-sm flex flex-col justify-between h-24 cursor-pointer select-none transition old-paper";
+                card.onclick = () => {
+                    OccultAudio.playTalk();
+                    showDialogue(clue.name, clue.desc);
+                };
+
+                const title = document.createElement('span');
+                title.className = `text-[11px] font-bold font-serif flex items-center gap-1 ${clue.keyClue ? 'text-orange-400' : 'text-[#f5c398]'}`;
+                title.innerHTML = `
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 009 11.5M12 11c0-3.517 1.009-6.799 2.753-9.571m3.44 2.04l-.054.09A13.916 13.916 0 0015 11.5M12 11a1 1 0 110-2 1 1 0 010 2zm0 0v1.5a1.5 1.5 0 001.5 1.5H15m-3-1.5v.5M12 15h.01M12 18.5h.01"/></svg>
+                    <span>${clue.name}</span>
+                `;
+
+                const brief = document.createElement('span');
+                brief.className = "text-[10px] text-[#a68670] line-clamp-2 mt-1.5 font-serif leading-relaxed";
+                brief.innerText = clue.desc;
+
+                card.appendChild(title);
+                card.appendChild(brief);
+                container.appendChild(card);
+            });
+
+            document.getElementById('invCount').innerText = count;
+
+            const logBox = document.getElementById('cbLog');
+            logBox.innerHTML = gameState.clueLogs.join("<br/>");
+            logBox.scrollTop = 0;
+        }
+
+        // ==========================================
+        // FINAL COMPILATION & CORE QUIZ VERIFIER
+        // ==========================================
+        function openSynth() {
+            OccultAudio.playTalk();
+            document.getElementById('synthModal').classList.remove('hidden');
+            renderSynthModal();
+        }
+
+        function closeSynth() {
+            document.getElementById('synthModal').classList.add('hidden');
+        }
+
+        function renderSynthModal() {
+            const slots = ["fangwei", "bianhao", "shichen"];
+            slots.forEach(s => {
+                const textEl = document.getElementById(`slot_${s}_text`);
+                const boxEl = document.getElementById(`slot_${s}`);
+                
+                let targetClueId = "";
+                if (s === 'fangwei') targetClueId = 'gc_engrave_revealed';
+                else if (s === 'bianhao') targetClueId = 'yl_safe_note';
+                else if (s === 'shichen') targetClueId = 'ws_pc_unlocked';
+
+                const isUnlocked = gameState.synthesizedClues.includes(targetClueId);
+                
+                if (isUnlocked) {
+                    const data = DYNAMIC_CLUES[targetClueId];
+                    textEl.innerText = data.name;
+                    textEl.className = "text-[10px] text-green-400 font-bold uppercase font-serif mt-1";
+                    boxEl.style.borderColor = "#2e7d32";
+                    boxEl.style.background = "#142514";
+                } else {
+                    textEl.innerText = "（锁孔未知）";
+                    textEl.className = "text-[10px] text-[#5e4b3e] italic mt-1";
+                    boxEl.style.borderColor = "#5a3e2e";
+                    boxEl.style.background = "#1f1612";
+                }
+            });
+        }
+
+        function synthesizeKey() {
+            // Verify 3 lockpieces are fully gathered
+            const unlockedF = gameState.synthesizedClues.includes('gc_engrave_revealed');
+            const unlockedB = gameState.synthesizedClues.includes('yl_safe_note');
+            const unlockedS = gameState.synthesizedClues.includes('ws_pc_unlocked');
+
+            if (!unlockedF || !unlockedB || !unlockedS) {
+                OccultAudio.playFail();
+                customAlert("“天锁熔铸断绝：\n你目前尚未取齐 极北方位、绝密码、阴阳时辰 三块至要黄铜刻块！无法与神坛形成重力融合。”");
+                return;
+            }
+
+            const ans1 = document.getElementById('quiz_ans1').value;
+            const ans2 = document.getElementById('quiz_ans2').value;
+            const ans3 = document.getElementById('quiz_ans3').value;
+
+            if (!ans1 || !ans2 || !ans3) {
+                OccultAudio.playFail();
+                customAlert("“考问失准：\n天台铁锁重压震悚，警示你必须先推断出下方【同善仙人三大对证考问】的真实教员身份，方可合拢齿轮！”");
+                return;
+            }
+
+            // Answers: 
+            // 1. zhoushenzhi (medium/ vegetative)
+            // 2. sany (saboteur/ mathematician)
+            // 3. jiayifang (overseer/ forced the ritual)
+            if (ans1 === 'zhoushenzhi' && ans2 === 'sany' && ans3 === 'jiayifang') {
+                OccultAudio.playUnlock();
+                const btn = document.getElementById('btnStartSynth');
+                btn.innerText = "☠ 谶语严丝合缝！铜水熔融，天锁重合解锁中... ☠";
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    gameState.keyFound = true;
+                    saveState();
+                    try { localStorage.setItem('wbs_key_found_v1', '1'); } catch(e){}
+                    addLogSystem("天台门开", "大铁锁齿轮绞合完成。天门密室尘封十五年的封条断碎！");
+                    document.getElementById('synthSuccess').classList.remove('hidden');
+                }, 1500);
+            } else {
+                OccultAudio.playFail();
+                customAlert("“大考问斥绝：\n推论与1991教工案情底本完全对证不上！\n神坛因气脉错乱而发生剧烈震栗。请仔细阅读并揣摩熔汇出的三卷【重组秘档】，重新厘清 乩首、涂改者 及 监坛者 究竟是谁！”");
+                document.getElementById('quiz_ans1').value = "";
+                document.getElementById('quiz_ans2').value = "";
+                document.getElementById('quiz_ans3').value = "";
+            }
+        }
+
+        // ==========================================
+        // UTILITIES
+        // ==========================================
+        function getItemObjById(id) {
+            for (let siteId in INV_DATA) {
+                for (let floor of INV_DATA[siteId].floors) {
+                    const found = floor.items.find(it => it.id === id);
+                    if (found) return found;
+                }
+            }
+            return null;
+        }
+
+        function getItemNameById(id) {
+            const obj = getItemObjById(id);
+            if (obj) return obj.name;
+            const cData = DYNAMIC_CLUES[id];
+            return cData ? cData.name : "未知证物";
+        }
+
+        function toast(msg) {
+            const toastEl = document.createElement('div');
+            toastEl.className = "fixed bottom-24 right-6 bg-[#2d1212] border border-[#a83232] text-[#f2adad] text-xs px-4 py-2 rounded-sm shadow-2xl z-50 font-serif flex items-center gap-1";
+            toastEl.innerHTML = `
+                <svg class="w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span>${msg}</span>
+            `;
+            document.body.appendChild(toastEl);
+            setTimeout(() => toastEl.remove(), 2500);
+        }
+
+        function addLogSystem(type, msg) {
+            const timeStr = new Date().toTimeString().split(' ')[0];
+            gameState.clueLogs.unshift(`[${timeStr}] <span class="text-red-400 font-serif">[${type}]</span> ${msg}`);
+            if (gameState.clueLogs.length > 50) gameState.clueLogs.pop();
+            saveState();
+            refreshClueBox();
+        }
+
+        function winGameRedirect() {
+            customAlert("恭喜你！在逻辑重重印证中破译了1991年大惨剧的真相。天台铁门终于大开！何宏宇等后生代终于获得了救赎...");
+            setTimeout(() => {
+                try { localStorage.setItem('wbs_key_found_v1', '1'); } catch(e){}
+                window.location.href = 'page14-tiantai.html';
+            }, 3000);
+        }
+
+        // ==========================================
+        // SYSTEM RUN
+        // ==========================================
+        window.addEventListener('DOMContentLoaded', () => {
+            initGameState();
+        });
+    </script>
+</body>
+</html>

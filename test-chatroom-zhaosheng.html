@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta charset="UTF-8">
+<title>招生咨询对话框 · 独立测试</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"宋体","SimSun",serif;font-size:12px;background:#1a1a2e;color:#eee;display:flex;align-items:center;justify-content:center;min-height:100vh;flex-direction:column;gap:16px}
+
+/* 测试说明 */
+.test-info{background:#16213e;border:1px solid #0f3460;padding:14px 20px;max-width:560px;border-radius:6px;line-height:1.8;font-size:13px}
+.test-info h2{color:#e94560;font-size:16px;margin-bottom:6px;font-family:"黑体","SimHei",sans-serif}
+.test-info .cmd{display:inline-block;background:#0f3460;color:#e94560;padding:1px 8px;border-radius:3px;font-family:monospace;font-size:12px}
+.test-info .note{color:#aaa;font-size:11px;margin-top:6px}
+
+/* === 对话框完整样式（从 page10-zhaosheng.html 抽取）=== */
+.modal-overlay{display:flex;position:static;background:none;z-index:2000;align-items:center;justify-content:center}
+.modal-box{width:480px;max-width:92%;background:#fff;border:3px solid #edc75a;box-shadow:4px 4px 12px rgba(0,0,0,.4)}
+.modal-head{background:linear-gradient(to bottom,#2d4838,#3a5a4a);color:#fff;padding:10px 16px;font-size:15px;font-family:"黑体","SimHei",sans-serif;display:flex;justify-content:space-between;align-items:center}
+.modal-close{cursor:pointer;font-size:18px;color:#fff;line-height:1}
+.chat-box{width:440px;max-width:94%;display:flex;flex-direction:column;max-height:84vh}
+.chat-log{flex:1;overflow-y:auto;padding:14px;background:#f7f9fc;min-height:320px;max-height:50vh}
+.chat-row{display:flex;margin-bottom:12px;align-items:flex-end;gap:8px}
+.chat-row .av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-family:"黑体","SimHei",sans-serif;flex-shrink:0}
+.chat-row.teacher .av{background:#3a5a4a;color:#fff}
+.chat-row.user{flex-direction:row-reverse}
+.chat-row.user .av{background:#edc75a;color:#000}
+.chat-row .bubble{max-width:74%;padding:9px 12px;border-radius:10px;font-size:13px;line-height:1.85;text-align:justify;font-family:"宋体","SimSun",serif;word-break:break-word;white-space:pre-wrap}
+.chat-row.teacher .bubble{background:#fff;border:1px solid #eef3ea;color:#333}
+.chat-row.user .bubble{background:#3a5a4a;color:#fff}
+.typing{font-size:11px;color:#888;padding:0 14px 4px;font-family:"宋体","SimSun",serif;display:none}
+.chat-input{display:flex;gap:8px;padding:10px 12px;border-top:1px solid #eee}
+.chat-input input{flex:1;border:1px inset #808080;padding:7px 8px;font-size:13px;font-family:"宋体","SimSun",serif}
+.chat-input button{background:#3a5a4a;color:#fff;border:none;padding:0 18px;cursor:pointer;font-family:"黑体","SimHei",sans-serif;font-size:13px}
+.chat-input button:hover{background:#2d4838}
+
+/* 结局二选一按钮 */
+.ending-choice-btn{padding:8px 28px;font-size:14px;font-family:"黑体","SimHei",sans-serif;border:2px solid #edc75a;background:#3a5a4a;color:#fff;cursor:pointer;border-radius:4px;transition:all .25s;letter-spacing:2px}
+.ending-choice-btn:hover{background:#edc75a;color:#000;box-shadow:0 0 12px rgba(192,160,64,.5)}
+.ending-choice-btn.refuse{border-color:#666;background:#333;color:#ccc}
+.ending-choice-btn.refuse:hover{background:#555;color:#fff;border-color:#999;box-shadow:none}
+
+/* 记忆碎片触发器 */
+.frag-trigger{display:inline-block;background:#2e8b6a;color:#fff;padding:6px 14px;border-radius:4px;cursor:pointer;font-size:12px;font-family:"黑体","SimHei",sans-serif}
+.frag-trigger:hover{background:#3a5a4a}
+.frag-trigger.collected{background:#666;cursor:default}
+.frag-trigger .ft-mark{margin-right:4px}
+
+/* 重置按钮 */
+.reset-btn{background:#e94560;color:#fff;border:none;padding:6px 18px;border-radius:4px;cursor:pointer;font-family:"黑体","SimHei",sans-serif;font-size:12px}
+.reset-btn:hover{background:#c0392b}
+</style>
+</head>
+<body>
+
+<div class="test-info">
+  <h2>🧪 招生咨询 · 对话框独立测试</h2>
+  <div>
+    <span class="cmd">39</span> — 故事（末尾问钥匙在哪）<br>
+    <span class="cmd">想</span> 或 <span class="cmd">是</span> — 回答钥匙问题（需先发39）<br>
+    <span class="cmd">不</span> / <span class="cmd">不想</span> / <span class="cmd">不想了</span> / <span class="cmd">不了</span> — 拒绝作答（有惊吓！）<br>
+    <span class="cmd">祈愿</span> — 第四章记忆碎片<br>
+    <span class="cmd">无生老母</span> — 终极邀请（二选一结局）<br>
+    <span class="cmd">黄靖川</span> — 隐藏结局（自动跳转）<br>
+    其它文本 — 普通回复
+  </div>
+  <div class="note">⚠ 本测试页独立于游戏，不依赖外部脚本。所有阶段门禁已模拟为已解锁（Phase 3）。黑红惊吓效果仅作用于本页。</div>
+  <button class="reset-btn" onclick="resetTest()">🗑 清空对话记录</button>
+</div>
+
+<!-- 对话框（直接从 page10-zhaosheng.html 复制，不加遮罩/弹窗，常驻显示） -->
+<div class="modal-overlay">
+  <div class="modal-box chat-box">
+    <div class="modal-head">
+      <span>招生咨询 · 贾老师 <span style="font-size:11px;color:#9fe0a0">● 在线</span></span>
+      <span class="modal-close" onclick="closeChat()">×</span>
+    </div>
+    <div class="chat-log" id="chatLog"></div>
+    <div class="typing" id="chatTyping">贾老师 正在输入…</div>
+    <div class="chat-input">
+      <input id="chatText" placeholder="输入您想咨询的问题…" onkeydown="if(event.key==='Enter')sendChat()">
+      <button onclick="sendChat()">发送</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ========== 模拟依赖（独立测试用）==========
+window.phaseUnlocked = function(p){ return true; }; // 始终 Phase 3 已解锁
+window.FRAG = {
+  getCollected: function(){
+    try{ return JSON.parse(localStorage.getItem('test_wbs_frag_v1') || '[]'); }catch(e){ return []; }
+  },
+  known: function(){ return false; }
+};
+var CHAT_KEY = 'test_wbs_zhaosheng_chat_v1';
+var _keyQuestionPending = false;
+
+// ===== 核心对话逻辑（从 page10-zhaosheng.html 原样抽取）=====
+var chatStarted = false;
+function openChat(){}
+function closeChat(){}
+
+function appendRow(role, text){
+  var log = document.getElementById('chatLog');
+  var row = document.createElement('div'); row.className = 'chat-row ' + role;
+  var av = document.createElement('div'); av.className = 'av'; av.textContent = (role === 'teacher') ? '贾' : '我';
+  var b = document.createElement('div'); b.className = 'bubble'; b.textContent = text;
+  row.appendChild(av); row.appendChild(b); log.appendChild(row);
+  log.scrollTop = log.scrollHeight;
+  saveChat();
+}
+
+function saveChat(){
+  try { localStorage.setItem(CHAT_KEY, document.getElementById('chatLog').innerHTML); } catch(e){}
+}
+
+function userSay(t){ appendRow('user', t); }
+function botSay(t){ appendRow('teacher', t); }
+
+function sendChat(){
+  var inp = document.getElementById('chatText');
+  var q = inp.value.trim();
+  if(!q) return;
+  inp.value = '';
+  sendMsg(q);
+}
+
+function sendMsg(q){
+  userSay(q);
+  var typing = document.getElementById('chatTyping');
+  typing.style.display = 'block';
+  setTimeout(function(){
+    typing.style.display = 'none';
+    if(/祈愿/.test(q)){
+      botSayQiyuan();
+    }
+    else if(q === '39'){
+      botSay39();
+    }
+    else if(/^(想|是)$/.test(q) && _keyQuestionPending){
+      _keyQuestionPending = false;
+      botSayKeyYes();
+    }
+    else if(/^(不|不想|不想了|不了)$/.test(q) && _keyQuestionPending){
+      // 不标记清空，用户仍可改口答复"想"
+      botSayKeyNo();
+    }
+    else if(/无生老母/.test(q)){
+      botSayWusheng();
+    }
+    else if(/黄靖川/.test(q)){
+      botSayHuangjc();
+    }
+    else { botSay(teacherReply(q)); }
+  }, 700);
+}
+
+function teacherReply(q){
+  return '这个问题我一时说不清，您可以直接来教务处找我，或拨打招生专线。其他招生政策以县教育局当年文件为准。';
+}
+
+// 发送「39」触发
+function botSay39(){
+  var log = document.getElementById('chatLog');
+  if(log.querySelector('[data-special="39"]')) return;
+  var row = document.createElement('div'); row.className = 'chat-row teacher';
+  row.setAttribute('data-special', '39');
+  var av = document.createElement('div'); av.className = 'av'; av.textContent = '贾';
+  var b = document.createElement('div'); b.className = 'bubble';
+  b.innerHTML =
+    '三十九……你还是摸到这个数了，纪佑泽。你大概以为，贾一方当年那一群所谓的‘老朋友’，是挂在学校荣誉墙上那几张意气风发的教师形象？不，那只是给外人看的幌子。' +
+    '<br><br>那些看起来衣冠楚楚的正人君子，真实的身份是散落在各地的<b>同善社社员</b>。这所学校，从来不是什么象牙塔，它只是同善社的一颗名为‘无生’的坛口。贾一方借着办学的名义，把这里建成了一座巨大的‘祈愿池’。' +
+    '<br><br>而我们所追从的，是<b>无生老母</b>。你要问‘无生老母’是什么？在同善社的经卷里，她是‘真空家乡’的起源，是无生无灭的终极归宿。但在我们的坛口里，她是‘天平’，是执行‘等价交换’的法则。' +
+    '<br><br>发展到今日，扶乩早就不再是最初的样子了。贾一方把那一套通过转动盘子、询问神灵的旧迷信，改成了<b>祈愿</b>"——向‘无生老母’祭献某种代价，以换取现实中的筹码。这套法则的核心只有一句：‘凡有所取，必有所失。’' +
+    '<br><br>在同善社看来，这世界是死寂的、无序的。考运、财运、权势，这些东西原本就是分配不均的。所谓的‘祈愿’，其实就是从那些被视为弃子的人身上，把属于他们的气数强行抽出来，灌注到被选中的人身上。' +
+    '<br><br>何宏宇坠楼那天，你们全班三十个孩子，加上我总共三十一人都按在那张乩盘上。而我们只是向‘无生老母’献上了集体的傲慢与贪婪。当三十一个人同时渴望一个结果，并愿意承认某种代价时，那股力量大到可以扭曲现实。' +
+    '<br><br>‘<b>无生</b>’之名，取自‘生前无生，死后无生’。这意味着，每一个被卷入其中的人，都成了坛口的一部分，再也跳不出这张网。贾一方当年在后山立的那尊无头石像，就是为了给老母供奉那些‘被收走的气数’。' +
+    '<br><br>你看那八栋建筑，钟楼、教学楼、宿舍、运动场……当你把它们连起来，是一个巨大的‘同’字。那是贾一方当年请社里懂堪舆的高人布下的。这所学校从落成之日起，就是一个巨大的阵法，每一个走进校门的学生，在不知不觉中，都成了这个坛口的‘供品’。' +
+    '<br><br>现在，你还想知道那把<b>钥匙</b>在哪吗？';
+  row.appendChild(av); row.appendChild(b); log.appendChild(row);
+  log.scrollTop = log.scrollHeight;
+  saveChat();
+  _keyQuestionPending = true;
+}
+
+// 钥匙问答：想/是
+function botSayKeyYes(){
+  var log = document.getElementById('chatLog');
+  if(log.querySelector('[data-special="key-yes"]')) return;
+  var row = document.createElement('div'); row.className = 'chat-row teacher';
+  row.setAttribute('data-special', 'key-yes');
+  var av = document.createElement('div'); av.className = 'av'; av.textContent = '贾';
+  var b = document.createElement('div'); b.className = 'bubble';
+  b.innerHTML = '很好。去「联系我们」页看看吧，那里有你想要的线索。';
+  row.appendChild(av); row.appendChild(b); log.appendChild(row);
+  log.scrollTop = log.scrollHeight;
+  saveChat();
+  _keyQuestionPending = false;
+  try{ localStorage.setItem('test_wbs_keyaddr_v1','1'); }catch(e){}
+}
+
+// 钥匙问答：不/不想/不想了/不了 —— 黑红惊悚效果
+function botSayKeyNo(){
+  var log = document.getElementById('chatLog');
+  if(log.querySelector('[data-special="key-no"]')) return;
+  var row = document.createElement('div'); row.className = 'chat-row teacher';
+  row.setAttribute('data-special', 'key-no');
+  var av = document.createElement('div'); av.className = 'av'; av.textContent = '贾';
+  var b = document.createElement('div'); b.className = 'bubble';
+  b.innerHTML = '你不要为你的选择后悔。';
+  row.appendChild(av); row.appendChild(b); log.appendChild(row);
+  log.scrollTop = log.scrollHeight;
+  saveChat();
+  // 注意：不设 _keyQuestionPending = false，用户仍可改口回答"想"
+  // 黑红乱码震动效果
+  document.body.style.transition = 'background 0.3s';
+  document.body.style.background = '#1a0000';
+  document.documentElement.style.background = '#1a0000';
+  document.body.style.color = '#8b0000';
+  // 震动
+  var orig = document.body.style.transform || '';
+  document.body.style.transform = 'translate(0,0)';
+  var shake = function(n){
+    if(n <= 0){ document.body.style.transform = orig; return; }
+    var dx = (Math.random()-0.5)*20;
+    var dy = (Math.random()-0.5)*20;
+    document.body.style.transform = 'translate('+dx+'px,'+dy+'px)';
+    setTimeout(function(){ shake(n-1); }, 40);
+  };
+  shake(12);
+  // 乱码覆盖层 —— 布满整个屏幕，多行不分段，随机铺满
+  var glitch = document.createElement('div');
+  glitch.id = 'glitch-overlay';
+  glitch.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;pointer-events:none;color:#800000;font-family:monospace;font-size:10px;line-height:1.2;overflow:hidden;opacity:.65;word-break:break-all;white-space:pre';
+  var chars = '!@#$%^&*()_+{}|:<>?~`0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz汉同善无生老母扶乩祈愿坛气数命因果轮回';
+  var txt = '';
+  // 生成约 200 行，每行约 80 个随机字符，全力铺满
+  for(var r=0;r<200;r++){
+    for(var c=0;c<80;c++){ txt += chars[Math.floor(Math.random()*chars.length)]; }
+    txt += '\n';
+  }
+  glitch.textContent = txt; // 用 textContent 避免 HTML 渲染延迟
+  document.body.appendChild(glitch);
+  // 3 秒后渐隐清除
+  setTimeout(function(){
+    glitch.style.transition = 'opacity 1s';
+    glitch.style.opacity = '0';
+    setTimeout(function(){ if(glitch.parentNode) glitch.parentNode.removeChild(glitch); }, 1000);
+  }, 3000);
+}
+
+// 发送「祈愿」触发
+function botSayQiyuan(){
+  var log = document.getElementById('chatLog');
+  var row = document.createElement('div'); row.className = 'chat-row teacher';
+  row.setAttribute('data-special', 'qiyuan');
+  var av = document.createElement('div'); av.className = 'av'; av.textContent = '贾';
+  var b = document.createElement('div'); b.className = 'bubble';
+  b.innerHTML =
+    '纪佑泽，我一直在等你。你还记得那天吗？2006年6月5日发生的事你应该已经想起来了吧，我很好奇，你会不会觉得对不起‘他’呢？' +
+    '<br><br>哦对了，到这里你难道不好奇这个无生中学建立时贾一方的那群‘朋友’们到底是谁吗？想的话就去名师风采处看看吧。——' +
+    '<br>0001 0011 1010 0010 1010 1011 0111' +
+    '<br>1001 0100 0110 1000 1001 1100 0101';
+  row.appendChild(av); row.appendChild(b); log.appendChild(row);
+  try { localStorage.setItem('test_wbs_mingshi_gray_v1', '1'); } catch(e){}
+  var hold = document.createElement('div');
+  hold.style.textAlign = 'center'; hold.style.margin = '2px 0 8px';
+  var ft = document.createElement('div'); ft.className = 'frag-trigger'; ft.setAttribute('data-frag', 'f4');
+  var have = (window.FRAG && window.FRAG.getCollected ? FRAG.getCollected() : []);
+  if (have.indexOf('f4') >= 0) {
+    ft.classList.add('collected');
+    ft.innerHTML = '<span class="ft-mark"></span>已收入记忆碎片';
+  } else {
+    ft.innerHTML = '<span class="ft-mark"></span>记忆碎片 · 日记第四章';
+  }
+  ft.style.display = '';
+  hold.appendChild(ft); log.appendChild(hold);
+  log.scrollTop = log.scrollHeight;
+  saveChat();
+}
+
+// 发送「无生老母」触发
+function botSayWusheng(){
+  var log = document.getElementById('chatLog');
+  var row = document.createElement('div'); row.className = 'chat-row teacher';
+  row.setAttribute('data-special', 'wusheng');
+  var av = document.createElement('div'); av.className = 'av'; av.textContent = '贾';
+  var b = document.createElement('div'); b.className = 'bubble';
+  b.innerHTML =
+    '……你终于念出了那个名字。' +
+    '<br><br>纪佑泽，我等这一刻，比你以为的更久。你以为你摸到了这间学校的底，其实你才刚刚碰到了水面。水底下是什么？是几百年来从未断过的一口气——从罗祖的五部六册，到贾一方借它立校，到我站在这间教室里给你们上心理课。我们不是在"传教"。我们是在替那些走投无路的人，找一个能活下去的理由。' +
+    '<br><br>扶乩也好，祈愿也罢，名字换了，道理没变过：总得有人付出代价，剩下的人才能往前走。何宏宇付出了。你付出了——你的记忆，你的身份，你整整九年。' +
+    '<br><br>现在，我把选择权还给你。' +
+    '<br><br>无生中学需要一个新的"引路人"。一个真正经历过这一切、又重新站在门口的人。你可以接过这支火把，像我当年一样，去下一个地方，换一个名字，继续做这件事。或者……你也可以转身就走。门一直开着。';
+  row.appendChild(av); row.appendChild(b); log.appendChild(row);
+  var hold = document.createElement('div');
+  hold.style.textAlign = 'center'; hold.style.margin = '10px 0 6px';
+  hold.style.display = 'flex'; hold.style.gap = '10px'; hold.style.justifyContent = 'center';
+  var btn1 = document.createElement('button');
+  btn1.className = 'ending-choice-btn';
+  btn1.textContent = '我加入';
+  btn1.onclick = function(){ alert('结局：我加入（测试弹窗，正式版跳转 ending-join.html）'); };
+  var btn2 = document.createElement('button');
+  btn2.className = 'ending-choice-btn refuse';
+  btn2.textContent = '我拒绝';
+  btn2.onclick = function(){ alert('结局：我拒绝（测试弹窗，正式版跳转 ending-refuse.html）'); };
+  hold.appendChild(btn1); hold.appendChild(btn2);
+  log.appendChild(hold);
+  log.scrollTop = log.scrollHeight;
+  saveChat();
+}
+
+// 发送「黄靖川」触发
+function botSayHuangjc(){
+  var log = document.getElementById('chatLog');
+  if(log.querySelector('[data-special="huangjc"]')) return;
+  var row = document.createElement('div'); row.className = 'chat-row teacher';
+  row.setAttribute('data-special', 'huangjc');
+  var av = document.createElement('div'); av.className = 'av'; av.textContent = '贾';
+  var b = document.createElement('div'); b.className = 'bubble';
+  b.innerHTML =
+    '……黄靖川。你居然还记得他。' +
+    '<br><br>好吧。既然你问到了这个名字，我就告诉你那个被所有人藏起来的真相。但听完之后，你别怪我没提醒过你——有些东西，不知道反而是一种仁慈。' +
+    '<br><br>何宏宇的事，从来就不是一个人干的。那是全班三十颗心，一起往一个人身上压的恶念。那天晚上旧同善楼的天台，扶乩盘转起来的时候，每个人都伸长脖子盯着它，盼着它别指到自己。何宏宇的手机被收、他的家境被翻来覆去地嚼、他每次"又没被抽中"时那点松一口气被人当成笑话——那不是我一个人的手推的，是全班一起。' +
+    '<br><br>可我，是第一个把那只手按下去的人。我是把那股恶念推到台面上的人。别人还在犹豫，我已经替他们做了。所以我不是最坏的，我是最先坏的——明着坏的那一个。何宏宇坠下去，根子上是全班的恶，而我是那个推手。' +
+    '<br><br>何宏宇坠下去之后，黄靖川才找上我的。' +
+    '<br><br>你以为他是来安慰我的？错了。他是来设套的。' +
+    '<br><br>他想要我的身世。他想要和我换。他是山沟沟里长大的穷孩子，我是城里有钱人家的少爷。他看了我那种什么都不缺的日子太久了，久到那点艳羡烂成了别的东西。所以他故意激我——故意在我面前把话说得轻飘飘的，像是看不起我似的："你敢不敢赌一把？反正你什么都有，输了也不过是换一种活法。"' +
+    '<br><br>我就是信了。我就是太自信、太傲慢，觉得自己怎么都不会输，觉得天下没有我摆不平的事。我笑着答应了他。' +
+    '<br><br>那次扶乩，不是用来替谁祈愿的。是用来换命的。盘转起来的时候，我和他都不知道会落到谁头上。——不。他知道的。从头到尾，他都知道会是我。' +
+    '<br><br>我被抽中了。然后我们换了。我的名字、我家里那扇雕花的大门、那辆每天来接我的车、那张写着"少爷"的床，全都到了他身上。而他那个山沟沟里漏雨的屋子、那双磨破底的解放鞋、那碗永远掺着沙子的苞谷饭，到了我身上。' +
+    '<br><br>换的那一刻，我的记忆被抽走了。我不记得自己曾是有钱人家的少爷了。不记得那扇门，不记得那辆车，不记得母亲喊我"少爷"的声音。我以为自己生来就是现在这副样子——穷、无名、可以被任何人忽略。' +
+    '<br><br>可黄靖川记得。他住进了我的房子，坐上了我的位子，用着我的名字，却还披着那层"好人"的皮。他知道我是谁，知道他偷走了什么，可他一个字都不会告诉我。这就是他比谁都深的那一种坏——明面上的恶有人防，暗地里的恶没人防。' +
+    '<br><br>所以你现在才会以"二狗"的身份活着。所以你才会对一道又酸又甜的绿菜有执念，却想不起为什么。所以你才会翻到这个网址，却想不起自己曾经在这里写下过每一个字。你不是失去了记忆。你把自己的命，赌给了另一个想当你的坏人。' +
+    '<br><br>而黄靖川，守着这个秘密，演了一辈子好人。他比何宏宇更该被记恨——何宏宇，到底是被全班推下去的；黄靖川，是踩着我的命，站到了我本来该站的地方。' +
+    '<br><br>现在你站在我的对话框里，把"黄靖川"三个字打出来了。说明你的身体比你的脑子更诚实——它记得。它一直都记得。' +
+    '<br><br>至于你接下来要怎么活……那是你自己的事了。我只说一句：你欠何宏宇的，和你欠自己的，这辈子恐怕都还不清了。';
+  row.appendChild(av); row.appendChild(b); log.appendChild(row);
+  log.scrollTop = log.scrollHeight;
+  saveChat();
+  setTimeout(function(){ alert('隐藏结局触发（测试弹窗，正式版跳转 ending-hidden.html）'); }, 800);
+}
+
+// 记忆碎片点击（仅模拟测试用，不跳转页面）
+document.addEventListener('click', function(e){
+  var t = e.target.closest && e.target.closest('.frag-trigger[data-frag="f4"]');
+  if(!t) return;
+  var cur = (window.FRAG && window.FRAG.getCollected ? FRAG.getCollected() : []).slice();
+  if(cur.indexOf('f4') < 0) cur.push('f4');
+  try {
+    var LS_KEY = 'test_wbs_frag_v1';
+    var saved = [];
+    try { saved = JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch(e2){ saved = []; }
+    if(!Array.isArray(saved)) saved = [];
+    cur.forEach(function(x){ if(saved.indexOf(x) < 0) saved.push(x); });
+    localStorage.setItem(LS_KEY, JSON.stringify(saved));
+  } catch(e2){}
+  t.classList.add('collected');
+  t.innerHTML = '<span class="ft-mark"></span>已收入记忆碎片';
+  alert('✓ 已收集日记第四章记忆碎片！');
+});
+
+// 清空测试记录
+function resetTest(){
+  try{
+    localStorage.removeItem(CHAT_KEY);
+    localStorage.removeItem('test_wbs_frag_v1');
+    localStorage.removeItem('test_wbs_keyaddr_v1');
+    localStorage.removeItem('test_wbs_mingshi_gray_v1');
+  }catch(e){}
+  document.getElementById('chatLog').innerHTML = '';
+  _keyQuestionPending = false;
+  document.body.style.background = '';
+  document.body.style.color = '';
+  document.body.style.transform = '';
+  document.querySelectorAll('#glitch-overlay').forEach(function(el){ el.parentNode.removeChild(el); });
+  // 恢复测试标题
+  document.body.style.background = '#1a1a2e';
+  botSay('家长您好，我是无生中学招生办的贾老师。2015届招生报名正在进行，您有什么想了解的？');
+}
+botSay('家长您好，我是无生中学招生办的贾老师。2015届招生报名正在进行，您有什么想了解的？');
+</script>
+</body>
+</html>
