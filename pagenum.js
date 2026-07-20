@@ -15,20 +15,24 @@
  */
 (function () {
   // 推荐游玩顺序 —— 严格按《全解锁攻略》第一阶段→第二阶段→第三阶段的「发现顺序」重排：
-  //   常驻导航/表面页 → 阶段1(搜索框发现的表面线索：心理老师/会长/杜兴/贾一方/同善楼/天台/档案馆)
-  //   → 阶段2(论坛/聊天室/档案馆深层/停职/广播)
-  //   → 阶段3(菜单/校友旧刊/凯撒解密/秘密基地/日记/校友聚集/招生咨询/下载)
+  //   阶段0 常驻导航/表面页（含校园论坛/校友聚集/招生咨询/资源下载，均为导航页，第一阶段即可打开）
+  //   → 阶段1(搜索框发现的表面线索：心理老师/会长/杜兴/贾一方/同善楼/天台/档案馆)
+  //   → 阶段2(聊天室/档案馆深层/停职/广播)
+  //   → 阶段3(菜单/校友旧刊/凯撒解密/秘密基地/日记)
   // 序页(preamble)、索引(index)、三结局页(ending-*)与测试页不在序列内、不显示页码。
   var PAGES = [
-    /* 阶段0：常驻导航 / 表面浏览页（任何阶段均可访问，downloads 已移出 PHASE_OF） */
+    /* 阶段0：常驻导航 / 表面浏览页（任何阶段均可访问；论坛/校友/招生/downloads 均为导航页，第一阶段即可打开，已移出 PHASE_OF） */
     'page1.html',
     'page2-about.html',
     'page3-notice.html',
     'page4-events.html',
     'page5-jiaoyu.html',
     'page6-mingshi.html',
+    'page7-xiaoyou.html',
     'page8-dangjian.html',
     'page9-xuesheng.html',
+    'page10-zhaosheng.html',
+    'page11-luntan.html',
     'page12-guanyu.html',
     'school-calendar.html',
     'weekly-calendar.html',
@@ -45,16 +49,13 @@
     'archive-year.html',
     'archive-class.html',
     'archive-class7.html',
-    /* 第二阶段：论坛 + 聊天室 + 档案馆深层 + 停职 + 广播 */
-    'page11-luntan.html',
+    /* 第二阶段：聊天室 + 档案馆深层 + 停职 + 广播 */
     'page21-chatroom.html',
     'page22-graduation-photo.html',
     'page23-yuli-stop.html',
     'decrypt-morse.html',
     'morse-code.html',
-    /* 第三阶段：校友聚集 + 招生咨询 + 身份翻转 + 校友旧刊 + 凯撒解密 + 秘密基地 + 日记 */
-    'page7-xiaoyou.html',
-    'page10-zhaosheng.html',
+    /* 第三阶段：身份翻转 + 校友旧刊 + 凯撒解密 + 秘密基地 + 日记 */
     'food-menu.html',
     'jiukan.html',
     'decrypt-caesar.html',

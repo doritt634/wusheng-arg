@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>测试解锁面板 · 会同县无生中学（开发者专用）</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#0d1220;color:#dfe6f0;font-family:"Consolas","宋体",SimSun,monospace;font-size:14px;line-height:1.6;padding:24px}
+  .wrap{max-width:960px;margin:0 auto}
+  h1{font-size:20px;color:#ffe9a8;letter-spacing:2px;margin:0 0 4px;font-family:"黑体",SimHei,sans-serif}
+  .sub{color:#8fa3c0;font-size:12px;margin-bottom:18px}
+  .warn{background:#3a1e1e;border:1px solid #7a3a3a;color:#ffb0b0;padding:8px 12px;border-radius:6px;font-size:12px;margin-bottom:18px}
+  .card{background:#131b2e;border:1px solid #26324c;border-radius:8px;padding:16px 18px;margin-bottom:16px}
+  .card h2{font-size:14px;color:#8ec5ff;margin:0 0 12px;letter-spacing:1px;font-family:"黑体",SimHei,sans-serif}
+  .btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:6px}
+  button{cursor:pointer;border:none;border-radius:6px;padding:9px 16px;font-size:13px;font-family:inherit;transition:.15s}
+  .b-unlock{background:linear-gradient(180deg,#2e8b57,#1e6b40);color:#fff}
+  .b-unlock:hover{background:linear-gradient(180deg,#34a066,#227a49)}
+  .b-reset{background:linear-gradient(180deg,#a03030,#7a2020);color:#fff}
+  .b-reset:hover{background:linear-gradient(180deg,#c03838,#902828)}
+  .b-mini{background:#26324c;color:#cfe0f5}
+  .b-mini:hover{background:#334066}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+  .nav-a{display:block;text-decoration:none;color:#cfe0f5;background:#1a2439;border:1px solid #2a3752;border-radius:5px;padding:8px 11px;font-size:12.5px;transition:.12s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .nav-a:hover{background:#243254;border-color:#3a5080;color:#fff}
+  .nav-a .fn{color:#7f93b3;font-size:11px}
+  .grp-title{color:#c0a040;font-size:12px;margin:14px 0 6px;letter-spacing:1px}
+  .grp-title:first-child{margin-top:0}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  td{padding:4px 8px;border-bottom:1px solid #1e2840;vertical-align:top}
+  td.k{color:#9db4d6;white-space:nowrap;width:230px}
+  td.v{color:#9be3a0;word-break:break-all}
+  td.v.off{color:#c77}
+  .badge{display:inline-block;padding:1px 7px;border-radius:10px;font-size:11px}
+  .badge.on{background:#1e4d2e;color:#7be59a}
+  .badge.off{background:#4d2020;color:#e59a9a}
+  .foot{color:#6a7ea0;font-size:11px;margin-top:20px;text-align:center}
+  code{background:#0a0f1c;padding:1px 5px;border-radius:3px;color:#ffe9a8}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>测试解锁面板 · 开发者专用</h1>
+  <div class="sub">会同县无生中学 ARG — 一键跳过第一/二/三阶段的顺序解锁，直达任意页面测试纠错。此页不属于游戏，玩家不会看到。</div>
+
+  <div class="warn">⚠️ 本页仅供开发测试。点击「一键全解锁」会把游戏进度直接写成"通关状态"（阶段3 + 全部谜题已解 + 身份已确认 + 5 块碎片齐全）。如需回到真实试玩，请点「全部重置」。</div>
+
+  <div class="card">
+    <h2>① 进度控制</h2>
+    <div class="btnrow">
+      <button class="b-unlock" onclick="unlockAll()">🔓 一键全解锁（跳过三阶段）</button>
+      <button class="b-reset" onclick="resetAll()">♻ 全部重置（回到序章从头玩）</button>
+      <button class="b-mini" onclick="render()">↻ 刷新状态显示</button>
+    </div>
+    <div class="btnrow">
+      <button class="b-mini" onclick="setPhaseOnly(1)">仅设阶段①</button>
+      <button class="b-mini" onclick="setPhaseOnly(2)">仅设阶段②</button>
+      <button class="b-mini" onclick="setPhaseOnly(3)">仅设阶段③</button>
+      <button class="b-mini" onclick="clearKey('wbs_key_found_v1')">清除钥匙（测天台）</button>
+    </div>
+    <div id="msg" style="color:#7be59a;font-size:12px;min-height:16px;margin-top:6px"></div>
+  </div>
+
+  <div class="card">
+    <h2>② 页面快速跳转（全部可直达）</h2>
+    <div id="nav"></div>
+  </div>
+
+  <div class="card">
+    <h2>③ 当前存档状态（localStorage）</h2>
+    <table id="stat"><tbody></tbody></table>
+  </div>
+
+  <div class="foot">提示：改完文件后浏览器请硬刷新 <code>Ctrl+Shift+R</code>。此文件可随时删除，不影响游戏本体。</div>
+</div>
+
+<script>
+/* ===== 全部解锁键位映射（与游戏各页 localStorage 键保持一致）===== */
+
+// 阶段门禁：phase.js 里所有按阶段解锁的隐藏页，写入 wbs_visited 即视为"已访问"，
+// 配合 wbs_phase=3 彻底跳过顺序推进。
+// 阶段划分（2026-07-18 按《全解锁攻略》修正，须与 phase.js 的 PHASE_OF 保持一致）：
+//   Phase 1 = 搜索框发现的表面线索页（10页：心理老师/会长/杜兴/贾一方/同善楼/天台/档案馆三页）
+//   Phase 2 = 聊天室+档案馆深层+停职+广播（5页，排除 morse-code 参考表后 4 页为推进门槛）
+//   Phase 3 = 菜单/校友旧刊/凯撒解密/秘密基地/日记（5页）
+//   注：论坛(page11)/校友聚集(page7)/招生咨询(page10)/资源下载(downloads) 为常驻导航页，
+//       已从 PHASE_OF 移除（阶段0，永远可开）；此处 PHASE_PAGES 仅含「隐藏/搜索页」。
+var PHASE_PAGES = [
+  // ── 阶段1：搜索框发现的表面线索页 ──
+  "page15-xinli.html","page16-huizhang.html","page17-duxing.html",
+  "page18-jiayifang.html","page19-jiayifang-interview.html","page20-tongshan-notice.html",
+  "page14-tiantai.html",
+  "archive-year.html","archive-class.html","archive-class7.html",
+  // ── 阶段2：聊天室 + 档案馆深层 + 停职 + 广播 ──
+  "page21-chatroom.html","page22-graduation-photo.html","page23-yuli-stop.html",
+  "decrypt-morse.html","morse-code.html",
+  // ── 阶段3：身份翻转 + 日记 + 秘密基地 + 校友旧刊 ──
+  "food-menu.html","jiukan.html","decrypt-caesar.html","decrypt-base.html","page13-riji.html"
+];
+
+// 简单标志键（值为字符串 "1"）
+var FLAGS_1 = [
+  "wusheng_forum_login",     // 论坛登录
+  "wbs_caesar_solved_v1",    // 凯撒解密
+  "wbs_morse_solved_v1",     // 摩斯解密
+  "wbs_base_solved_v1",      // base 解密
+  "wbs_jiukan_photo_v1",     // 旧刊照片就位
+  "wbs_foodpuzzle_solved_v1",// 食堂糖醋排骨配对
+  "wbs_tiantai_door_v1",     // 天台第一道密码
+  "wbs_tiantai_cab_v1",      // 天台第二道密码
+  "wbs_key_found_v1",        // 最后一把钥匙
+  "wbs_keyaddr_v1",          // 地址密钥（招生39回复）
+  "wbs_mingshi_gray_v1",     // 名师风采卡片变灰
+  "wbs_pdf_downloaded_v1",   // PDF 已下载
+  "wbs_ch5_visible_v1",      // 日记第五章可见
+  "wbs_dl_toast_v1"          // 下载提示已弹
+];
+
+// JSON 编码键
+function unlockAll(){
+  try{
+    localStorage.setItem("wbs_phase","3");
+    localStorage.setItem("wbs_visited", JSON.stringify(PHASE_PAGES));
+    FLAGS_1.forEach(function(k){ localStorage.setItem(k,"1"); });
+    // 记忆碎片：5 片齐全 + 身份已确认
+    localStorage.setItem("wbs_frag_v1", JSON.stringify(["f1","f2","f3","f4","f5"]));
+    localStorage.setItem("wbs_known_v1", JSON.stringify(1));
+    // 集齐全部记忆：触发贾义正「最后一次机会」私信（与 fragment.js 的判定保持一致）
+    localStorage.setItem("wbs_jyz_msg_v1", "1");
+    // 清除「已读」标记，确保本次全解锁后弹窗会重新出现（便于反复测试）
+    localStorage.removeItem("wbs_jyz_read_v1");
+    // 矛盾点玩法：解锁 he / yu 两组，并全部抓出+揭示
+    localStorage.setItem("wbs_reveal_unlock_v1", JSON.stringify(["he","yu"]));
+    localStorage.setItem("wbs_reveal_v1", JSON.stringify({
+      caught:["he1","he2","he3","he4","he5","yu1","yu2","yu3"],
+      revealed:["he","yu"]
+    }));
+    // 聊天室 5 道口令全部解开
+    localStorage.setItem("wbs_cr_unlock_v1", JSON.stringify([0,1,2,3,4]));
+    flash("✔ 已全部解锁：阶段③ + 全谜题 + 身份确认 + 5 碎片 + 聊天室 5 口令。正在跳转到「名师风采」页以触发贾义正私信弹窗…");
+    // 跳到一个挂了 fragment.js 的故事页，使右下角弹窗立即出现（测试面板本身不加载 fragment.js）
+    setTimeout(function(){ window.location.href = "page6-mingshi.html"; }, 900);
+  }catch(e){ flash("✘ 写入失败："+e.message); }
+  render();
+}
+
+function resetAll(){
+  try{
+    // 关键修正：清空整个 localStorage（开发面板、同源 localhost，清空即纯净），
+    // 不再只匹配 wbs_ 前缀——否则 test_wbs_* 等键会残留，且任何非 wbs_ 前缀的状态键都漏掉。
+    var kill=[];
+    for(var i=0;i<localStorage.length;i++){ var k=localStorage.key(i); if(k) kill.push(k); }
+    kill.forEach(function(k){ try{ localStorage.removeItem(k); }catch(e){} });
+    // 顺手清 sessionStorage（万一有临时态）
+    try{ for(var j=sessionStorage.length-1;j>=0;j--){ var sk=sessionStorage.key(j); if(sk) sessionStorage.removeItem(sk); } }catch(e3){}
+    // 清掉地址栏里可能残存的碎片/身份透传参数，避免进入游戏页后被 fragment.js 重新写回 localStorage
+    try {
+      var up = new URLSearchParams(location.search);
+      if (up.has('known') || up.has('frag')) {
+        up.delete('known'); up.delete('frag');
+        var uq = up.toString();
+        history.replaceState(null, '', location.pathname + (uq ? '?' + uq : '') + location.hash);
+      }
+    } catch(e2){}
+    flash("♻ 已清空全部进度（共 "+kill.length+" 项）。请对已打开的游戏页按 Ctrl+Shift+R 硬刷新，使其内存态也回到序章。");
+  }catch(e){ flash("✘ 重置失败："+e.message); }
+  render();
+}
+
+function setPhaseOnly(n){
+  try{
+    localStorage.setItem("wbs_phase", String(n));
+    if(n>=3) localStorage.setItem("wbs_visited", JSON.stringify(PHASE_PAGES));
+    flash("已将阶段设为 "+n+"（仅改阶段，其余进度不变）。");
+  }catch(e){ flash("✘ "+e.message); }
+  render();
+}
+
+function clearKey(k){
+  try{ localStorage.removeItem(k); flash("已清除 "+k); }catch(e){}
+  render();
+}
+
+function flash(t){ document.getElementById("msg").textContent=t; }
+
+/* ===== 页面导航（全部直达）===== */
+var NAV = [
+  ["门户主站", [
+    ["page1.html","首页"],["preamble.html","序章·玩家手记"],
+    ["page2-about.html","学校概况"],["page3-notice.html","通知公告"],
+    ["page4-events.html","无生大事"],["page5-jiaoyu.html","教育教学"],
+    ["page6-mingshi.html","名师风采"],["page7-xiaoyou.html","校友聚集"],
+    ["page8-dangjian.html","党建园地"],["page9-xuesheng.html","学生天地"],
+    ["page10-zhaosheng.html","招聘招生"],["page11-luntan.html","校园论坛"],
+    ["page12-guanyu.html","关于我们"]
+  ]],
+  ["秘境 / 解密页", [
+    ["decrypt-caesar.html","凯撒解密"],["decrypt-morse.html","摩斯广播"],
+    ["decrypt-base.html","Base 解密"],["morse-code.html","摩斯对照表"],
+    ["jiukan.html","校友旧刊"],["food-menu.html","食堂菜单·糖醋排骨"]
+  ]],
+  ["档案 / 人物 / 事件页", [
+    ["archive-year.html","档案馆·年份"],["archive-class7.html","档案馆·7班"],
+    ["archive-class.html","档案馆·班级"],["page15-xinli.html","心理咨询室"],
+    ["page16-huizhang.html","学生会长"],["page17-duxing.html","独行"],
+    ["page18-jiayifang.html","贾一方"],["page19-jiayifang-interview.html","贾一方专访"],
+    ["page20-tongshan-notice.html","同善楼通告"],["page21-chatroom.html","加密聊天室"],
+    ["page22-graduation-photo.html","毕业照"],["page23-yuli-stop.html","俞丽停职"]
+  ]],
+  ["核心 / 结局页", [
+    ["page13-riji.html","纪佑泽日记（5章）"],["page14-tiantai.html","旧同善楼·天台储藏室"],
+    ["contact-us.html","联系我们（地图钥匙）"],["downloads.html","资料下载"],
+    ["school-calendar.html","校历"],["weekly-calendar.html","课程表"],
+    ["ending-join.html","结局·传承（加入）"],["ending-refuse.html","结局·离去（拒绝）"],
+    ["ending-hidden.html","隐藏结局（黄靖川）"]
+  ]]
+];
+
+function render(){
+  // 导航
+  var nav="";
+  NAV.forEach(function(sec){
+    nav+='<div class="grp-title">'+sec[0]+'</div><div class="grid">';
+    sec[1].forEach(function(p){
+      nav+='<a class="nav-a" href="'+p[0]+'">'+p[1]+'<br><span class="fn">'+p[0]+'</span></a>';
+    });
+    nav+='</div>';
+  });
+  document.getElementById("nav").innerHTML=nav;
+
+  // 状态表
+  var rows=[
+    ["wbs_phase","当前阶段"],
+    ["wbs_visited_hidden","已访问·隐藏页（阶段推进）"],
+    ["wbs_visited","已浏览页（含门户，全部）"],
+    ["wusheng_forum_login","论坛登录"],
+    ["wbs_cr_unlock_v1","聊天室已解口令"],
+    ["wbs_caesar_solved_v1","凯撒解密"],
+    ["wbs_morse_solved_v1","摩斯解密"],
+    ["wbs_base_solved_v1","Base 解密"],
+    ["wbs_jiukan_photo_v1","旧刊照片"],
+    ["wbs_foodpuzzle_solved_v1","糖醋排骨配对"],
+    ["wbs_known_v1","身份已确认"],
+    ["wbs_frag_v1","记忆碎片"],
+    ["wbs_tiantai_door_v1","天台第一道锁"],
+    ["wbs_tiantai_cab_v1","天台第二道锁"],
+    ["wbs_key_found_v1","最后钥匙"],
+    ["wbs_keyaddr_v1","地址密钥"],
+    ["wbs_mingshi_gray_v1","名师卡变灰"],
+    ["wbs_pdf_downloaded_v1","PDF 下载"],
+    ["wbs_ch5_visible_v1","日记第五章"],
+    ["wbs_reveal_unlock_v1","矛盾点已激活"]
+  ];
+  var html="";
+  rows.forEach(function(r){
+    var k=r[0], label=r[1], raw=localStorage.getItem(k), disp, on=false;
+    if(k==="wbs_visited_hidden"){
+      var hv=[]; try{ hv=JSON.parse(localStorage.getItem("wbs_visited"))||[]; }catch(e){}
+      var hidden=hv.filter(function(f){ return PHASE_PAGES.indexOf(f)>=0; });
+      disp=hidden.length+" / "+PHASE_PAGES.length+" 页（隐藏页）";
+      on=hidden.length>=PHASE_PAGES.length;
+    }else if(k==="wbs_visited"){
+      var av=[]; try{ av=JSON.parse(raw)||[]; }catch(e){}
+      var seenFiles={};
+      NAV.forEach(function(sec){ sec[1].forEach(function(p){ seenFiles[p[0]]=1; }); });
+      PHASE_PAGES.forEach(function(f){ seenFiles[f]=1; });
+      var totalPages=Object.keys(seenFiles).length;
+      disp=av.length+" / "+totalPages+" 页（含门户）";
+      on=av.length>=totalPages;
+    }else if(k==="wbs_frag_v1"){
+      var a=[]; try{ a=JSON.parse(raw)||[]; }catch(e){}
+      disp=a.length+"/5"+(a.length?" ("+a.join(",")+")":""); on=a.length>=5;
+    }else if(k==="wbs_cr_unlock_v1"){
+      var c=[]; try{ c=JSON.parse(raw)||[]; }catch(e){}
+      disp=c.length+"/5"; on=c.length>=5;
+    }else if(k==="wbs_reveal_unlock_v1"){
+      var g=[]; try{ g=JSON.parse(raw)||[]; }catch(e){}
+      disp=g.join(",")||"—"; on=g.length>=2;
+    }else if(k==="wbs_phase"){
+      disp=raw||"1（默认）"; on=raw==="3";
+    }else if(k==="wbs_ch5_visible_v1"){
+      // 游戏内 日记第五章 实际由 wbs_frag_v1 含 'f5' 解锁（page13-riji.html:222）；
+      // wbs_ch5_visible_v1 仅由本测试面板 unlockAll 写入，二者任一成立即视为已解锁。
+      var cf5=[]; try{ cf5=JSON.parse(localStorage.getItem("wbs_frag_v1"))||[]; }catch(e){}
+      var hasFlag=(localStorage.getItem("wbs_ch5_visible_v1")==="1");
+      on = hasFlag || (cf5.indexOf("f5")>=0);
+      disp = on ? ("已解锁（"+(cf5.indexOf("f5")>=0?"碎片 f5 已集":"标记位已置")+"）") : "未解锁（缺 f5）";
+    }else{
+      disp = raw==null ? "未设置" : raw;
+      on = raw!=null && raw!=="0";
+    }
+    var badge = on?'<span class="badge on">已解锁</span>':'<span class="badge off">未解锁</span>';
+    html+='<tr><td class="k">'+label+'<br><span class="fn" style="color:#5c6d8c;font-size:11px">'+k+'</span></td>'
+        +'<td class="v'+(on?'':' off')+'">'+disp+'</td><td style="width:80px;text-align:right">'+badge+'</td></tr>';
+  });
+  document.getElementById("stat").querySelector("tbody").innerHTML=html;
+}
+
+render();
+
+/* 调试便利：回到本页（浏览器后退 / bfcache 恢复）或别的标签页改了 localStorage 时，
+   重新读取并刷新状态显示，避免看到"冻结的旧快照"。
+   注意：只重绘，不做 location.reload()，不会陷入刷新死循环。 */
+window.addEventListener('pageshow', function(){ render(); });
+window.addEventListener('storage', function(){ render(); });
+</script>
+</body>
+</html>
