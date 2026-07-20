@@ -1,13 +1,14 @@
-/* pagenum.js —— 全站右下角「页码标」可逆层
+/* pagenum.js —— 全站页脚「页码文字」图层
  *
- * 功能：在每个游戏页面右下角显示一个固定页码标「n / 总页数」，
+ * 功能：在每个游戏页面底部版权栏的右下角，以纯文字形式显示页码「第 n / 总页数」，
  *       n 取自「推荐游玩顺序」（见 无生中学游玩攻略.md 第一/二层）。
  *
  * 设计要点：
- *  - position:fixed 钉在右下角，不受 foot.css 的 body flex 布局影响；
- *  - 半透明深底 + 白字，适配浅色/深色/白色背景的各类页面；
- *  - 位于左下角 fragHud、左上角热线方块之外的空白区，不冲突；
- *  - z-index 低于搜索弹窗(4000)/揭示遮罩(2000)，高于普通内容。
+ *  - 不再使用 position:fixed 浮标（iOS Safari 在 body overflow-x:hidden 下会退化、移动端不可见）。
+ *  - 改为把页码作为文档流的一部分，插入到页面底部版权栏
+ *    （.copy / .site-footer / .forum-footer / <footer> / .footer）内，右对齐显示；
+ *    移动端随页滚动到底部必然可见，彻底避开 fixed 定位问题。
+ *  - 若页面没有可识别的版权栏，则在 body 末尾兜底创建一个，保证页码始终存在。
  *
  * 还原方式：删除本文件，并移除各页 <script src="pagenum.js"></script> 即可整体撤销。
  */
@@ -69,6 +70,32 @@
     return m || 'page1.html';
   }
 
+  // 注入页码文字样式（文档流、靠右对齐，移动端可见）
+  function injectStyle() {
+    if (document.getElementById('pageNumStyle')) return;
+    var s = document.createElement('style');
+    s.id = 'pageNumStyle';
+    s.textContent =
+      '.pageNumText{' +
+      'display:block;width:100%;text-align:right;' +
+      'margin-top:6px;' +
+      'font:12px/1.5 "Courier New",monospace;letter-spacing:1px;' +
+      'color:#8a8a8a;user-select:none;pointer-events:none;' +
+      '}' +
+      '@media (max-width:820px){.pageNumText{font-size:11px;}}';
+    document.head.appendChild(s);
+  }
+
+  // 找页面底部版权栏：优先 .copy，其次各类 footer 容器
+  function findHost() {
+    var sels = ['.copy', '.site-footer', '.forum-footer', 'footer', '.footer'];
+    for (var i = 0; i < sels.length; i++) {
+      var el = document.querySelector(sels[i]);
+      if (el) return el;
+    }
+    return null;
+  }
+
   function init() {
     var file = currentFile();
     if (SKIP.indexOf(file) !== -1) return;
@@ -78,21 +105,24 @@
     var n = idx + 1;
     var total = PAGES.length;
 
-    var badge = document.createElement('div');
-    badge.id = 'pageNumBadge';
-    badge.textContent = n + ' / ' + total;
-    // 移动端抬到底部安全区/浏览器工具栏之上
-    // （mobile.css 另有 #pageNumBadge !important 兜底规则）
-    var isMobile = window.matchMedia && window.matchMedia('(max-width: 820px)').matches;
-    var bottomPos = isMobile ? 'calc(env(safe-area-inset-bottom, 0px) + 14px)' : '12px';
-    badge.setAttribute('style',
-      'position:fixed;right:12px;bottom:' + bottomPos + ';z-index:1100;' +
-      'background:rgba(20,20,20,.55);color:#fff;' +
-      'font:12px/1.5 "Courier New",monospace;letter-spacing:1px;' +
-      'padding:3px 9px;border-radius:11px;' +
-      'box-shadow:0 1px 4px rgba(0,0,0,.35);user-select:none;pointer-events:none;'
-    );
-    document.body.appendChild(badge);
+    injectStyle();
+
+    var host = findHost();
+    if (!host) {
+      // 兜底：页面无版权栏时，在 body 末尾创建一个，保证页码始终存在
+      host = document.createElement('div');
+      host.className = 'copy';
+      host.style.cssText = 'text-align:center;padding:14px 12px;color:#8a8a8a;font-size:12px;';
+      host.innerHTML = 'Copyright &copy; 十个化石 版权所有';
+      document.body.appendChild(host);
+    }
+
+    if (host.querySelector('.pageNumText')) return;   // 防重复插入
+
+    var el = document.createElement('div');
+    el.className = 'pageNumText';
+    el.textContent = '第 ' + n + ' / ' + total + ' 页';
+    host.appendChild(el);
   }
 
   if (document.readyState === 'loading') {
