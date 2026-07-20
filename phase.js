@@ -238,6 +238,7 @@
         var href = (a.getAttribute("href") || "").trim();
         if (!href || /^(#|javascript:)/i.test(href)) return;
         var m = href.split("/").pop().split("?")[0].split("#")[0].toLowerCase();
+        if (NAV_PAGES.indexOf(m) >= 0) return;   // 常驻导航页永远可点，不拦截（仅页内 data-phase 深层内容受阶段门禁）
         var need = (window.PHASE_OF && window.PHASE_OF[m]) || 0;
         if (!need || need <= ph) return;
         a.addEventListener("click", function (e) {
