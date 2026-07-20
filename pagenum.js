@@ -71,18 +71,18 @@
     return m || 'page1.html';
   }
 
-  // 注入页码文字样式（文档流、钉在版权栏同一行右侧，移动端可见，字体紧凑）
+  // 注入页码文字样式（文档流、紧跟版权文字后空几格、同行内联，移动端可见，字体紧凑）
   function injectStyle() {
     if (document.getElementById('pageNumStyle')) return;
     var s = document.createElement('style');
     s.id = 'pageNumStyle';
     s.textContent =
       '.pageNumText{' +
-      'position:absolute;right:10px;top:50%;transform:translateY(-50%);' +
+      'display:inline;margin-left:1.5em;' +
       'font:11px/1 "Courier New",monospace;letter-spacing:.5px;' +
       'color:#8a8a8a;user-select:none;pointer-events:none;' +
       '}' +
-      '@media (max-width:820px){.pageNumText{font-size:10px;right:8px;}}';
+      '@media (max-width:820px){.pageNumText{font-size:10px;margin-left:1em;}}';
     document.head.appendChild(s);
   }
 
@@ -119,11 +119,7 @@
 
     if (host.querySelector('.pageNumText')) return;   // 防重复插入
 
-    // 让页码相对版权栏定位（钉在同一行右侧）
-    if (getComputedStyle(host).position === 'static') {
-      host.style.position = 'relative';
-    }
-
+    // 页码紧跟版权文字之后、同一行内联（版权栏原有居中/对齐布局保持不变）
     var el = document.createElement('span');
     el.className = 'pageNumText';
     el.textContent = n + '/' + total;
