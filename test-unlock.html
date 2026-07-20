@@ -218,6 +218,23 @@ var NAV = [
 ];
 
 function render(){
+  // —— 存储可写性自检（移动端最易踩坑：无痕模式/阻止网站数据会让 setItem 静默失败）——
+  var swOK=true;
+  try{ localStorage.setItem("__wbst__","1"); swOK=(localStorage.getItem("__wbst__")==="1"); localStorage.removeItem("__wbst__"); }catch(e){ swOK=false; }
+  var swEl=document.getElementById("storeWarn");
+  if(!swEl){
+    swEl=document.createElement("div");
+    swEl.id="storeWarn";
+    swEl.style.cssText="background:#3a1e1e;border:1px solid #7a3a3a;color:#ffb0b0;padding:8px 12px;border-radius:6px;font-size:12px;margin-bottom:18px";
+    document.querySelector(".wrap").insertBefore(swEl, document.querySelector(".card"));
+  }
+  if(swOK){ swEl.style.display="none"; }
+  else {
+    swEl.style.display="block";
+    swEl.innerHTML="⚠️ 检测到当前浏览器<b>禁用了网站数据存储</b>（常见原因：iOS Safari 无痕/隐私模式，或在设置里阻止了本网站数据）。"+
+      "此时页面能正常打开，但「已访问」记录写不进 localStorage，阶段永远不会推进。请关闭无痕模式，或在 Safari → 本网站 → 允许数据，再硬刷新重试。";
+  }
+
   // 导航
   var nav="";
   NAV.forEach(function(sec){
@@ -258,7 +275,9 @@ function render(){
     if(k==="wbs_visited_hidden"){
       var hv=[]; try{ hv=JSON.parse(localStorage.getItem("wbs_visited"))||[]; }catch(e){}
       var hidden=hv.filter(function(f){ return PHASE_PAGES.indexOf(f)>=0; });
-      disp=hidden.length+" / "+PHASE_PAGES.length+" 页（隐藏页）";
+      var missing=PHASE_PAGES.filter(function(f){ return hv.indexOf(f)<0; });
+      disp=hidden.length+" / "+PHASE_PAGES.length+" 页（隐藏页）"
+        + (missing.length ? "<br><span style='color:#ffb0b0;font-size:11px'>未记录："+missing.join("、")+"</span>" : "");
       on=hidden.length>=PHASE_PAGES.length;
     }else if(k==="wbs_visited"){
       var av=[]; try{ av=JSON.parse(raw)||[]; }catch(e){}
