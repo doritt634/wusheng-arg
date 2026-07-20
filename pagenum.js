@@ -20,24 +20,22 @@
   //   → 阶段3(菜单/校友旧刊/凯撒解密/秘密基地/日记/校友聚集/招生咨询/下载)
   // 序页(preamble)、索引(index)、三结局页(ending-*)与测试页不在序列内、不显示页码。
   var PAGES = [
-    /* 常驻导航 / 表面浏览页（永远可访问） */
+    /* 阶段0：常驻导航 / 表面浏览页（任何阶段均可访问，downloads 已移出 PHASE_OF） */
     'page1.html',
     'page2-about.html',
     'page3-notice.html',
     'page4-events.html',
     'page5-jiaoyu.html',
     'page6-mingshi.html',
-    'page7-xiaoyou.html',
     'page8-dangjian.html',
     'page9-xuesheng.html',
-    'page10-zhaosheng.html',
     'page12-guanyu.html',
     'school-calendar.html',
     'weekly-calendar.html',
     'contact-us.html',
     'downloads.html',
-    'page11-luntan.html',
-    /* 第一阶段：搜索框发现的表面线索页 */
+    /* 第一阶段：搜索框发现的表面线索页（含天台、档案馆；天台排 P1 组最前） */
+    'page14-tiantai.html',
     'page15-xinli.html',
     'page16-huizhang.html',
     'page17-duxing.html',
@@ -47,14 +45,16 @@
     'archive-year.html',
     'archive-class.html',
     'archive-class7.html',
-    'page14-tiantai.html',
     /* 第二阶段：论坛 + 聊天室 + 档案馆深层 + 停职 + 广播 */
+    'page11-luntan.html',
     'page21-chatroom.html',
     'page22-graduation-photo.html',
     'page23-yuli-stop.html',
     'decrypt-morse.html',
     'morse-code.html',
-    /* 第三阶段：身份翻转 + 日记 + 秘密基地 + 校友旧刊 + 终局 */
+    /* 第三阶段：校友聚集 + 招生咨询 + 身份翻转 + 校友旧刊 + 凯撒解密 + 秘密基地 + 日记 */
+    'page7-xiaoyou.html',
+    'page10-zhaosheng.html',
     'food-menu.html',
     'jiukan.html',
     'decrypt-caesar.html',
