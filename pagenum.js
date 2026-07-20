@@ -81,8 +81,12 @@
     var badge = document.createElement('div');
     badge.id = 'pageNumBadge';
     badge.textContent = n + ' / ' + total;
+    // 移动端抬到底部安全区/浏览器工具栏之上
+    // （mobile.css 另有 #pageNumBadge !important 兜底规则）
+    var isMobile = window.matchMedia && window.matchMedia('(max-width: 820px)').matches;
+    var bottomPos = isMobile ? 'calc(env(safe-area-inset-bottom, 0px) + 14px)' : '12px';
     badge.setAttribute('style',
-      'position:fixed;right:12px;bottom:12px;z-index:1100;' +
+      'position:fixed;right:12px;bottom:' + bottomPos + ';z-index:1100;' +
       'background:rgba(20,20,20,.55);color:#fff;' +
       'font:12px/1.5 "Courier New",monospace;letter-spacing:1px;' +
       'padding:3px 9px;border-radius:11px;' +
