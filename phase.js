@@ -68,6 +68,25 @@
   var STORE_PHASE = "wbs_phase";     // 当前已解锁阶段（1/2/3）
   var STORE_VISIT = "wbs_visited";   // 已访问页文件名数组
 
+  // —— 存储后端（localStorage 优先，不可写时降级 sessionStorage）——
+  // 移动端 Safari 无痕/隐私模式会静默丢弃 setItem，导致 markVisited 看似成功
+  // 但实际没写入 → 阶段永远不推进。此处做回检 + 自动降级。
+  var _storeOK = true;  // 全局标记：当前存储是否可写
+  (function checkStore() {
+    try { localStorage.setItem("__wbst__", "1"); _storeOK = (localStorage.getItem("__wbst__") === "1"); localStorage.removeItem("__wbst__"); }
+    catch (e) { _storeOK = false; }
+  })();
+  function storeSet(key, val) {
+    try { if (_storeOK) { localStorage.setItem(key, val); return; } } catch (e) { _storeOK = false; }
+    try { sessionStorage.setItem(key, val); } catch (e2) {}  // 降级 session（本次会话有效，关标签丢失）
+  }
+  function storeGet(key) {
+    try {
+      if (_storeOK) { var v = localStorage.getItem(key); if (v !== null) return v; }
+      return sessionStorage.getItem(key);  // localStorage 无值时也尝试 session
+    } catch (e) { return null; }
+  }
+
   // 隐藏/搜索页所属阶段；未列出的页（常驻导航页、工具页）视为永远可访问（阶段 0）。
   //
   // 阶段划分依据：开发提供的《一到三阶段全解锁攻略》(2026-07-18) 严格对齐：
@@ -140,16 +159,16 @@
   ];
 
   function getPhase() {
-    var n = parseInt(localStorage.getItem(STORE_PHASE), 10);
+    var n = parseInt(storeGet(STORE_PHASE), 10);
     return (n >= 1 && n <= 3) ? n : 1;
   }
   function setPhase(n) {
-    try { localStorage.setItem(STORE_PHASE, String(n)); } catch (e) {}
+    storeSet(STORE_PHASE, String(n));
   }
   function getVisited() {
     try {
-      var a = JSON.parse(localStorage.getItem(STORE_VISIT));
-      if (Array.isArray(a)) return a;
+        var a = JSON.parse(storeGet(STORE_VISIT));
+        if (Array.isArray(a)) return a;
     } catch (e) {}
     return [];
   }
@@ -157,7 +176,13 @@
     var a = getVisited();
     if (a.indexOf(f) < 0) {
       a.push(f);
-      try { localStorage.setItem(STORE_VISIT, JSON.stringify(a)); } catch (e) {}
+      storeSet(STORE_VISIT, JSON.stringify(a));
+    }
+    // 档案馆合并计数：打开 archive-year 即视为档案馆三层均已访问（避免玩家漏点 class/class7 卡死阶段推进）
+    if (f === "archive-year.html") {
+      ["archive-class.html", "archive-class7.html"].forEach(function (cf) {
+        if (a.indexOf(cf) < 0) { a.push(cf); storeSet(STORE_VISIT, JSON.stringify(a)); }
+      });
     }
   }
 
@@ -262,6 +287,16 @@
   }
 
   function init() {
+    // 存储不可用时（Safari 无痕/阻止数据）立即提示，避免玩家"点了但进度不累积"的困惑
+    if (!_storeOK) {
+      var warnEl = document.createElement("div");
+      warnEl.style.cssText = "position:fixed;bottom:0;left:0;right:0;z-index:5000;background:#c93a3a;color:#fff;" +
+        "padding:8px 14px;font-size:12px;font-family:'宋体',SimSun,serif;text-align:center;line-height:1.6";
+      warnEl.innerHTML = "⚠️ 当前浏览器禁用了网站数据存储，游戏进度无法保存。<br>" +
+        "请关闭「无痕/隐私模式」，或在 Safari 设置中允许本网站存储数据，然后刷新页面。";
+      (document.body || document.documentElement).appendChild(warnEl);
+    }
+
     var f = (location.pathname.split("/").pop() || "").toLowerCase();
 
     // 统一拦截指向未解锁页的链接（如论坛里点开阶段2以后的热帖），点击即提示、不跳转
