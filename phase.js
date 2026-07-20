@@ -77,14 +77,13 @@
     catch (e) { _storeOK = false; }
   })();
   function storeSet(key, val) {
-    try { if (_storeOK) { localStorage.setItem(key, val); return; } } catch (e) { _storeOK = false; }
-    try { sessionStorage.setItem(key, val); } catch (e2) {}  // 降级 session（本次会话有效，关标签丢失）
+    // 每次都先尝试 localStorage（不依赖加载时的一次性 _storeOK 检测，避免误判降级导致进度丢失）
+    try { localStorage.setItem(key, val); return; } catch (e) {}
+    try { sessionStorage.setItem(key, val); } catch (e2) {}  // 真不可写时降级 session（本次会话有效，关标签丢失）
   }
   function storeGet(key) {
-    try {
-      if (_storeOK) { var v = localStorage.getItem(key); if (v !== null) return v; }
-      return sessionStorage.getItem(key);  // localStorage 无值时也尝试 session
-    } catch (e) { return null; }
+    try { var v = localStorage.getItem(key); if (v !== null) return v; } catch (e) {}
+    try { return sessionStorage.getItem(key); } catch (e2) { return null; }
   }
 
   // 隐藏/搜索页所属阶段；未列出的页（常驻导航页、工具页）视为永远可访问（阶段 0）。
