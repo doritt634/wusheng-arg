@@ -214,16 +214,21 @@
   }
 
   // 读取“当前选中的文字”，命中落在异常短句范围内的 anomaly 并捕获。
-  // desktop：按 R 键时调用；mobile：长按选中并保持约 2 秒后调用。
+  // desktop：按 R 键时调用；mobile：选区旁「标记矛盾点」按钮点击(touchstart)时调用，直接传 savedRange。
   // silentEmpty=true 时，若没有选中任何文字则不弹提示（移动端松手即取消，避免打扰）。
-  function catchFromSelection(silentEmpty){
-    var sel = window.getSelection();
-    if(!sel || sel.isCollapsed || sel.rangeCount === 0){
-      if(!silentEmpty) toast('这里似乎并无异样。');
-      return;
+  function catchFromSelection(silentEmpty, rangeOverride){
+    var range;
+    if(rangeOverride){
+      range = rangeOverride;               // 触屏按钮场景：直接用保存的选区，不受点击时选区塌缩影响
+    } else {
+      var sel = window.getSelection();
+      if(!sel || sel.isCollapsed || sel.rangeCount === 0){
+        if(!silentEmpty) toast('这里似乎并无异样。');
+        return;
+      }
+      range = sel.getRangeAt(0);
     }
-    var range = sel.getRangeAt(0);
-    if(!range.toString().trim()){
+    if(!range || !range.toString().trim()){
       if(!silentEmpty) toast('这里似乎并无异样。');
       return;
     }
@@ -270,67 +275,83 @@
     catchFromSelection(false);
   }
 
-  // ========== 触屏：长按选中文字并保持约 2 秒 → 判定选中正确 ==========
-  // 思路：不劫持系统选词。玩家像平时一样用系统长按选中一段文字，
-  // 只要期间手指“一直按住不动”满 HOLD_MS，且选中的范围落在某处矛盾点内，
-  // 即读取该选中文字并捕获。松手过早 / 滑动则视为取消，不影响。
-  var HOLD_MS = 2000;                                   // 长按保持时长
-  var lpTimer = null, lpArmed = false, lpX = 0, lpY = 0;
+  // ========== 触屏：选中文字后浮现「标记矛盾点」按钮，点按即捕获 ==========
+  // 思路：完全不劫持系统选词、不要求“长按保持 2 秒”。玩家像平时一样
+  // 选中文字（安卓即长按选词、拖拽手柄调整选区），只要选区落在某处矛盾点范围内，
+  // 页面即在选区旁浮现一个浮动按钮，点一下即读取选中文字并捕获。
+  // 这样彻底规避了安卓“长按已选文字即拖动选区 / 手指微移取消计时”与原生选词的冲突。
+  var selBtn = null, savedRange = null;
 
-  function clearLp(){
-    if(lpTimer){ clearTimeout(lpTimer); lpTimer = null; }
-    lpArmed = false;
-    hideHoldHint();
-  }
-
-  // 按住期间的轻提示（告诉玩家正在计 2 秒）
-  function showHoldHint(){
-    var h = document.getElementById('reveal-hold');
-    if(!h){
-      h = document.createElement('div');
-      h.id = 'reveal-hold';
-      h.className = 'reveal-hold';
-      document.body.appendChild(h);
+  function ensureSelBtn(){
+    if(selBtn) return;
+    selBtn = document.createElement('button');
+    selBtn.id = 'reveal-sel-btn';
+    selBtn.type = 'button';
+    selBtn.textContent = '标记矛盾点';
+    selBtn.style.cssText = 'position:fixed;z-index:1600;background:#c93a3a;color:#fff;' +
+      'border:2px outset #e6b0b0;border-radius:18px;padding:8px 16px;font-size:13px;' +
+      'font-family:\'黑体\',SimHei,sans-serif;box-shadow:0 3px 12px rgba(0,0,0,.35);' +
+      'display:none;touch-action:manipulation;user-select:none;-webkit-user-select:none;';
+    // 关键：安卓上点按钮时浏览器会先塌缩选区(selectionchange→本脚本隐藏按钮)，
+    // 若用 click 则按钮在 click 触发前已被 display:none，点击永不生效。
+    // 故用 touchstart(passive:false + preventDefault) 在选区塌缩前捕获，并直接传 savedRange，
+    // 完全不依赖点击瞬间的实时选区。mousedown 作桌面兜底（按钮本仅触屏显示）。
+    function onBtnActivate(e){
+      if(e){ e.preventDefault(); e.stopPropagation(); }
+      if(savedRange) catchFromSelection(true, savedRange);
+      hideSelBtn();
+      try { window.getSelection().removeAllRanges(); } catch(e3){}
     }
-    h.textContent = '保持按住以标记选中的文字…';
-    h.classList.add('show');
+    selBtn.addEventListener('touchstart', onBtnActivate, { passive:false });
+    selBtn.addEventListener('mousedown', onBtnActivate);
+    document.body.appendChild(selBtn);
   }
-  function hideHoldHint(){
-    var h = document.getElementById('reveal-hold');
-    if(h) h.classList.remove('show');
+  function showSelBtnAt(x, y){
+    ensureSelBtn();
+    var bw = 116, bh = 38;
+    var px = Math.max(8, Math.min(window.innerWidth - bw - 8, x - bw / 2));
+    var py = y - bh - 12;
+    if(py < 8) py = y + 16;               // 选区贴顶则改放到下方
+    selBtn.style.left = px + 'px';
+    selBtn.style.top = py + 'px';
+    selBtn.style.display = 'block';
+  }
+  function hideSelBtn(){
+    if(selBtn) selBtn.style.display = 'none';
+    savedRange = null;
   }
 
-  function onTouchStart(e){
+  // 选区是否与任一矛盾点短句相交（部分覆盖也算），用于决定是否弹按钮
+  function selectionIntersectsAnomaly(range){
+    var els = document.querySelectorAll('.anomaly');
+    for(var i = 0; i < els.length; i++){
+      try { if(range.intersectsNode(els[i])) return true; } catch(e){}
+    }
+    return false;
+  }
+
+  function onSelectionChange(){
     if(!isTouch) return;
-    // 仅“矛盾点任务进行中”（已搜名字激活、且尚未全部找完）才显示长按提示并判定；
-    // 任务未开启（没搜名字）/ 已全部完成 → 不弹提示、不计判定。
-    if(!hasIncompleteUnlockedGroup()) return;
-    if(e.touches && e.touches.length > 1) return;       // 多指不触发
-    lpArmed = true;
-    var tc = e.touches[0];
-    lpX = tc.clientX; lpY = tc.clientY;
-    showHoldHint();
-    lpTimer = setTimeout(function(){
-      var captured = lpArmed;          // 若中途未被取消（移动/松手）才有效
-      clearLp();
-      if(captured) catchFromSelection(true);   // 读取玩家此刻选中的文字并判定
-    }, HOLD_MS);
+    if(!hasIncompleteUnlockedGroup()){ hideSelBtn(); return; }  // 任务未激活/已完成不弹
+    var sel = window.getSelection();
+    if(!sel || sel.isCollapsed || sel.rangeCount === 0){ hideSelBtn(); return; }
+    var range = sel.getRangeAt(0);
+    if(!range.toString().trim()){ hideSelBtn(); return; }
+    if(!selectionIntersectsAnomaly(range)){ hideSelBtn(); return; }
+    savedRange = range.cloneRange();
+    var rect = range.getBoundingClientRect();
+    showSelBtnAt(rect.right, rect.top);
   }
-  function onTouchMove(e){
-    if(!lpArmed) return;
-    var tc = e.touches[0];
-    if(!tc) return;
-    if(Math.abs(tc.clientX - lpX) > 12 || Math.abs(tc.clientY - lpY) > 12) clearLp();
-  }
-  function onTouchEnd(){ clearLp(); }     // 未满 2 秒松手 → 取消
 
   function attachTouchListeners(){
-    document.addEventListener('touchstart', onTouchStart, { passive:true });
-    document.addEventListener('touchmove', onTouchMove, { passive:true });
-    document.addEventListener('touchend', onTouchEnd, { passive:true });
-    document.addEventListener('touchcancel', onTouchEnd, { passive:true });
-    // 注：不拦截 contextmenu / 不禁用 user-select，保留系统原生选词体验，
-    // 玩家选中文字后保持按住 2 秒由本脚本判定。
+    document.addEventListener('selectionchange', onSelectionChange, { passive:true });
+    // 滚动时按当前选区重定位按钮（选区仍在，仅视口坐标变化）
+    window.addEventListener('scroll', function(){
+      if(selBtn && selBtn.style.display === 'block' && savedRange){
+        var rect = savedRange.getBoundingClientRect();
+        showSelBtnAt(rect.right, rect.top);
+      }
+    }, { passive:true });
   }
 
   function resetReveal(){
@@ -375,7 +396,7 @@
     // 卡片内逐人显示“已抓 / 共 N（剩 M）”，并在每次抓中后实时刷新。
     var show = hasIncompleteUnlockedGroup();
     var tip = isTouch
-      ? '提示：先在搜索框查查某个名字，激活 ta 的矛盾点；再回到页面，<b>长按选中</b>那段看似不合常理的整句话，并<b>保持按住约 2 秒</b>，便可窥见被掩去的真相。'
+      ? '提示：先在搜索框查查某个名字，激活 ta 的矛盾点；再回到页面，<b>选中</b>那段看似不合常理的整句话（安卓即长按选词、拖手柄调整选区），选区旁会浮现「标记矛盾点」按钮，<b>点一下</b>即可窥见被掩去的真相。'
       : '提示：先在搜索框查查某个名字，激活 ta 的矛盾点；再回到页面，选中看似不合常理的<b>整句话</b>，按下 <b>R</b> 键，或可窥见被掩去的真相。';
     var body =
       '<div class="reveal-hint-tip">' + tip + '</div>' +
