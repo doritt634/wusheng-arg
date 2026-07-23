@@ -288,7 +288,7 @@
     selBtn.id = 'reveal-sel-btn';
     selBtn.type = 'button';
     selBtn.textContent = '标记矛盾点';
-    selBtn.style.cssText = 'position:fixed;z-index:1600;background:#c93a3a;color:#fff;' +
+    selBtn.style.cssText = 'position:fixed;z-index:100000;background:#c93a3a;color:#fff;' +
       'border:2px outset #e6b0b0;border-radius:18px;padding:8px 16px;font-size:13px;' +
       'font-family:\'黑体\',SimHei,sans-serif;box-shadow:0 3px 12px rgba(0,0,0,.35);' +
       'display:none;touch-action:manipulation;user-select:none;-webkit-user-select:none;';
