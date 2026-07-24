@@ -130,9 +130,13 @@
   }
 
 /* ========== 底部免责/版权灰框 ========== */
-.disclaimer { max-width: 1200px; margin: 0 auto; background: #1a1a1a; color: #6b6b6b; text-align: center; padding: 6px 16px 5px; font-family: "宋体", "SimSun", serif; }
+.disclaimer { max-width: 1200px; margin: 0 auto; background: #1a1a1a; color: #6b6b6b; text-align: center; padding: 8px 16px 7px; font-family: "宋体", "SimSun", serif; display:flex; justify-content:space-between; align-items:flex-end; position:relative; }
+.disclaimer .dis-left { flex:1; }
 .disclaimer .dis-text { font-size: 10px; letter-spacing: .3px; color: #555; }
 .disclaimer .copy { margin-top: 3px; font-size: 10px; color: #555; font-family: "黑体", "SimHei", sans-serif; letter-spacing: .3px; }
+.qr-survey { text-align:center; flex-shrink:0; margin-left:16px; }
+.qr-survey img { width:72px; height:72px; display:block; border-radius:4px; background:#fff; padding:2px; box-sizing:border-box; }
+.qr-survey span { display:block; font-size:9px; color:#888; margin-top:2px; white-space:nowrap; }
 </style>
   <link rel="stylesheet" href="foot.css">
 </head>
@@ -202,8 +206,14 @@
 
 <!-- ========== 底部免责声明 / 版权灰框 ========== -->
 <div class="disclaimer">
-  <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
-  <div class="copy">Copyright © 十个化石 版权所有</div>
+  <div class="dis-left">
+    <div class="dis-text">本网站内容纯属虚构，如有雷同，纯属巧合</div>
+    <div class="copy">Copyright © 十个化石 版权所有</div>
+  </div>
+  <div class="qr-survey">
+    <img src="survey-qrcode.png" alt="问卷调查二维码">
+    <span>欢迎填写问卷调查</span>
+  </div>
 </div>
   <script src="pagenum.js"></script>
 </body>
