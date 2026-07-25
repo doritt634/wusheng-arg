@@ -751,6 +751,70 @@ document.querySelectorAll('.modal-overlay').forEach(function(o){
 // 页面加载时先绑定顶部账户区事件（用 addEventListener，避免依赖内联 onclick），再恢复登录态
 setAccountUI('out');
 restoreLogin();
+
+// —— 帖子回复：需登录后才能回复（issue 1）——
+(function(){
+  var css = [
+    '.reply-wrap{margin-top:8px;}',
+    '.reply-btn{display:inline-block;padding:4px 14px;font:13px/1.4 "宋体",SimSun,serif;color:#2d4838;',
+    'background:#fff;border:1px solid #c43a3a;border-radius:3px;cursor:pointer;}',
+    '.reply-btn:hover{background:#fbeaea;}',
+    '.reply-btn .lk{font-size:11px;margin-left:5px;color:#c43a3a;}',
+    '.reply-box{margin-top:8px;padding:8px 10px;background:#fafafa;border:1px dashed #ccc;border-radius:4px;}',
+    '.reply-box textarea{width:100%;min-height:54px;box-sizing:border-box;font:13px/1.5 "宋体",SimSun,serif;',
+    'border:1px solid #bbb;border-radius:3px;padding:6px;resize:vertical;}',
+    '.reply-box .rb-actions{margin-top:6px;text-align:right;}',
+    '.reply-box .rb-cancel{margin-right:8px;padding:4px 12px;font:13px/1.4 "宋体",SimSun,serif;color:#666;',
+    'background:#eee;border:1px solid #ccc;border-radius:3px;cursor:pointer;}',
+    '.reply-box .rb-send{padding:4px 14px;font:13px/1.4 "宋体",SimSun,serif;color:#fff;background:#2d4838;',
+    'border:none;border-radius:3px;cursor:pointer;}',
+    '.reply-list{margin-top:8px;border-top:1px dashed #ddd;padding-top:6px;}',
+    '.reply-list .rp{font:13px/1.6 "宋体",SimSun,serif;color:#333;padding:4px 0;border-bottom:1px dotted #eee;}',
+    '.reply-list .rp .ra{color:#c43a3a;font-weight:bold;margin-right:6px;}'
+  ].join('');
+  var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
+
+  function isLoggedIn(){
+    try { return localStorage.getItem('wusheng_forum_login') === '1'; } catch(e){ return false; }
+  }
+
+  function buildReply(post){
+    if(post.querySelector('.reply-wrap')) return;
+    var wrap = document.createElement('div'); wrap.className = 'reply-wrap';
+    var btn = document.createElement('button'); btn.className = 'reply-btn'; btn.type = 'button';
+    btn.innerHTML = '回复<span class="lk">🔒</span>';
+    var box = document.createElement('div'); box.className = 'reply-box'; box.style.display = 'none';
+    box.innerHTML =
+      '<textarea placeholder="说点什么……（登录后可见）"></textarea>' +
+      '<div class="rb-actions"><button type="button" class="rb-cancel">取消</button>' +
+      '<button type="button" class="rb-send">发表回复</button></div>';
+    wrap.appendChild(btn); wrap.appendChild(box);
+    post.appendChild(wrap);
+
+    var ta = box.querySelector('textarea');
+    btn.addEventListener('click', function(){
+      if(!isLoggedIn()){ openLogin('请先登录后再回复本帖。'); return; }
+      box.style.display = (box.style.display === 'none') ? 'block' : 'none';
+      if(box.style.display === 'block') ta.focus();
+    });
+    box.querySelector('.rb-cancel').addEventListener('click', function(){ box.style.display = 'none'; });
+    box.querySelector('.rb-send').addEventListener('click', function(){
+      var txt = ta.value.trim();
+      if(!txt){ ta.focus(); return; }
+      var list = post.querySelector('.reply-list');
+      if(!list){ list = document.createElement('div'); list.className = 'reply-list'; post.appendChild(list); }
+      var rp = document.createElement('div'); rp.className = 'rp';
+      rp.innerHTML = '<span class="ra">纪佑泽</span>' + txt.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      list.appendChild(rp);
+      ta.value = '';
+      box.style.display = 'none';
+      var cnt = post.querySelector('.hot-num b');
+      if(cnt){ cnt.textContent = (parseInt(cnt.textContent,10) || 0) + 1; }
+    });
+  }
+
+  document.querySelectorAll('.hot-item, .thread-row').forEach(buildReply);
+})();
 </script>
 <script src="fragment.js"></script>
 <script src="search.js"></script>

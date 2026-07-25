@@ -44,7 +44,7 @@
   <h1>测试解锁面板 · 开发者专用</h1>
   <div class="sub">会同县无生中学 ARG — 一键跳过第一/二/三阶段的顺序解锁，直达任意页面测试纠错。此页不属于游戏，玩家不会看到。</div>
 
-  <div class="warn">⚠️ 本页仅供开发测试。点击「一键全解锁」会把游戏进度直接写成"通关状态"（阶段3 + 全部谜题已解 + 身份已确认 + 5 块碎片齐全）。如需回到真实试玩，请点「全部重置」。</div>
+  <div class="warn">⚠️ 本页仅供开发测试。「一键全解锁」会把进度写成"通关状态"（阶段3 + 全部谜题已解 + 矛盾点 + 聊天室口令），但<b>不会</b>集齐记忆碎片——碎片须按原玩法逐片点击收集。如需测试「你是纪佑泽」翻转/结局，请点「集齐碎片(测结局)」。回到真实试玩请点「全部重置」。</div>
 
   <div class="card">
     <h2>① 进度控制</h2>
@@ -57,6 +57,7 @@
       <button class="b-mini" onclick="setPhaseOnly(1)">仅设阶段①</button>
       <button class="b-mini" onclick="setPhaseOnly(2)">仅设阶段②</button>
       <button class="b-mini" onclick="setPhaseOnly(3)">仅设阶段③</button>
+      <button class="b-mini" onclick="collectAllFrags()">集齐碎片(测结局)</button>
       <button class="b-mini" onclick="clearKey('wbs_key_found_v1')">清除钥匙（测天台）</button>
     </div>
     <div id="msg" style="color:#7be59a;font-size:12px;min-height:16px;margin-top:6px"></div>
@@ -123,13 +124,6 @@ function unlockAll(){
     localStorage.setItem("wbs_phase","3");
     localStorage.setItem("wbs_visited", JSON.stringify(PHASE_PAGES));
     FLAGS_1.forEach(function(k){ localStorage.setItem(k,"1"); });
-    // 记忆碎片：5 片齐全 + 身份已确认
-    localStorage.setItem("wbs_frag_v1", JSON.stringify(["f1","f2","f3","f4","f5"]));
-    localStorage.setItem("wbs_known_v1", JSON.stringify(1));
-    // 集齐全部记忆：触发贾义正「最后一次机会」私信（与 fragment.js 的判定保持一致）
-    localStorage.setItem("wbs_jyz_msg_v1", "1");
-    // 清除「已读」标记，确保本次全解锁后弹窗会重新出现（便于反复测试）
-    localStorage.removeItem("wbs_jyz_read_v1");
     // 矛盾点玩法：解锁 he / yu 两组，并全部抓出+揭示
     localStorage.setItem("wbs_reveal_unlock_v1", JSON.stringify(["he","yu"]));
     localStorage.setItem("wbs_reveal_v1", JSON.stringify({
@@ -138,9 +132,20 @@ function unlockAll(){
     }));
     // 聊天室 5 道口令全部解开
     localStorage.setItem("wbs_cr_unlock_v1", JSON.stringify([0,1,2,3,4]));
-    flash("✔ 已全部解锁：阶段③ + 全谜题 + 身份确认 + 5 碎片 + 聊天室 5 口令。正在跳转到「名师风采」页以触发贾义正私信弹窗…");
-    // 跳到一个挂了 fragment.js 的故事页，使右下角弹窗立即出现（测试面板本身不加载 fragment.js）
-    setTimeout(function(){ window.location.href = "page6-mingshi.html"; }, 900);
+    flash("✔ 已解锁：阶段③ + 全谜题 + 矛盾点 + 聊天室 5 口令（记忆碎片须按原玩法逐片点击收集，或用下方「集齐碎片」按钮）。");
+  }catch(e){ flash("✘ 写入失败："+e.message); }
+  render();
+}
+
+// 集齐记忆碎片（仅测试用）：写入 5 片碎片 + 身份确认 + 贾义正私信触发。
+// 与「一键全解锁」分离，避免「解锁阶段」被误当成「碎片已集齐」——真实玩法中碎片须逐片点击收集。
+function collectAllFrags(){
+  try{
+    localStorage.setItem("wbs_frag_v1", JSON.stringify(["f1","f2","f3","f4","f5"]));
+    localStorage.setItem("wbs_known_v1", JSON.stringify(1));
+    localStorage.setItem("wbs_jyz_msg_v1", "1");
+    localStorage.removeItem("wbs_jyz_read_v1");
+    flash("✔ 已集齐 5 块记忆碎片 + 身份确认（用于测试「你是纪佑泽」翻转与结局）。打开任意故事页查看右下角私信。");
   }catch(e){ flash("✘ 写入失败："+e.message); }
   render();
 }
