@@ -676,7 +676,6 @@ function renderLoggedIn(){
   setAccountUI('in');
   document.getElementById('enterBtn').textContent = '进入聊天室';
   document.getElementById('lockTip').textContent = '※ 已登录，欢迎回到 2006 届毕业班！';
-  refreshForumLocks();
 }
 
 // 加载时恢复登录态：localStorage 已登录，或经由 ?from=forum 进入（从聊天室返回）
@@ -733,7 +732,6 @@ function doLogout(){
   loginForChatroom = false;
   try{ localStorage.removeItem('wusheng_forum_login'); }catch(e){}
   setAccountUI('out');
-  refreshForumLocks();
   document.getElementById('loginUser').value = '';
   document.getElementById('loginPass').value = '';
   document.getElementById('enterBtn').textContent = '进入聊天室';
@@ -754,34 +752,8 @@ document.querySelectorAll('.modal-overlay').forEach(function(o){
 setAccountUI('out');
 restoreLogin();
 
-// —— 帖子进入登录锁：未登录不能点进「求2006届毕业照高清扫描版」帖子（issue 1）——
+// —— 帖子进入登录锁：外观无差别，未登录点击不进入（弹登录提示）（issue 1）——
 (function(){
-  var css = '.post-locked{color:#999 !important;cursor:not-allowed;}' +
-            '.post-lock{font-size:12px;color:#c43a3a;margin-left:5px;font-weight:normal;}';
-  var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
-})();
-
-function refreshForumLocks(){
-  var links = document.querySelectorAll('a[href="page22-graduation-photo.html"]');
-  Array.prototype.forEach.call(links, function(a){
-    var parent = a.parentNode;
-    var badge = parent.querySelector(':scope > .post-lock');
-    if(!loggedIn){
-      a.classList.add('post-locked');
-      if(!badge){
-        badge = document.createElement('span');
-        badge.className = 'post-lock';
-        badge.textContent = '🔒 需登录';
-        parent.appendChild(badge);
-      }
-    } else {
-      a.classList.remove('post-locked');
-      if(badge && badge.parentNode){ badge.parentNode.removeChild(badge); }
-    }
-  });
-}
-
-function initPostEnterLock(){
   var links = document.querySelectorAll('a[href="page22-graduation-photo.html"]');
   Array.prototype.forEach.call(links, function(a){
     a.addEventListener('click', function(e){
@@ -791,9 +763,7 @@ function initPostEnterLock(){
       }
     });
   });
-  refreshForumLocks();
-}
-initPostEnterLock();
+})();
 </script>
 <script src="fragment.js"></script>
 <script src="search.js"></script>
