@@ -358,8 +358,11 @@ body { max-width: 1200px; margin-left: auto; margin-right: auto; }
     document.body.appendChild(pop);
     playJiaTone();
   }
-  // 进入日记本页且已解锁第五章（已拿钥匙、天台采集碎片解锁日记第五章）时弹出贾老师新消息
-  if (ch5Unlocked()) { showJiaNewMsg(); }
+  // 进入日记本页且「已拿钥匙」且「第五章已解锁（天台采集碎片）」时才弹贾老师新消息。
+  // 必须同时校验钥匙：碎片参数(?frag=)会被 fragment.js 透传到链接里，新浏览器用带参链接打开也会带 f5，
+  // 但钥匙(wbs_key_found_v1)不在 URL 中，故仅靠碎片参数不会误触发本弹窗。
+  function hasKeyLocal(){ try { return localStorage.getItem('wbs_key_found_v1') === '1'; } catch(e){ return false; } }
+  if (hasKeyLocal() && ch5Unlocked()) { showJiaNewMsg(); }
 })();
 </script>
 <script src="clue.js"></script>
