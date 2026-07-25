@@ -369,6 +369,10 @@ function restoreChat(){
 }
 function userSay(t){ appendRow('user', t); }
 function botSay(t){ appendRow('teacher', t); }
+// 是否已拿到旧同善楼顶楼钥匙（决定"无生老母/黄靖川"结局回复是否有效）
+function hasKey(){
+  try { return localStorage.getItem('wbs_key_found_v1') === '1'; } catch(e){ return false; }
+}
 function sendChat(){
   var inp = document.getElementById('chatText');
   var q = inp.value.trim();
@@ -399,12 +403,14 @@ function sendMsg(q){
       botSayKeyNo();
     }
     else if(/无生老母/.test(q)){
-      if(window.phaseUnlocked && window.phaseUnlocked(3)){ botSayWusheng(); }
-      else { botSay('（对方似乎在忙，没有回应。）'); }
+      if(!(window.phaseUnlocked && window.phaseUnlocked(3))){ botSay('（对方似乎在忙，没有回应。）'); }
+      else if(!hasKey()){ botSay('（你念出了那个名字，对话里却只有沉默。也许，你还没拿到打开一切的那把钥匙。）'); }
+      else { botSayWusheng(); }
     }
     else if(/黄靖川/.test(q)){
-      if(window.phaseUnlocked && window.phaseUnlocked(3)){ botSayHuangjc(); }
-      else { botSay('（对方似乎在忙，没有回应。）'); }
+      if(!(window.phaseUnlocked && window.phaseUnlocked(3))){ botSay('（对方似乎在忙，没有回应。）'); }
+      else if(!hasKey()){ botSay('（你念出了那个名字，对话里却只有沉默。也许，你还没拿到打开一切的那把钥匙。）'); }
+      else { botSayHuangjc(); }
     }
     else { botSay(teacherReply(q)); }
   }, 700);
