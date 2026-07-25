@@ -313,6 +313,53 @@ body { max-width: 1200px; margin-left: auto; margin-right: auto; }
       else { location.href = 'downloads.html'; }
     });
   }
+
+  // 贾老师新消息框：进入日记本页面（已拿钥匙、天台采集碎片解锁第五章）时弹出，
+  // 点击进入招生咨询与贾老师对话。用已读标记避免重复弹出。
+  function playJiaTone(){
+    try{
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if(AC){
+        var ctx = new AC();
+        var o = ctx.createOscillator(), g = ctx.createGain();
+        o.type = 'sine'; o.frequency.value = 880;
+        o.connect(g); g.connect(ctx.destination);
+        g.gain.setValueAtTime(0.0001, ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
+        o.start(); o.stop(ctx.currentTime + 0.55);
+        setTimeout(function(){ try{ ctx.close(); }catch(e){} }, 800);
+      }
+    }catch(e){}
+  }
+  function showJiaNewMsg(){
+    var KEY = 'wbs_jia_msg_read_v1';
+    var read = false;
+    try{ read = localStorage.getItem(KEY) === '1'; }catch(e){}
+    if(read) return;
+    var pop = document.createElement('div');
+    pop.style.cssText = 'position:fixed;right:18px;bottom:18px;z-index:9999;width:300px;max-width:calc(100vw - 36px);background:linear-gradient(180deg,#22364a,#152537);color:#eef2f7;border:1px solid #c0a040;border-radius:8px;box-shadow:0 8px 28px rgba(0,0,0,.5);font-family:"宋体",SimSun,serif;overflow:hidden;cursor:pointer;';
+    pop.innerHTML =
+      '<div style="display:flex;align-items:center;gap:9px;padding:9px 11px;background:rgba(192,160,64,.14);border-bottom:1px solid rgba(192,160,64,.35);">' +
+        '<div style="width:36px;height:36px;border-radius:50%;background:#0d2347;border:1px solid #c0a040;display:flex;align-items:center;justify-content:center;color:#ffe9a8;font-size:15px;flex-shrink:0;">贾</div>' +
+        '<div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:bold;color:#ffe9a8;letter-spacing:1px;">贾老师 · 招生咨询</div><div style="font-size:10px;color:#9fb4c8;margin-top:1px;">现在</div></div>' +
+        '<div class="jia-x" style="width:20px;height:20px;line-height:18px;text-align:center;border-radius:50%;color:#9fb4c8;font-size:15px;flex-shrink:0;">×</div>' +
+      '</div>' +
+      '<div style="padding:11px 13px;font-size:13px;line-height:1.75;color:#e9eff6;">你解锁了第五章？有些事，或许你该来招生咨询处找我聊聊。</div>' +
+      '<div style="padding:0 13px 11px;font-size:11px;color:#ffd36b;letter-spacing:1px;">点击查看 →</div>';
+    pop.addEventListener('click', function(e){
+      try{ localStorage.setItem(KEY,'1'); }catch(err){}
+      if(e.target.classList && e.target.classList.contains('jia-x')){
+        if(pop.parentNode) pop.parentNode.removeChild(pop);
+        return;
+      }
+      location.href = 'page10-zhaosheng.html';
+    });
+    document.body.appendChild(pop);
+    playJiaTone();
+  }
+  // 进入日记本页且已解锁第五章（已拿钥匙、天台采集碎片解锁日记第五章）时弹出贾老师新消息
+  if (ch5Unlocked()) { showJiaNewMsg(); }
 })();
 </script>
 <script src="clue.js"></script>

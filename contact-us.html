@@ -488,44 +488,7 @@ loadLogo();
         showToast('你已持有旧同善楼顶楼的钥匙。');
       } else {
         showToast('校徽暗格弹开，一把铜钥匙落入掌心——旧同善楼顶楼已解锁。');
-        showJiaNewMsg(); // 拿到钥匙后，贾老师发来新消息
       }
-    }
-    // 贾老师新消息框：点校徽拿到钥匙后弹出，点击进入招生咨询与贾老师对话
-    function showJiaNewMsg() {
-      var pop = document.createElement('div');
-      pop.style.cssText = 'position:fixed;right:18px;bottom:18px;z-index:9999;width:300px;max-width:calc(100vw - 36px);background:linear-gradient(180deg,#22364a,#152537);color:#eef2f7;border:1px solid #c0a040;border-radius:8px;box-shadow:0 8px 28px rgba(0,0,0,.5);font-family:"宋体",SimSun,serif;overflow:hidden;cursor:pointer;';
-      pop.innerHTML =
-        '<div style="display:flex;align-items:center;gap:9px;padding:9px 11px;background:rgba(192,160,64,.14);border-bottom:1px solid rgba(192,160,64,.35);">' +
-          '<div style="width:36px;height:36px;border-radius:50%;background:#0d2347;border:1px solid #c0a040;display:flex;align-items:center;justify-content:center;color:#ffe9a8;font-size:15px;flex-shrink:0;">贾</div>' +
-          '<div style="flex:1;min-width:0;"><div style="font-size:13px;font-weight:bold;color:#ffe9a8;letter-spacing:1px;">贾老师 · 招生咨询</div><div style="font-size:10px;color:#9fb4c8;margin-top:1px;">现在</div></div>' +
-          '<div class="jia-x" style="width:20px;height:20px;line-height:18px;text-align:center;border-radius:50%;color:#9fb4c8;font-size:15px;flex-shrink:0;">×</div>' +
-        '</div>' +
-        '<div style="padding:11px 13px;font-size:13px;line-height:1.75;color:#e9eff6;">你拿到钥匙了？有些事，或许你该来招生咨询处找我聊聊。</div>' +
-        '<div style="padding:0 13px 11px;font-size:11px;color:#ffd36b;letter-spacing:1px;">点击查看 →</div>';
-      pop.addEventListener('click', function (e) {
-        if (e.target.classList && e.target.classList.contains('jia-x')) {
-          if (pop.parentNode) pop.parentNode.removeChild(pop);
-          return;
-        }
-        location.href = 'page10-zhaosheng.html';
-      });
-      document.body.appendChild(pop);
-      // 轻提示音（无需音频文件）
-      try {
-        var AC = window.AudioContext || window.webkitAudioContext;
-        if (AC) {
-          var ctx = new AC();
-          var o = ctx.createOscillator(), g = ctx.createGain();
-          o.type = 'sine'; o.frequency.value = 880;
-          o.connect(g); g.connect(ctx.destination);
-          g.gain.setValueAtTime(0.0001, ctx.currentTime);
-          g.gain.exponentialRampToValueAtTime(0.25, ctx.currentTime + 0.02);
-          g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.5);
-          o.start(); o.stop(ctx.currentTime + 0.55);
-          setTimeout(function () { try { ctx.close(); } catch (e) {} }, 800);
-        }
-      } catch (e) {}
     }
     var logo = document.querySelector('.school-logo');
     if (logo) {
