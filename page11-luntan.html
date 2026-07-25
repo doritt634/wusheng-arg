@@ -676,6 +676,7 @@ function renderLoggedIn(){
   setAccountUI('in');
   document.getElementById('enterBtn').textContent = '进入聊天室';
   document.getElementById('lockTip').textContent = '※ 已登录，欢迎回到 2006 届毕业班！';
+  refreshForumLocks();
 }
 
 // 加载时恢复登录态：localStorage 已登录，或经由 ?from=forum 进入（从聊天室返回）
@@ -732,6 +733,7 @@ function doLogout(){
   loginForChatroom = false;
   try{ localStorage.removeItem('wusheng_forum_login'); }catch(e){}
   setAccountUI('out');
+  refreshForumLocks();
   document.getElementById('loginUser').value = '';
   document.getElementById('loginPass').value = '';
   document.getElementById('enterBtn').textContent = '进入聊天室';
@@ -752,69 +754,46 @@ document.querySelectorAll('.modal-overlay').forEach(function(o){
 setAccountUI('out');
 restoreLogin();
 
-// —— 帖子回复：需登录后才能回复（issue 1）——
+// —— 帖子进入登录锁：未登录不能点进「求2006届毕业照高清扫描版」帖子（issue 1）——
 (function(){
-  var css = [
-    '.reply-wrap{margin-top:8px;}',
-    '.reply-btn{display:inline-block;padding:4px 14px;font:13px/1.4 "宋体",SimSun,serif;color:#2d4838;',
-    'background:#fff;border:1px solid #c43a3a;border-radius:3px;cursor:pointer;}',
-    '.reply-btn:hover{background:#fbeaea;}',
-    '.reply-btn .lk{font-size:11px;margin-left:5px;color:#c43a3a;}',
-    '.reply-box{margin-top:8px;padding:8px 10px;background:#fafafa;border:1px dashed #ccc;border-radius:4px;}',
-    '.reply-box textarea{width:100%;min-height:54px;box-sizing:border-box;font:13px/1.5 "宋体",SimSun,serif;',
-    'border:1px solid #bbb;border-radius:3px;padding:6px;resize:vertical;}',
-    '.reply-box .rb-actions{margin-top:6px;text-align:right;}',
-    '.reply-box .rb-cancel{margin-right:8px;padding:4px 12px;font:13px/1.4 "宋体",SimSun,serif;color:#666;',
-    'background:#eee;border:1px solid #ccc;border-radius:3px;cursor:pointer;}',
-    '.reply-box .rb-send{padding:4px 14px;font:13px/1.4 "宋体",SimSun,serif;color:#fff;background:#2d4838;',
-    'border:none;border-radius:3px;cursor:pointer;}',
-    '.reply-list{margin-top:8px;border-top:1px dashed #ddd;padding-top:6px;}',
-    '.reply-list .rp{font:13px/1.6 "宋体",SimSun,serif;color:#333;padding:4px 0;border-bottom:1px dotted #eee;}',
-    '.reply-list .rp .ra{color:#c43a3a;font-weight:bold;margin-right:6px;}'
-  ].join('');
+  var css = '.post-locked{color:#999 !important;cursor:not-allowed;}' +
+            '.post-lock{font-size:12px;color:#c43a3a;margin-left:5px;font-weight:normal;}';
   var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
-
-  function isLoggedIn(){
-    try { return localStorage.getItem('wusheng_forum_login') === '1'; } catch(e){ return false; }
-  }
-
-  function buildReply(post){
-    if(post.querySelector('.reply-wrap')) return;
-    var wrap = document.createElement('div'); wrap.className = 'reply-wrap';
-    var btn = document.createElement('button'); btn.className = 'reply-btn'; btn.type = 'button';
-    btn.innerHTML = '回复<span class="lk">🔒</span>';
-    var box = document.createElement('div'); box.className = 'reply-box'; box.style.display = 'none';
-    box.innerHTML =
-      '<textarea placeholder="说点什么……（登录后可见）"></textarea>' +
-      '<div class="rb-actions"><button type="button" class="rb-cancel">取消</button>' +
-      '<button type="button" class="rb-send">发表回复</button></div>';
-    wrap.appendChild(btn); wrap.appendChild(box);
-    post.appendChild(wrap);
-
-    var ta = box.querySelector('textarea');
-    btn.addEventListener('click', function(){
-      if(!isLoggedIn()){ openLogin('请先登录后再回复本帖。'); return; }
-      box.style.display = (box.style.display === 'none') ? 'block' : 'none';
-      if(box.style.display === 'block') ta.focus();
-    });
-    box.querySelector('.rb-cancel').addEventListener('click', function(){ box.style.display = 'none'; });
-    box.querySelector('.rb-send').addEventListener('click', function(){
-      var txt = ta.value.trim();
-      if(!txt){ ta.focus(); return; }
-      var list = post.querySelector('.reply-list');
-      if(!list){ list = document.createElement('div'); list.className = 'reply-list'; post.appendChild(list); }
-      var rp = document.createElement('div'); rp.className = 'rp';
-      rp.innerHTML = '<span class="ra">纪佑泽</span>' + txt.replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      list.appendChild(rp);
-      ta.value = '';
-      box.style.display = 'none';
-      var cnt = post.querySelector('.hot-num b');
-      if(cnt){ cnt.textContent = (parseInt(cnt.textContent,10) || 0) + 1; }
-    });
-  }
-
-  document.querySelectorAll('.hot-item, .thread-row').forEach(buildReply);
 })();
+
+function refreshForumLocks(){
+  var links = document.querySelectorAll('a[href="page22-graduation-photo.html"]');
+  Array.prototype.forEach.call(links, function(a){
+    var parent = a.parentNode;
+    var badge = parent.querySelector(':scope > .post-lock');
+    if(!loggedIn){
+      a.classList.add('post-locked');
+      if(!badge){
+        badge = document.createElement('span');
+        badge.className = 'post-lock';
+        badge.textContent = '🔒 需登录';
+        parent.appendChild(badge);
+      }
+    } else {
+      a.classList.remove('post-locked');
+      if(badge && badge.parentNode){ badge.parentNode.removeChild(badge); }
+    }
+  });
+}
+
+function initPostEnterLock(){
+  var links = document.querySelectorAll('a[href="page22-graduation-photo.html"]');
+  Array.prototype.forEach.call(links, function(a){
+    a.addEventListener('click', function(e){
+      if(!loggedIn){
+        e.preventDefault();
+        openLogin('请先登录后再查看「求2006届毕业照高清扫描版」帖子。');
+      }
+    });
+  });
+  refreshForumLocks();
+}
+initPostEnterLock();
 </script>
 <script src="fragment.js"></script>
 <script src="search.js"></script>
