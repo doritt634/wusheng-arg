@@ -1,5 +1,7 @@
-/* ===== 第二层线索页 · 与第一层校站统一的骨架 + 谜题卡片 ===== */
-/* 地址栏 / 顶部 / 导航 / 面包屑 / 页脚 沿用第一层；谜题区为浅色卡片。 */
+/* 被发现了吧，不要偷懒自己解！ */
+
+
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
   font-family: "宋体", "SimSun", serif;
@@ -9,15 +11,15 @@ body {
   min-height: 100vh;
 }
 
-/* —— 地址栏 —— */
-/* —— 顶部 —— */
+
+
 .top-bar { background: linear-gradient(to bottom, #3a5a4a, #2d4838); border-bottom: 3px solid #edc75a; padding: 8px 16px; display: flex; align-items: center; gap: 12px; }
 .school-logo { width: 46px; height: 46px; border-radius: 50%; border: 2px solid #edc75a; overflow: hidden; background: #fff; flex-shrink: 0; }
 .school-logo img { width: 100%; height: 100%; object-fit: contain; }
 .school-name .cn { font-family: "华文行楷", "STXingkai", "楷体", "KaiTi", "SimSun", serif; font-size: 26px; font-weight: bold; letter-spacing: 2px; color: #fff; }
 .school-name .en { font-size: 10px; color: #a8c4b8; letter-spacing: 0px; margin-top: 2px; font-family: "Times New Roman", serif; }
 
-/* —— 导航 —— */
+
 .nav-bar { background: linear-gradient(to bottom, #2d4838, #3a5a4a); border-bottom: 2px solid #edc75a; padding: 0; }
 .nav-inner { display: flex; align-items: center; flex-wrap: wrap; }
 .nav-item { padding: 8px 13px; color: #fff; font-size: 13px; font-family: "黑体", "SimHei", sans-serif; cursor: pointer; border-right: 1px solid #4a6b5a; white-space: nowrap; }
@@ -34,12 +36,12 @@ body {
 .hamburger-menu a:hover { background: #3a5a4a; color: #fff; }
 .hamburger:hover .hamburger-menu { display: block; }
 
-/* —— 面包屑 —— */
+
 .breadcrumb { background: #d4d4d4; border: 1px solid #999; padding: 6px 16px; font-size: 11px; margin: 8px; color: #555; font-family: "宋体", "SimSun", serif; }
 .breadcrumb a { color: #3a5a4a; text-decoration: none; }
 .breadcrumb a:hover { color: #c93a3a; text-decoration: underline; }
 
-/* —— 谜题内容区 —— */
+
 .clue-main { max-width: 920px; margin: 10px auto 30px; padding: 0 14px; }
 .clue-card { background: #fff; border: 2px outset #c0c0c0; padding: 22px 24px; margin-bottom: 16px; }
 .clue-title { font-size: 19px; font-family: "黑体", "SimHei", sans-serif; color: #3a5a4a; border-bottom: 2px solid #edc75a; padding-bottom: 8px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
@@ -48,7 +50,7 @@ body {
 .clue-card p { line-height: 2; color: #333; margin-bottom: 10px; }
 .clue-card p.tip { font-size: 12px; color: #3a5a4a; margin-top: 8px; background: #e8f0ea; border-left: 3px solid #edc75a; padding: 8px 12px; }
 
-/* —— 通用按钮 / 提示 / 揭示 —— */
+
 .btn { padding: 8px 20px; border: none; background: #3a5a4a; color: #fff; cursor: pointer; font-size: 14px; font-family: "黑体", "SimHei", sans-serif; border-radius: 3px; margin-top: 12px; margin-right: 8px; }
 .btn:hover { background: #2d4838; }
 .btn.gold { background: #edc75a; color: #3a5a4a; }
@@ -63,7 +65,7 @@ body {
 .next-link { display: inline-block; margin-top: 16px; padding: 9px 22px; background: #edc75a; color: #3a5a4a; text-decoration: none; border-radius: 3px; font-family: "黑体", "SimHei", sans-serif; font-weight: bold; }
 .next-link:hover { background: #d9b75a; }
 
-/* —— #校徽六记：点击排序 —— */
+
 .emblem-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 14px; }
 .emblem { width: 108px; padding: 12px 8px; text-align: center; background: #fff; border: 1px solid #3a5a4a; border-radius: 6px; cursor: pointer; transition: .15s; user-select: none; }
 .emblem:hover { border-color: #edc75a; box-shadow: 0 0 0 2px #edc75a inset; }
@@ -73,10 +75,10 @@ body {
 .emblem.lit .glyph, .emblem.lit .date { color: #3a5a4a; }
 .order-track { font-size: 13px; color: #555; margin-top: 12px; min-height: 20px; }
 
-/* —— 通用密文框 —— */
+
 .cipher { font-family: "Courier New", monospace; background: #2d4838; color: #edc75a; border: 1px dashed #4a6b5a; padding: 12px 14px; letter-spacing: 2px; line-height: 1.8; margin: 12px 0; word-break: break-all; font-size: 14px; }
 
-/* —— #凯撒：转盘位移 —— */
+
 .rotor { display: flex; align-items: center; gap: 14px; margin: 14px 0; flex-wrap: wrap; }
 .rotor-wheel { display: flex; border: 1px solid #3a5a4a; border-radius: 6px; overflow: hidden; }
 .rotor-col { width: 22px; text-align: center; padding: 6px 0; font-family: "Courier New", monospace; font-size: 13px; border-right: 1px solid #eee; }
@@ -88,13 +90,13 @@ body {
 .rotor-ctrl .rbtn:hover { background: #3a5a4a; color: #fff; }
 .rotor-val { font-family: "黑体", "SimHei", sans-serif; font-size: 15px; color: #3a5a4a; min-width: 84px; }
 
-/* —— #摩斯：点划复刻 —— */
+
 .morse-box { background: #2d4838; border: 1px dashed #4a6b5a; padding: 14px; margin: 12px 0; font-family: "Courier New", monospace; color: #edc75a; letter-spacing: 3px; line-height: 2; word-break: break-all; }
 .pulse { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #4a6b5a; margin-right: 6px; vertical-align: middle; }
 .pulse.on { background: #edc75a; box-shadow: 0 0 8px #edc75a; }
 .morse-cells { display: flex; gap: 8px; margin: 14px 0; flex-wrap: wrap; }
 
-/* —— 符号问答（校广播站） —— */
+
 .sym { width: 26px; height: 26px; vertical-align: middle; flex: none; }
 .sym-slip {
   display: flex; align-items: center; gap: 18px;
@@ -132,26 +134,26 @@ body {
 .mcell.filled { background: #e8f0ea; }
 .mcell .mc-sym { line-height: 1; }
 
-/* —— #逻辑：选择 —— */
+
 .choice { display: block; width: 100%; text-align: left; margin-top: 10px; padding: 12px 14px; background: #fff; border: 1px solid #3a5a4a; color: #333; border-radius: 4px; cursor: pointer; font-family: "宋体", "SimSun", serif; font-size: 14px; }
 .choice:hover { border-color: #edc75a; box-shadow: 0 0 0 2px #edc75a inset; }
 .choice.right { background: #e3f1e6; border-color: #2e7d32; }
 .choice.wrong { background: #fbe3e3; border-color: #c93a3a; }
 
-/* —— #1976：年份滑块 —— */
+
 .year-wrap { margin: 16px 0; }
 .year-range { width: 100%; max-width: 420px; accent-color: #3a5a4a; }
 .year-val { font-family: "黑体", "SimHei", sans-serif; font-size: 20px; color: #3a5a4a; letter-spacing: 2px; }
 .year-ticks { display: flex; justify-content: space-between; max-width: 420px; font-size: 11px; color: #888; margin-top: 4px; }
 
-/* —— #无生信箱：字符九宫格 —— */
+
 .char-grid { display: grid; grid-template-columns: repeat(3, 64px); gap: 10px; margin: 14px 0; }
 .char-cell { width: 64px; height: 64px; border: 2px solid #3a5a4a; border-radius: 6px; background: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 28px; font-family: "黑体", "SimHei", sans-serif; color: #3a5a4a; user-select: none; }
 .char-cell:hover { border-color: #edc75a; background: #e8f0ea; }
 .char-pick { margin: 12px 0; font-size: 15px; color: #333; }
 .char-pick b { font-family: "黑体", "SimHei", sans-serif; font-size: 22px; color: #3a5a4a; letter-spacing: 4px; border-bottom: 2px solid #edc75a; padding: 0 6px; }
 
-/* —— #同善楼：楼宇名册点选 —— */
+
 .bld-list { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 14px 0; }
 .bld-card { padding: 12px 14px; border: 1px solid #3a5a4a; border-radius: 4px; background: #fff; cursor: pointer; font-family: "黑体", "SimHei", sans-serif; font-size: 15px; color: #3a5a4a; transition: .15s; }
 .bld-card:hover { border-color: #edc75a; background: #e8f0ea; }
@@ -159,7 +161,7 @@ body {
 .bld-card.bad { background: #fbe3e3; border-color: #c93a3a; animation: shake .4s; }
 @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 
-/* —— 通用：暗号 / 答案核验表单 —— */
+
 .vform { margin-top: 14px; }
 .vrow { margin-bottom: 16px; padding: 13px 15px; border: 1px solid #3a5a4a; border-left: 4px solid #edc75a; border-radius: 4px; background: #fff; }
 .vlabel { font-family: "黑体", "SimHei", sans-serif; font-size: 15px; color: #3a5a4a; margin-bottom: 5px; }
@@ -168,7 +170,7 @@ body {
 .vinput { width: 100%; max-width: 320px; padding: 9px 12px; border: 1px inset #808080; font-size: 16px; font-family: "Courier New", monospace; letter-spacing: 3px; color: #3a5a4a; background: #fff; }
 .vinput:focus { outline: 2px solid #edc75a; outline-offset: -2px; }
 
-/* —— #秘密基地：地图点选 —— */
+
 .map-wrap { position: relative; width: 100%; max-width: 640px; height: 480px; margin: 14px auto 0; background: #16241c; border: 1px solid #2d4838; border-radius: 4px; overflow: hidden; }
 .map-wrap svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .mk-label { font-family: "黑体", "SimHei", sans-serif; font-size: 13px; fill: #edc75a; }
@@ -181,19 +183,19 @@ body {
 .b-list li.done { color: #2e7d32; }
 .b-list li .nm { font-family: "黑体", "SimHei", sans-serif; }
 .bigchar { font-family: "黑体", "SimHei", sans-serif; font-size: 46px; color: #c93a3a; letter-spacing: 6px; text-shadow: 0 0 16px rgba(255,59,59,.7); display: block; margin: 4px 0 8px; }
-/* 地图节点点击后的选项浮层 */
+
 .mk-menu { position: absolute; transform: translate(-50%, 0); background: #fff; border: 2px solid #3a5a4a; border-radius: 4px; padding: 6px; z-index: 5; box-shadow: 2px 2px 6px rgba(0,0,0,.3); display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
 .mk-menu button { padding: 5px 8px; font-size: 12px; border: 1px solid #ccc; background: #fff; cursor: pointer; font-family: "黑体", "SimHei", sans-serif; border-radius: 3px; }
 .mk-menu button:hover { background: #edc75a; color: #3a5a4a; }
 
-/* —— 2005 日记残页 —— */
+
 .relic-note { margin-top: 18px; background: #e9dcc0; color: #4a3a22; border: 1px solid #c9b48a; border-left: 4px solid #a89060; border-radius: 2px; padding: 14px 16px; font-family: "宋体", "SimSun", serif; font-size: 13px; line-height: 2; box-shadow: 0 2px 6px rgba(0,0,0,.12); transform: rotate(-.6deg); }
 .relic-note .relic-label { font-size: 11px; color: #8a6f44; letter-spacing: 1px; margin-bottom: 8px; border-bottom: 1px dashed #c9b48a; padding-bottom: 6px; }
 .relic-note .relic-date { font-weight: bold; color: #6a4f28; }
 .relic-note p { margin: 6px 0; color: #4a3a22; }
 .relic-note .faint { color: #9a8358; font-style: italic; }
 
-/* —— 摩斯电码详述（参考文档） —— */
+
 .doc-h { font-family: "黑体", "SimHei", sans-serif; color: #3a5a4a; font-size: 16px; margin: 22px 0 10px; border-left: 4px solid #edc75a; padding-left: 10px; }
 .doc-lead { font-size: 13px; color: #555; line-height: 2; margin-bottom: 6px; }
 .morse-ref { width: 100%; border-collapse: collapse; margin: 12px 0 6px; font-family: "宋体", "SimSun", serif; }
@@ -210,7 +212,7 @@ body {
 .morse-spec b { font-family: "Courier New", monospace; color: #3a5a4a; }
 .morse-note { font-size: 12px; color: #888; margin: 14px 0 4px; line-height: 1.9; border-top: 1px dashed #ccc; padding-top: 12px; }
 
-/* —— 页脚（与 foot.js 配合） —— */
+
 .footer { background: linear-gradient(to bottom, #3a5a4a, #2d4838); border-top: 3px solid #edc75a; padding: 16px; color: #a8c4b8; font-size: 11px; margin-top: 8px; }
 .footer-inner { display: flex; align-items: center; gap: 16px; padding: 0 16px; }
 .footer-logo { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #edc75a; overflow: hidden; background: #fff; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }

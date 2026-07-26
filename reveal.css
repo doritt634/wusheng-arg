@@ -1,4 +1,5 @@
-/* ===== reveal 玩法：表面违和文字 → 真相 ===== */
+/* 被发现了吧，不要偷懒自己解！ */
+
 .anomaly{
   cursor: text;
   transition: color .25s ease, background .25s ease;
@@ -18,7 +19,6 @@
   border-radius: 2px;
 }
 
-/* 提示条 */
 .reveal-hint{
   position: fixed; left: 12px; bottom: 12px; z-index: 9999;
   background: rgba(26,58,108,.94); color:#fff; font-size:12px; line-height:1.5;
@@ -34,7 +34,6 @@
 .reveal-hint-grps{ display:flex; flex-wrap:wrap; gap:5px 8px; margin-top:3px; }
 .reveal-grp{ background:rgba(255,255,255,.14); padding:2px 9px; border-radius:11px; font-size:11px; color:#ffe9a8; white-space:nowrap; }
 
-/* 浮层提示 */
 .reveal-toast{
   position: fixed; left:50%; top:22px; transform: translateX(-50%);
   background: rgba(192,57,43,.96); color:#fff; padding:8px 18px; border-radius:4px;
