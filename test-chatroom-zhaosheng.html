@@ -95,7 +95,7 @@ window.FRAG = {
   known: function(){ return false; }
 };
 var CHAT_KEY = 'test_wbs_zhaosheng_chat_v1';
-var _keyQuestionPending = false;
+// 钥匙问答待答态由聊天记录派生（见 isKeyQuestionPending），不再用易失内存变量
 
 // ===== 核心对话逻辑（从 page10-zhaosheng.html 原样抽取）=====
 var chatStarted = false;
@@ -118,6 +118,15 @@ function saveChat(){
 
 function userSay(t){ appendRow('user', t); }
 function botSay(t){ appendRow('teacher', t); }
+// 钥匙问答的"待答"状态从聊天记录派生（而非易失内存变量），刷新/重进页面后仍能正确识别，
+// 且脚本外回复（如"钥匙""天台"）不会把它弄丢。
+function isKeyQuestionPending(){
+  var log = document.getElementById('chatLog');
+  if(!log) return false;
+  if(!log.querySelector('[data-special="39"]')) return false;      // 39 问句尚未出现
+  if(log.querySelector('[data-special="key-yes"]')) return false;  // 已选"想"，无需再答
+  return true;  // 已问且未选"想"（含选过"不想"可改口）
+}
 
 function sendChat(){
   var inp = document.getElementById('chatText');
@@ -139,11 +148,10 @@ function sendMsg(q){
     else if(q === '39'){
       botSay39();
     }
-    else if(/^(想|是)$/.test(q) && _keyQuestionPending){
-      _keyQuestionPending = false;
+    else if(/^(想|是)$/.test(q) && isKeyQuestionPending()){
       botSayKeyYes();
     }
-    else if(/^(不|不想|不想了|不了)$/.test(q) && _keyQuestionPending){
+    else if(/^(不|不想|不想了|不了)$/.test(q) && isKeyQuestionPending()){
       // 不标记清空，用户仍可改口答复"想"
       botSayKeyNo();
     }
@@ -182,7 +190,7 @@ function botSay39(){
   row.appendChild(av); row.appendChild(b); log.appendChild(row);
   log.scrollTop = log.scrollHeight;
   saveChat();
-  _keyQuestionPending = true;
+  // 待答态由聊天记录派生（见 isKeyQuestionPending），无需内存变量
 }
 
 // 钥匙问答：想/是
@@ -197,7 +205,6 @@ function botSayKeyYes(){
   row.appendChild(av); row.appendChild(b); log.appendChild(row);
   log.scrollTop = log.scrollHeight;
   saveChat();
-  _keyQuestionPending = false;
   try{ localStorage.setItem('test_wbs_keyaddr_v1','1'); }catch(e){}
 }
 
@@ -213,7 +220,7 @@ function botSayKeyNo(){
   row.appendChild(av); row.appendChild(b); log.appendChild(row);
   log.scrollTop = log.scrollHeight;
   saveChat();
-  // 注意：不设 _keyQuestionPending = false，用户仍可改口回答"想"
+  // 不标记已答，用户仍可改口回答"想"（待答态由聊天记录中的 39 问句 + 无 key-yes 派生，见 isKeyQuestionPending）
   // 黑红乱码震动效果
   document.body.style.transition = 'background 0.3s';
   document.body.style.background = '#1a0000';
@@ -371,7 +378,7 @@ function resetTest(){
     localStorage.removeItem('test_wbs_mingshi_gray_v1');
   }catch(e){}
   document.getElementById('chatLog').innerHTML = '';
-  _keyQuestionPending = false;
+  // 清空聊天记录后，isKeyQuestionPending() 自然返回 false（无 39 问句）
   document.body.style.background = '';
   document.body.style.color = '';
   document.body.style.transform = '';

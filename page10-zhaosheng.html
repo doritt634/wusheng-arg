@@ -373,6 +373,15 @@ function botSay(t){ appendRow('teacher', t); }
 function hasKey(){
   try { return localStorage.getItem('wbs_key_found_v1') === '1'; } catch(e){ return false; }
 }
+// 钥匙问答的"待答"状态从聊天记录派生（而非易失内存变量），刷新/重进页面后仍能正确识别，
+// 且脚本外回复（如"钥匙""天台"）不会把它弄丢。
+function isKeyQuestionPending(){
+  var log = document.getElementById('chatLog');
+  if(!log) return false;
+  if(!log.querySelector('[data-special="39"]')) return false;      // 39 问句尚未出现
+  if(log.querySelector('[data-special="key-yes"]')) return false;  // 已选"想"，无需再答
+  return true;  // 已问且未选"想"（含选过"不想"可改口）
+}
 function sendChat(){
   var inp = document.getElementById('chatText');
   var q = inp.value.trim();
@@ -394,11 +403,10 @@ function sendMsg(q){
       if(window.phaseUnlocked && window.phaseUnlocked(3)){ botSay39(); }
       else { botSay('（对方似乎在忙，没有回应。）'); }
     }
-    else if(/^(想|是)$/.test(q) && _keyQuestionPending){
-      _keyQuestionPending = false;
+    else if(/^(想|是)$/.test(q) && isKeyQuestionPending()){
       botSayKeyYes();
     }
-    else if(/^(不|不想|不想了|不了)$/.test(q) && _keyQuestionPending){
+    else if(/^(不|不想|不想了|不了)$/.test(q) && isKeyQuestionPending()){
       // 不标记清空，用户仍可改口答复"想"
       botSayKeyNo();
     }
@@ -439,7 +447,7 @@ function botSay39(){
   row.appendChild(av); row.appendChild(b); log.appendChild(row);
   log.scrollTop = log.scrollHeight;
   saveChat();
-  _keyQuestionPending = true; // 等着玩家回答"想"或"不"
+  // 待答态由聊天记录派生（见 isKeyQuestionPending），无需内存变量
 }
 // ── 钥匙问答：选择「想/是」──
 function botSayKeyYes(){
@@ -453,7 +461,6 @@ function botSayKeyYes(){
   row.appendChild(av); row.appendChild(b); log.appendChild(row);
   log.scrollTop = log.scrollHeight;
   saveChat();
-  _keyQuestionPending = false;
   try{ localStorage.setItem('wbs_keyaddr_v1','1'); }catch(e){}
 }
 // ── 钥匙问答：选择「不想/不」—— 黑红惊悚效果 ──
@@ -468,7 +475,7 @@ function botSayKeyNo(){
   row.appendChild(av); row.appendChild(b); log.appendChild(row);
   log.scrollTop = log.scrollHeight;
   saveChat();
-  // 注意：不设 _keyQuestionPending = false，用户仍可改口回答"想"
+  // 不标记已答，用户仍可改口回答"想"（待答态由聊天记录中的 39 问句 + 无 key-yes 派生，见 isKeyQuestionPending）
   // 黑红乱码震动效果
   document.body.style.transition = 'background 0.3s';
   document.body.style.background = '#1a0000';
