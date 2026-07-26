@@ -195,6 +195,14 @@
       if(startOk && endOk) return true;
       if(startOk && !endOk)   return onlyBoundaryPunct(range, elRange, 'end');
       if(!startOk && endOk)   return onlyBoundaryPunct(range, elRange, 'start');
+      // 跨边界（起点在 anomaly 前、终点在 anomaly 后）：若选区“包含”整句且非大范围框选，
+      // 仍算命中——解决桌面端拖选时起点多选了 anomaly 前的一个正常字、需反复按 R 才命中的痛点
+      var _rl = range.toString().length, _el = elRange.toString().length;
+      if(_rl > 0 && _el > 0 && _rl <= _el * 3){
+        var _contains = range.compareBoundaryPoints(Range.START_TO_START, elRange) <= 0
+                     && range.compareBoundaryPoints(Range.END_TO_END, elRange) >= 0;
+        if(_contains) return true;
+      }
       return false;
     } catch(e){ return false; }
   }

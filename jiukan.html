@@ -124,16 +124,59 @@ body { max-width: 1200px; margin-left: auto; margin-right: auto; }
 
   function photoPlaced(){ try{ return localStorage.getItem(PHOTO_STORE)==="1"; }catch(e){ return false; } }
 
+  // —— 内容识别：用感知哈希(aHash)比对上传图与站内参考图 chenjing.png，
+  //     解决“设备自动改名 / 改扩展名”导致仅靠文件名识别失败的问题 ——
+  var refHash = null;
+  (function preloadRef(){
+    var img = new Image();
+    img.onload = function(){ try{ refHash = computeAHash(img); }catch(e){} };
+    img.onerror = function(){};
+    img.src = 'chenjing.png';
+  })();
+  function computeAHash(img){
+    var N = 8, c = document.createElement('canvas'); c.width = N; c.height = N;
+    var ctx = c.getContext('2d'); ctx.drawImage(img, 0, 0, N, N);
+    var d = ctx.getImageData(0,0,N,N).data, g = [];
+    for(var i=0;i<d.length;i+=4) g.push((d[i]+d[i+1]+d[i+2])/3);
+    var avg = 0; for(var i=0;i<g.length;i++) avg += g[i]; avg /= g.length;
+    var bits = ''; for(var i=0;i<g.length;i++) bits += g[i] >= avg ? '1' : '0';
+    return bits;
+  }
+  function hamming(a, b){ var n = 0; for(var i=0;i<a.length;i++) if(a[i] !== b[i]) n++; return n; }
+
   function handleFile(file){
     if(!file) return;
-    if(file.name.toLowerCase().indexOf("chenjing") < 0){
-      if(photoMsg){ photoMsg.textContent = "这不是原来的照片。"; photoMsg.className = "msg err"; }
+    var name = (file.name || '').toLowerCase();
+    // 快速路径：文件名含关键字（兼容“陈静发送的照片.png”等下载名，或手动命名为 chenjing）
+    if(name.indexOf('chenjing') >= 0 || name.indexOf('陈静') >= 0){
+      succeed(file); return;
+    }
+    // 后备：内容比对（设备自动改名 / 改扩展名时，只要图本身还是那张就能识别）
+    if(refHash){
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onload = function(){
+        try{
+          if(hamming(computeAHash(img), refHash) <= 12){ succeed(file); }
+          else { fail(); }
+        }catch(e){ fail(); }
+        URL.revokeObjectURL(url);
+      };
+      img.onerror = function(){ URL.revokeObjectURL(url); fail(); };
+      img.src = url;
       return;
     }
-    if(preview){ try{ preview.src = URL.createObjectURL(file); }catch(e){} preview.hidden = false; }
-    if(hint){ hint.style.display = "none"; }
-    if(photoMsg){ photoMsg.textContent = "照片放好了。"; photoMsg.className = "msg ok"; }
-    try{ localStorage.setItem(PHOTO_STORE, "1"); }catch(e){}
+    fail();   // 无参考哈希可比对，退回文件名严格判定
+
+    function succeed(f){
+      if(preview){ try{ preview.src = URL.createObjectURL(f); }catch(e){} preview.hidden = false; }
+      if(hint){ hint.style.display = 'none'; }
+      if(photoMsg){ photoMsg.textContent = '照片放好了。'; photoMsg.className = 'msg ok'; }
+      try{ localStorage.setItem(PHOTO_STORE, '1'); }catch(e){}
+    }
+    function fail(){
+      if(photoMsg){ photoMsg.textContent = '这不是原来的照片。'; photoMsg.className = 'msg err'; }
+    }
   }
 
   box.addEventListener("click", function(){ if(input) input.click(); });
