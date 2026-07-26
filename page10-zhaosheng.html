@@ -373,6 +373,16 @@ function botSay(t){ appendRow('teacher', t); }
 function hasKey(){
   try { return localStorage.getItem('wbs_key_found_v1') === '1'; } catch(e){ return false; }
 }
+// 是否已集齐全部五块记忆碎片（f1-f5），是触发"无生老母/黄靖川"深层回复的前置条件之一
+function hasAllFrags(){
+  try {
+    var raw = localStorage.getItem('wbs_frag_v1');
+    if(!raw) return false;
+    var arr = JSON.parse(raw);
+    if(!Array.isArray(arr) || arr.length < 5) return false;
+    return ['f1','f2','f3','f4','f5'].every(function(f){ return arr.indexOf(f) >= 0; });
+  } catch(e){ return false; }
+}
 // 钥匙问答的"待答"状态从聊天记录派生（而非易失内存变量），刷新/重进页面后仍能正确识别，
 // 且脚本外回复（如"钥匙""天台"）不会把它弄丢。
 function isKeyQuestionPending(){
@@ -413,11 +423,13 @@ function sendMsg(q){
     else if(/无生老母/.test(q)){
       if(!(window.phaseUnlocked && window.phaseUnlocked(3))){ botSay('（对方似乎在忙，没有回应。）'); }
       else if(!hasKey()){ botSay('（你念出了那个名字，对话里却只有沉默。也许，你还没拿到打开一切的那把钥匙。）'); }
+      else if(!hasAllFrags()){ botSay('（你念出了那个名字，但脑中一阵刺痛——那些四散的往事尚未聚拢。你需要先集齐全部记忆碎片，才有资格触碰这个名字背后的真相。）'); }
       else { botSayWusheng(); }
     }
     else if(/黄靖川/.test(q)){
       if(!(window.phaseUnlocked && window.phaseUnlocked(3))){ botSay('（对方似乎在忙，没有回应。）'); }
       else if(!hasKey()){ botSay('（你念出了那个名字，对话里却只有沉默。也许，你还没拿到打开一切的那把钥匙。）'); }
+      else if(!hasAllFrags()){ botSay('（你念出了那个名字，但脑中一阵刺痛——那些四散的往事尚未聚拢。你需要先集齐全部记忆碎片，才有资格触碰这个名字背后的真相。）'); }
       else { botSayHuangjc(); }
     }
     else { botSay(teacherReply(q)); }
