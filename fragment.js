@@ -1,13 +1,9 @@
-/* 记忆碎片系统 · 无生中学
- * 玩家 = 失忆的纪佑泽。集齐 5 片记忆碎片 → 触发"你就是纪佑泽"翻转。
- * 状态以 URL（?frag=f1,f2,...）为主通道透传，并同步持久化到 localStorage，
- * 保证玩家直接刷新 / 重新进入日记页时，已解锁的章节继续保持已解锁状态。可部署到任意静态托管。
- * 链接拦截器会在点击站内 .html 链接时自动把当前碎片参数带上，实现跨页面持久化。
- */
+// 被发现了吧，不要偷懒自己解！
+
 (function () {
-  // —— 重置兼容：?reset=all 时清除记忆碎片状态并剥离 URL 的 known/frag 参数 ——
-  // 避免「重置」后，链接拦截器把残留的 ?known=1 重新透传，导致记忆碎片 UI 又出现。
-  // 唯有玩家再次走到解锁「你是纪佑泽」关键词（FRAG.setKnown）时，UI 才会重新出现。
+  
+  
+  
   (function handleFragReset(){
     try {
       var p = new URLSearchParams(location.search);
@@ -28,14 +24,14 @@
   var TOTAL = 5;
   var ORDER = ['f1', 'f2', 'f3', 'f4', 'f5'];
 
-  // 持久化：URL 仍为跨页面透传主通道；localStorage 作为「已解锁记忆」的持久备份，
-  // 保证玩家直接刷新 / 重新进入日记页时，已解锁的章节继续保持已解锁状态。
+  
+  
   var LS_FRAG = 'wbs_frag_v1';
   var LS_KNOWN = 'wbs_known_v1';
-  // 贾义正「最后一次机会」主动私信：集齐全部记忆碎片后触发
-  var LS_JYZ_MSG = 'wbs_jyz_msg_v1';   // '1' = 已触发（他已发来消息）
-  var LS_JYZ_READ = 'wbs_jyz_read_v1'; // '1' = 玩家已进入招生咨询（消息已读，不再提醒）
-  var JYZ_CHAT_PAGE = 'page10-zhaosheng.html'; // 消息落点：与贾义正对话
+  
+  var LS_JYZ_MSG = 'wbs_jyz_msg_v1';
+  var LS_JYZ_READ = 'wbs_jyz_read_v1';
+  var JYZ_CHAT_PAGE = 'page10-zhaosheng.html';
   function lsGet(key){
     try { var v = localStorage.getItem(key); return v == null ? null : JSON.parse(v); } catch(e){ return null; }
   }
@@ -43,11 +39,11 @@
     try { localStorage.setItem(key, JSON.stringify(val)); } catch(e){}
   }
 
-  // 状态模式：优先用 query（?frag=），file:// 下 replaceState 被禁时退化为 hash（#frag=）
+  
   var useHash = /[?&]frag=/.test(location.search) ? false
               : (/frag=/.test(location.hash) ? true : false);
 
-  // —— 自注入样式（不依赖各页已有 CSS）——
+  
   var css = [
     '#fragHud{position:fixed;left:14px;bottom:14px;z-index:1500;',
     'font-family:"宋体",SimSun,serif;font-size:12px;color:#fff;',
@@ -85,7 +81,7 @@
     '.reveal-box button{margin-top:18px;padding:8px 22px;font-family:"宋体",SimSun,serif;',
     'font-size:14px;color:#0d2347;background:#ffe9a8;border:none;border-radius:4px;cursor:pointer;}',
     '.reveal-box button:hover{background:#ffd86b;}',
-    // —— 贾义正主动私信弹窗（右下角）——
+    
     '#jyzNotify{position:fixed;right:18px;bottom:18px;z-index:3000;width:300px;',
     'max-width:calc(100vw - 36px);background:linear-gradient(180deg,#22364a,#152537);',
     'color:#eef2f7;border:1px solid #c0a040;border-radius:8px;',
@@ -115,7 +111,7 @@
   st.textContent = css;
   document.head.appendChild(st);
 
-  // —— URL 状态读写 ——
+  
   function parseRaw() {
     if (!useHash) {
       var q = new URLSearchParams(location.search).get('frag');
@@ -125,7 +121,7 @@
     return h ? h[1] : '';
   }
   function getCollected() {
-    // URL 与 localStorage 取并集（localStorage 持久化已解锁的记忆，避免重进日记页后丢失）
+    
     var s = parseRaw();
     var urlList = s ? s.split(',').filter(function (x) { return x && ORDER.indexOf(x) >= 0; }) : [];
     var lsList = lsGet(LS_FRAG);
@@ -137,7 +133,7 @@
   }
   function writeFrags(arr) {
     var val = arr.join(',');
-    lsSet(LS_FRAG, arr.slice()); // 收集即持久化，已解锁的日记保持已解锁
+    lsSet(LS_FRAG, arr.slice());
     if (useHash) {
       location.hash = val ? 'frag=' + val : '';
       return;
@@ -147,13 +143,13 @@
     try {
       history.replaceState(null, '', u.pathname + u.search + u.hash);
     } catch (e) {
-      // file:// 等环境禁用 replaceState → 退化为 hash
+      
       useHash = true;
       location.hash = val ? 'frag=' + val : '';
     }
   }
 
-  // —— 「已知身份」状态：发现「你是纪佑泽」之后，记忆碎片才解锁 ——
+  
   function getKnown() {
     var urlKnown = false;
     if (!useHash) {
@@ -184,7 +180,7 @@
     }
   }
 
-  // 暴露给其它页面（page13 日记 / food-menu 糖醋排骨等）使用
+  
   window.FRAG = {
     getCollected: getCollected,
     known: getKnown,
@@ -213,15 +209,15 @@
     }
   }
 
-  // 初始化：把当前 URL 中的碎片集合合并持久化到 localStorage（玩家直接刷新 / 重进日记页也能保持已解锁）
+  
   (function initPersist(){
     try { lsSet(LS_FRAG, getCollected()); } catch(e){}
   })();
 
-  // —— HUD（仅在发现「你是纪佑泽」且解锁第三阶段之后才出现；结局页不显示记忆碎片 UI）——
+  
   var known = getKnown();
   var fragPhase = (function () { try { var p = parseInt(localStorage.getItem('wbs_phase'), 10); return isNaN(p) ? 1 : (p < 1 ? 1 : p); } catch (e) { return 1; } })();
-  // 记忆碎片 UI（红色碎片框 / HUD）仅在「确认身份」且「已解锁第三阶段」后弹出
+  
   var fragAllowed = known && fragPhase >= 3;
   var isEnding = /(^|\/)ending-/.test(location.pathname);
   if (fragAllowed && !isEnding) {
@@ -234,7 +230,7 @@
   function renderDots() {
     var numEl = document.getElementById('fhNum');
     var dotsEl = document.getElementById('fhDots');
-    if (!numEl || !dotsEl) return; // HUD 未生成时（如本页 known 后置位）跳过，避免报错
+    if (!numEl || !dotsEl) return;
     var c = getCollected().length;
     var dots = '';
     for (var i = 0; i < TOTAL; i++) {
@@ -264,7 +260,7 @@
       '<button id="revealGo" style="display:none" onclick="FRAG.go(\'page13-riji.html\')">去看日记</button>' +
       '</div>';
     document.body.appendChild(ov);
-    // 中央大字逐字浮现（改动后文案；HUD 不闪红光）
+    
     var text = '记忆逐渐从深处浮现，那些忘却的不为人知的往事，正一点一滴，清晰地想起......';
     var big = document.getElementById('revealBig');
     var btn = document.getElementById('revealGo');
@@ -280,7 +276,7 @@
     }, 70);
   }
 
-  // —— 消息来电提示音（Web Audio 合成「叮咚」，无需音频文件，可离线）——
+  
   function playMsgTone() {
     try {
       var AC = window.AudioContext || window.webkitAudioContext;
@@ -299,20 +295,20 @@
         });
       }
       var now = ctx.currentTime;
-      ding(now, 880, 1174.7);        // 第一声「叮咚」
-      ding(now + 0.72, 880, 1174.7); // 第二声，营造「来消息了」的提醒感
+      ding(now, 880, 1174.7);
+      ding(now + 0.72, 880, 1174.7);
       setTimeout(function () { try { ctx.close(); } catch (e) {} }, 2200);
     } catch (e) {}
   }
 
-  // —— 贾义正主动私信弹窗（右下角）——
+  
   function isJyzChatPage() {
     return new RegExp(JYZ_CHAT_PAGE.replace('.', '\\.')).test(location.pathname);
   }
   function showJyzNotify(withSound) {
-    if (isEnding || isJyzChatPage()) return;                 // 结局页 / 对话页本身不弹
-    if (localStorage.getItem(LS_JYZ_READ) === '1') return;   // 已读则不再提醒
-    if (document.getElementById('jyzNotify')) return;        // 避免重复
+    if (isEnding || isJyzChatPage()) return;
+    if (localStorage.getItem(LS_JYZ_READ) === '1') return;
+    if (document.getElementById('jyzNotify')) return;
     var box = document.createElement('div');
     box.id = 'jyzNotify';
     box.setAttribute('role', 'alert');
@@ -326,13 +322,13 @@
       '<div class="jn-body">还有什么想问的吗？这是最后一次机会了。</div>' +
       '<div class="jn-cta">点击回复 →</div>';
     document.body.appendChild(box);
-    // 关闭按钮：仅关闭本次（未读，下次进入页面仍会提醒）
+    
     box.querySelector('.jn-close').addEventListener('click', function (e) {
       e.stopPropagation();
       box.classList.remove('show');
       setTimeout(function () { if (box.parentNode) box.parentNode.removeChild(box); }, 450);
     });
-    // 点击弹窗主体：进入与贾义正的对话（标记已读，携带碎片/身份参数）
+    
     box.addEventListener('click', function () {
       try { localStorage.setItem(LS_JYZ_READ, '1'); } catch (e) {}
       window.location.href = FRAG_link(JYZ_CHAT_PAGE);
@@ -344,7 +340,7 @@
   }
 
   function onCollect(id, el) {
-    if (!fragAllowed) return; // 未确认身份 / 未解锁第三阶段前，记忆碎片不可收集
+    if (!fragAllowed) return;
     var have = getCollected();
     if (have.indexOf(id) >= 0) return;
     have.push(id);
@@ -354,15 +350,15 @@
     renderDots();
     if (getCollected().length >= TOTAL) {
       setTimeout(showReveal, 350);
-      // 集齐全部记忆：贾义正主动发来「最后一次机会」的私信（弹窗 + 提示音）
+      
       try { localStorage.setItem(LS_JYZ_MSG, '1'); } catch (e) {}
       setTimeout(function () { showJyzNotify(true); }, 1200);
     }
   }
 
-  // —— 点击分发：碎片触发 + 站内链接参数透传 ——
+  
   document.addEventListener('click', function (e) {
-    // 1) 记忆碎片触发（未确认身份 / 未解锁第三阶段前不可收集）
+    
     var t = e.target.closest && e.target.closest('.frag-trigger');
     if (t) {
       if (!fragAllowed) return;
@@ -370,8 +366,8 @@
       return;
     }
 
-    // 2) 站内 .html 链接：透传碎片 + 已知身份 参数
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return; // 保留浏览器新标签等行为
+    
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
     var a = e.target.closest && e.target.closest('a');
     if (!a) return;
     var href = a.getAttribute('href');
@@ -383,7 +379,7 @@
 
     var frags = getCollected();
     var known = getKnown();
-    if (frags.length === 0 && !known) return; // 没有状态可带，正常导航
+    if (frags.length === 0 && !known) return;
 
     var hashIndex = href.indexOf('#');
     var hash = hashIndex >= 0 ? href.slice(hashIndex) : '';
@@ -410,22 +406,22 @@
     renderDots();
     markCollectedStatic();
   } else {
-    // 未确认身份前：记忆碎片入口不显示、不可收集
+    
     document.querySelectorAll('.frag-trigger').forEach(function (el) { el.style.display = 'none'; });
   }
 
-  // —— 贾义正私信：跨页面持久提醒 ——
-  // 进入招生咨询页 = 视为已读，停止后续提醒；
-  // 其它页面若消息已触发且未读，则重新弹出提醒（页面加载无用户手势，浏览器可能拦截声音，静默显示即可）。
+  
+  
+  
   (function jyzNotifyOnLoad(){
     try {
-      // 来源无关：碎片可能经 fragment.js 点击收集，也可能由天台/招生页直接写入 localStorage。
-      // 只要「已集齐全部 5 片」，就补齐触发标记，确保贾义正私信一定能弹出（不再依赖某个收集路径顺手设标记）。
+      
+      
       var allCollected = getCollected().length >= TOTAL;
       if (allCollected && localStorage.getItem(LS_JYZ_MSG) !== '1') {
         try { localStorage.setItem(LS_JYZ_MSG, '1'); } catch (e) {}
       }
-      if (localStorage.getItem(LS_JYZ_MSG) !== '1') return; // 尚未集齐全部记忆
+      if (localStorage.getItem(LS_JYZ_MSG) !== '1') return;
       if (isJyzChatPage()) { localStorage.setItem(LS_JYZ_READ, '1'); return; }
       if (localStorage.getItem(LS_JYZ_READ) === '1') return;
       if (document.readyState === 'loading') {

@@ -1,16 +1,11 @@
-/* =========================================================================
- * 秘境网关（clue.js） v3 —— 极简版
- * 不再有任何底部"秘语检索"框、入口印记或正文提示。
- * 输入只走站点自带的搜索框（.search-box）：玩家在里面输入关键词/口令，
- * 命中即跳到对应解密页；未命中则静默无反应（无任何提示）。
- * 所有跳转保留 ?frag= 记忆碎片参数。真正的解密在独立 decrypt-*.html 页面。
- * ========================================================================= */
+// 被发现了吧，不要偷懒自己解！
+
 (function () {
   "use strict";
 
-  // 实时读取，避免与 fragment.js 的 URL 状态不同步（fragment.js 会在收集碎片后
-  // 通过 replaceState 更新 location.search，这里必须实时取，否则新收集的碎片会在
-  // 用搜索框跳转时丢失）
+  
+  
+  
   function liveFrag() {
     return (new URLSearchParams(location.search).get("frag") || "").trim();
   }
@@ -28,7 +23,7 @@
     return u + (u.indexOf("?") > -1 ? "&" : "?") + add.join("&");
   }
 
-  /* 搜索关键词 -> 目标解密页（含口令本身，可直接搜） */
+  
   var SEARCH = {
     "校友": "decrypt-caesar.html",
     "旧刊": "decrypt-caesar.html",
@@ -85,22 +80,22 @@
     '<rect x="9" y="9" width="2" height="4" fill="#333"/></svg>';
 
   function wire(input, btn) {
-    // 用像素 SVG 替换可能的 emoji 搜索图标
+    
     if (btn && /[\uD800-\uDBFF][\uDC00-\uDFFF]/.test(btn.textContent)) {
       btn.textContent = "";
       btn.innerHTML = SEARCH_ICON;
     }
     function go(e) {
       if (e && e.type === "keydown") e.preventDefault();
-      // 优先：若输入精确命中站内搜索索引（隐藏页关键词），就地搜索，避免被模糊口令子串匹配劫持
+      
       if (window.siteSearchExact && window.siteSearchExact(input.value)) {
         window.doSiteSearch(input.value);
         return;
       }
       var target = match(input.value);
       if (target) { location.href = carry(target); return; }
-      // 非口令：若当前页提供站内搜索入口（search.js 已注入），则就地搜索；
-      // 否则保持静默（游戏设计：避免给玩家“无结果”提示）
+      
+      
       if (window.doSiteSearch) window.doSiteSearch(input.value);
     }
     if (btn) btn.addEventListener("click", go);

@@ -1,27 +1,14 @@
-/* pagenum.js —— 全站页脚「页码文字」图层
- *
- * 功能：在每个游戏页面底部版权栏的同一行右侧，以紧凑纯文字形式显示页码「n/总页数」，
- *       n 取自「推荐游玩顺序」（见 无生中学游玩攻略.md 第一/二层）。
- *
- * 设计要点：
- *  - 不使用 position:fixed 浮标（iOS Safari 在 body overflow-x:hidden 下会退化、移动端不可见）。
- *  - 改为把页码作为文档流的一部分，插入到页面底部版权栏
- *    （.copy / .site-footer / .forum-footer / <footer> / .footer）内，
- *    用 position:absolute 钉在「同一行」的右侧，保留版权文字原有居中布局；
- *    移动端随页滚动到底部必然可见，彻底避开 fixed 定位问题。
- *  - 若页面没有可识别的版权栏，则在 body 末尾兜底创建一个，保证页码始终存在。
- *
- * 还原方式：删除本文件，并移除各页 <script src="pagenum.js"></script> 即可整体撤销。
- */
+// 被发现了吧，不要偷懒自己解！
+
 (function () {
-  // 推荐游玩顺序 —— 严格按《全解锁攻略》第一阶段→第二阶段→第三阶段的「发现顺序」重排：
-  //   阶段0 常驻导航/表面页（含校园论坛/校友聚集/招生咨询/资源下载，均为导航页，第一阶段即可打开）
-  //   → 阶段1(搜索框发现的表面线索：心理老师/会长/杜兴/贾一方/同善楼/天台/档案馆)
-  //   → 阶段2(聊天室/档案馆深层/停职/广播)
-  //   → 阶段3(菜单/校友旧刊/凯撒解密/秘密基地/日记)
-  // 序页(preamble)、索引(index)、三结局页(ending-*)与测试页不在序列内、不显示页码。
+  
+  
+  
+  
+  
+  
   var PAGES = [
-    /* 阶段0：常驻导航 / 表面浏览页（任何阶段均可访问；论坛/校友/招生/downloads 均为导航页，第一阶段即可打开，已移出 PHASE_OF） */
+    
     'page1.html',
     'page2-about.html',
     'page3-notice.html',
@@ -38,7 +25,7 @@
     'weekly-calendar.html',
     'contact-us.html',
     'downloads.html',
-    /* 第一阶段：搜索框发现的表面线索页（含天台、档案馆；天台排 P1 组最前） */
+    
     'page14-tiantai.html',
     'page15-xinli.html',
     'page16-huizhang.html',
@@ -49,13 +36,13 @@
     'archive-year.html',
     'archive-class.html',
     'archive-class7.html',
-    /* 第二阶段：聊天室 + 档案馆深层 + 停职 + 广播 */
+    
     'page21-chatroom.html',
     'page22-graduation-photo.html',
     'page23-yuli-stop.html',
     'decrypt-morse.html',
     'morse-code.html',
-    /* 第三阶段：身份翻转 + 校友旧刊 + 凯撒解密 + 秘密基地 + 日记 */
+    
     'food-menu.html',
     'jiukan.html',
     'decrypt-caesar.html',
@@ -63,7 +50,7 @@
     'page13-riji.html'
   ];
 
-  // 开发/测试页不显示页码
+  
   var SKIP = ['test-unlock.html', 'preview-comparison.html'];
 
   function currentFile() {
@@ -72,7 +59,7 @@
     return m || 'page1.html';
   }
 
-  // 注入页码文字样式（文档流、紧跟版权文字后空几格、同行内联，移动端可见，字体紧凑）
+  
   function injectStyle() {
     if (document.getElementById('pageNumStyle')) return;
     var s = document.createElement('style');
@@ -87,7 +74,7 @@
     document.head.appendChild(s);
   }
 
-  // 找页面底部版权栏：优先 .copy，其次各类 footer 容器
+  
   function findHost() {
     var sels = ['.copy', '.site-footer', '.forum-footer', 'footer', '.footer'];
     for (var i = 0; i < sels.length; i++) {
@@ -102,7 +89,7 @@
     if (SKIP.indexOf(file) !== -1) return;
 
     var idx = PAGES.indexOf(file);
-    if (idx === -1) return;               // 不在游玩顺序表里的页不显示
+    if (idx === -1) return;
     var n = idx + 1;
     var total = PAGES.length;
 
@@ -110,7 +97,7 @@
 
     var host = findHost();
     if (!host) {
-      // 兜底：页面无版权栏时，在 body 末尾创建一个，保证页码始终存在
+      
       host = document.createElement('div');
       host.className = 'copy';
       host.style.cssText = 'position:relative;text-align:center;padding:14px 12px;color:#8a8a8a;font-size:12px;';
@@ -118,9 +105,9 @@
       document.body.appendChild(host);
     }
 
-    if (host.querySelector('.pageNumText')) return;   // 防重复插入
+    if (host.querySelector('.pageNumText')) return;
 
-    // 页码紧跟版权文字之后、同一行内联（版权栏原有居中/对齐布局保持不变）
+    
     var el = document.createElement('span');
     el.className = 'pageNumText';
     el.textContent = n + '/' + total;

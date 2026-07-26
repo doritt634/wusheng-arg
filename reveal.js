@@ -1,17 +1,15 @@
-/* reveal 玩法：选中表面违和文字 → 按 R 键 → 变红 → 整组选齐后揭示真相
- * 指定按键：R
- * 状态跨页累计于 localStorage（wbs_reveal_v1）：caught[] / revealed[]
- */
+// 被发现了吧，不要偷懒自己解！
+
 (function(){
   'use strict';
 
   var KEY = 'r';
   var STORE = 'wbs_reveal_v1';
 
-  // 触屏设备（手机/平板）无法“选词+按R”，改用“长按”触发抓矛盾点
+  
   var isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
 
-  // —— 视觉增强样式（改动后）：变红瞬间页面轻晃 + 文字呼吸 + 全部揭示降暗红遮罩 ——
+  
   (function injectRevealFx(){
     var s = document.createElement('style');
     s.textContent = [
@@ -26,7 +24,7 @@
     document.head.appendChild(s);
   })();
 
-  // 真相文字：键为各 anomaly 的 data-id
+  
   var TRUTH = {
     'he1': '何宏宇（2006年6月9日坠楼身亡）',
     'he2': '于2006年6月9日坠楼身亡，校方对外谎称“因个人原因退学”',
@@ -38,15 +36,15 @@
     'yu3': '曾带过2006届学生，早已离校，却以“政教主任·审核发布”之名列于本站制作成员中'
   };
 
-  // 每个 group 的全部成员（跨页累计，必须全部抓出才解锁真相）
+  
   var GROUPS = {
     'he': ['he1','he2','he3','he4','he5'],
     'yu': ['yu1','yu2','yu3']
   };
   var GROUP_NAMES = { 'he': '何宏宇', 'yu': '俞丽' };
 
-  // 受限 group：必须先搜索对应人名（在搜索框搜该名字）才能解锁“抓矛盾点”的能力。
-  // 解锁状态持久化于 localStorage，跨页生效，无需重复搜索。
+  
+  
   var GATED = { 'he': true, 'yu': true };
   var UNLOCK_STORE = 'wbs_reveal_unlock_v1';
 
@@ -62,22 +60,22 @@
   }
   var unlocked = loadUnlocked();
 
-  // 该 group 是否可抓：非受限组始终可抓；受限组需已解锁
+  
   function isUnlocked(group){
     if(!GATED[group]) return true;
     return unlocked.indexOf(group) >= 0;
   }
-  // 由 search.js 在搜索对应人名后调用，激活该 group 的矛盾点玩法
+  
   function unlockGroup(group){
     if(!GATED[group]) return;
-    if(unlocked.indexOf(group) >= 0) return;   // 已解锁则不再提示
+    if(unlocked.indexOf(group) >= 0) return;
     unlocked.push(group);
     saveUnlocked(unlocked);
     applyStates();
     if(group === 'he')      toast('搜索「何宏宇」——几处前后矛盾的记录，似乎浮出水面了。');
     else if(group === 'yu') toast('搜索「俞丽」——这位老师的履历，也藏着对不上的地方。');
     else                    toast('线索已激活。');
-    injectHint();   // 搜索解锁后，立即弹出“找矛盾点”的玩法提示
+    injectHint();
   }
   window.revealUnlockGroup = unlockGroup;
 
@@ -93,7 +91,7 @@
   }
   var state = loadState();
 
-  // 把一个 anomaly 标记为“已抓”，返回是否本次新抓到
+  
   function markCaught(el){
     var id = el.getAttribute('data-id');
     if(state.caught.indexOf(id) < 0){
@@ -103,7 +101,7 @@
     }
     return false;
   }
-  // 某 group 已抓/总数 文本
+  
   function groupProgress(group){
     var gtotal = GROUPS[group] ? GROUPS[group].length : '?', gcnt = 0;
     if(GROUPS[group]){ for(var k=0;k<GROUPS[group].length;k++){ if(state.caught.indexOf(GROUPS[group][k])>=0) gcnt++; } }
@@ -138,7 +136,7 @@
       var id = el.getAttribute('data-id');
       var group = el.getAttribute('data-group');
       if(!isUnlocked(group)){
-        // 受限且尚未解锁：确保不显示已抓/已揭示样式（看起来就是普通文字）
+        
         el.classList.remove('caught');
         el.classList.remove('revealed');
         continue;
@@ -152,7 +150,7 @@
   function checkGroup(group){
     var ids = GROUPS[group];
     if(!ids || !ids.length) return;
-    if(!isUnlocked(group)) return;   // 受限且未解锁，不允许揭示
+    if(!isUnlocked(group)) return;
     var all = true;
     for(var i=0;i<ids.length;i++){
       if(state.caught.indexOf(ids[i]) < 0){ all = false; break; }
@@ -163,7 +161,7 @@
       state.revealed.push(group);
       saveState(state);
       toast('真相，已浮现。');
-      injectHint();   // 该 group 已完整揭示 → 若已找完至少一人，则隐藏玩法提示
+      injectHint();
       if(allGroupsRevealed()) showRedVeil();
     }
   }
@@ -183,9 +181,9 @@
     toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 1900);
   }
 
-  // 选区是否“命中”某异常短句：必须落在该短句的 DOM 范围内
-  // （起点、终点都在该句之内），而非仅与它相交——这样框选整页不会被误判命中。
-  // 同时容错：若仅多选中了句首/句末的标点或空白（如句末的“。”），仍算命中。
+  
+  
+  
   function rangeWithinAnomaly(range, el){
     var elRange = document.createRange();
     try { elRange.selectNodeContents(el); } catch(e){ return false; }
@@ -195,8 +193,8 @@
       if(startOk && endOk) return true;
       if(startOk && !endOk)   return onlyBoundaryPunct(range, elRange, 'end');
       if(!startOk && endOk)   return onlyBoundaryPunct(range, elRange, 'start');
-      // 跨边界（起点在 anomaly 前、终点在 anomaly 后）：若选区“包含”整句且非大范围框选，
-      // 仍算命中——解决桌面端拖选时起点多选了 anomaly 前的一个正常字、需反复按 R 才命中的痛点
+      
+      
       var _rl = range.toString().length, _el = elRange.toString().length;
       if(_rl > 0 && _el > 0 && _rl <= _el * 3){
         var _contains = range.compareBoundaryPoints(Range.START_TO_START, elRange) <= 0
@@ -206,7 +204,7 @@
       return false;
     } catch(e){ return false; }
   }
-  // 超出范围的部分是否仅为标点/空白（如顺带选中了“。”、空格）
+  
   function onlyBoundaryPunct(range, elRange, side){
     try {
       var r = document.createRange();
@@ -221,13 +219,13 @@
     } catch(e){ return false; }
   }
 
-  // 读取“当前选中的文字”，命中落在异常短句范围内的 anomaly 并捕获。
-  // desktop：按 R 键时调用；mobile：选区旁「标记矛盾点」按钮点击(touchstart)时调用，直接传 savedRange。
-  // silentEmpty=true 时，若没有选中任何文字则不弹提示（移动端松手即取消，避免打扰）。
+  
+  
+  
   function catchFromSelection(silentEmpty, rangeOverride){
     var range;
     if(rangeOverride){
-      range = rangeOverride;               // 触屏按钮场景：直接用保存的选区，不受点击时选区塌缩影响
+      range = rangeOverride;
     } else {
       var sel = window.getSelection();
       if(!sel || sel.isCollapsed || sel.rangeCount === 0){
@@ -241,11 +239,11 @@
       return;
     }
 
-    // 命中所有“落在异常短句范围内”的 anomaly（整句或其中片段均可）
+    
     var els = document.querySelectorAll('.anomaly');
     var newCaught = [];
     var alreadyCaught = [];
-    var lockedTouched = [];   // 触碰到了、但因未搜索对应名字而被锁住的 group
+    var lockedTouched = [];
     var touched = {};
     for(var i=0;i<els.length;i++){
       var el = els[i];
@@ -255,7 +253,7 @@
       touched[group] = true;
       if(!isUnlocked(group)){
         if(lockedTouched.indexOf(group) < 0) lockedTouched.push(group);
-        continue;   // 受限且未解锁：暂不捕获，引导玩家去搜索该名字
+        continue;
       }
       if(markCaught(el)){ newCaught.push(id); }
       else { alreadyCaught.push(id); }
@@ -265,7 +263,7 @@
       var g = Object.keys(touched)[0];
       toast('你抓住了那一处违和（' + groupProgress(g) + '）。');
       for(var gg in touched){ checkGroup(gg); }
-      injectHint();   // 抓中后实时刷新“还剩多少个”计数
+      injectHint();
     } else if(alreadyCaught.length){
       toast('这一处，已经标记过了。');
     } else if(lockedTouched.length){
@@ -277,11 +275,11 @@
 
   function onKey(e){
     if(e.ctrlKey || e.metaKey || e.altKey) return;
-    if(e.isComposing) return;                       // 输入法组合态忽略（此时 key 可能为 'Process'）
+    if(e.isComposing) return;
     if(!e.key || e.key.toLowerCase() !== KEY) return;
-    // 焦点停在输入框（如刚在搜索框搜完名字）时仍允许按 R：只要正文选区与矛盾点相交即处理，
-    // 解决“搜完名字后焦点仍在搜索框、选中矛盾句按 R 被无声吞掉、要按很多次”的问题；
-    // 若焦点在输入框且无正文矛盾点选区（纯打字），则忽略，避免误触。
+    
+    
+    
     var ae = document.activeElement;
     var inField = ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA' || ae.isContentEditable);
     if(inField){
@@ -294,11 +292,11 @@
     catchFromSelection(false);
   }
 
-  // ========== 触屏：选中文字后浮现「标记矛盾点」按钮，点按即捕获 ==========
-  // 思路：完全不劫持系统选词、不要求“长按保持 2 秒”。玩家像平时一样
-  // 选中文字（安卓即长按选词、拖拽手柄调整选区），只要选区落在某处矛盾点范围内，
-  // 页面即在选区旁浮现一个浮动按钮，点一下即读取选中文字并捕获。
-  // 这样彻底规避了安卓“长按已选文字即拖动选区 / 手指微移取消计时”与原生选词的冲突。
+  
+  
+  
+  
+  
   var selBtn = null, savedRange = null;
 
   function ensureSelBtn(){
@@ -311,10 +309,10 @@
       'border:2px outset #e6b0b0;border-radius:18px;padding:8px 16px;font-size:13px;' +
       'font-family:\'黑体\',SimHei,sans-serif;box-shadow:0 3px 12px rgba(0,0,0,.35);' +
       'display:none;touch-action:manipulation;user-select:none;-webkit-user-select:none;';
-    // 关键：安卓上点按钮时浏览器会先塌缩选区(selectionchange→本脚本隐藏按钮)，
-    // 若用 click 则按钮在 click 触发前已被 display:none，点击永不生效。
-    // 故用 touchstart(passive:false + preventDefault) 在选区塌缩前捕获，并直接传 savedRange，
-    // 完全不依赖点击瞬间的实时选区。mousedown 作桌面兜底（按钮本仅触屏显示）。
+    
+    
+    
+    
     function onBtnActivate(e){
       if(e){ e.preventDefault(); e.stopPropagation(); }
       if(savedRange) catchFromSelection(true, savedRange);
@@ -330,7 +328,7 @@
     var bw = 116, bh = 38;
     var px = Math.max(8, Math.min(window.innerWidth - bw - 8, x - bw / 2));
     var py = y - bh - 12;
-    if(py < 8) py = y + 16;               // 选区贴顶则改放到下方
+    if(py < 8) py = y + 16;
     selBtn.style.left = px + 'px';
     selBtn.style.top = py + 'px';
     selBtn.style.display = 'block';
@@ -340,7 +338,7 @@
     savedRange = null;
   }
 
-  // 选区是否与任一矛盾点短句相交（部分覆盖也算），用于决定是否弹按钮
+  
   function selectionIntersectsAnomaly(range){
     var els = document.querySelectorAll('.anomaly');
     for(var i = 0; i < els.length; i++){
@@ -351,7 +349,7 @@
 
   function onSelectionChange(){
     if(!isTouch) return;
-    if(!hasIncompleteUnlockedGroup()){ hideSelBtn(); return; }  // 任务未激活/已完成不弹
+    if(!hasIncompleteUnlockedGroup()){ hideSelBtn(); return; }
     var sel = window.getSelection();
     if(!sel || sel.isCollapsed || sel.rangeCount === 0){ hideSelBtn(); return; }
     var range = sel.getRangeAt(0);
@@ -364,7 +362,7 @@
 
   function attachTouchListeners(){
     document.addEventListener('selectionchange', onSelectionChange, { passive:true });
-    // 滚动时按当前选区重定位按钮（选区仍在，仅视口坐标变化）
+    
     window.addEventListener('scroll', function(){
       if(selBtn && selBtn.style.display === 'block' && savedRange){
         var rect = savedRange.getBoundingClientRect();
@@ -379,25 +377,25 @@
     setTimeout(function(){ location.reload(); }, 700);
   }
 
-  // 供其他页面查询：某 group 的矛盾点是否已全部揭示（真相已浮现）
+  
   function isGroupRevealed(group){
     return state.revealed.indexOf(group) >= 0;
   }
   window.revealIsGroupRevealed = isGroupRevealed;
 
-  // 所有 group 是否均已揭示（矛盾点全部解锁）
+  
   function allGroupsRevealed(){
     for(var g in GROUPS){ if(state.revealed.indexOf(g) < 0) return false; }
     return true;
   }
-  // 是否「已有至少一个」group 被完整揭示（找完了一个人的矛盾点）
+  
   function anyGroupRevealed(){
     for(var g in GROUPS){ if(state.revealed.indexOf(g) >= 0) return true; }
     return false;
   }
-  // 是否存在「已解锁（搜过名字/非受限）但其矛盾点尚未全部揭示」的 group。
-  // 这是提示卡片的显示依据：某组还在找 → 显示；某组找完 → 该组不再显示，
-  // 因此各组独立门控（何宏宇找完隐藏、再搜俞丽激活后重新显示）。
+  
+  
+  
   function hasIncompleteUnlockedGroup(){
     for(var g in GROUPS){
       if(isUnlocked(g) && state.revealed.indexOf(g) < 0) return true;
@@ -406,13 +404,13 @@
   }
 
   function injectHint(){
-    // 受限组的提示：仅在玩家已在搜索框搜过对应人名（解锁了至少一个 group）后才出现，
-    // 未搜索前不提前弹出，避免剧透“有矛盾点可找”。
-    // 显示规则（各组独立门控）：某 group 已解锁、但其矛盾点尚未全部揭示 → 卡片显示；
-    // 该 group 全部揭示后 → 针对该组的卡片隐藏。
-    // 因此「何宏宇矛盾点全部解锁后卡片消失」，但「再搜索俞丽激活其矛盾点后卡片重新显示」，
-    // 直到俞丽的矛盾点也全部揭示才再次隐藏；两人都找完则彻底隐藏。
-    // 卡片内逐人显示“已抓 / 共 N（剩 M）”，并在每次抓中后实时刷新。
+    
+    
+    
+    
+    
+    
+    
     var show = hasIncompleteUnlockedGroup();
     var tip = isTouch
       ? '提示：先在搜索框查查某个名字，激活 ta 的矛盾点；再回到页面，<b>选中</b>那段看似不合常理的整句话（安卓即长按选词、拖手柄调整选区），选区旁会浮现「标记矛盾点」按钮，<b>点一下</b>即可窥见被掩去的真相。'
@@ -442,12 +440,12 @@
     document.body.appendChild(d);
   }
 
-  // 逐人（group）渲染“已抓 / 共 N（剩 M）”；未解锁或已全找完的行不显示
+  
   function groupRemainHTML(){
     var parts = [];
     for(var g in GROUPS){
-      if(!isUnlocked(g)) continue;                   // 没搜过名字 → 不显示
-      if(state.revealed.indexOf(g) >= 0) continue;   // 已全找完 → 隐藏该行
+      if(!isUnlocked(g)) continue;
+      if(state.revealed.indexOf(g) >= 0) continue;
       var total = GROUPS[g].length, got = 0;
       for(var k=0;k<total;k++){ if(state.caught.indexOf(GROUPS[g][k]) >= 0) got++; }
       var left = total - got;
@@ -457,7 +455,7 @@
     return parts.join('');
   }
 
-  // 聊天室等内容为动态生成，加载后派发此事件以同步已抓出/已揭示状态
+  
   document.addEventListener('reveal:refresh', applyStates);
 
   document.addEventListener('keydown', onKey);
