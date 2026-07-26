@@ -429,7 +429,17 @@ function teacherReply(q){
 // 发送「39」触发：贾老师揭示贾一方那群"朋友"的真实身份，及同善社的创立初衷与用途
 function botSay39(){
   var log = document.getElementById('chatLog');
-  if(log.querySelector('[data-special="39"]')) return; // 已展示过则不再重复追加
+  var existing = log.querySelector('[data-special="39"]');
+  if(existing){
+    // 已展示过：滚动到原处并补一句提示（已答"想"则不再追问钥匙），而不是毫无反应
+    try { existing.scrollIntoView({block:'center'}); } catch(e){}
+    if(!log.querySelector('[data-special="key-yes"]')){
+      botSay('（上面那段，我已经说过了。你还想知道那把钥匙在哪吗？）');
+    } else {
+      botSay('（上面那段，我已经说过了。）');
+    }
+    return;
+  }
   var row = document.createElement('div'); row.className = 'chat-row teacher';
   row.setAttribute('data-special', '39');
   var av = document.createElement('div'); av.className = 'av'; av.textContent = '贾';
