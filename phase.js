@@ -208,16 +208,24 @@
   function cn(n) { return ["零", "一", "二", "三"][n] || n; }
 
   function showToast(msg, variant) {
+    // 用全宽固定包裹层 + text-align:center + display:inline-block 实现居中，
+    // 彻底砍掉 transform:translateX(-50%) + left:50% 定位——
+    // 避免 iOS Safari 在 html{overflow-x:hidden} 时 position:fixed 退化为相对滚动偏移定位，
+    // 导致 toast 滚出屏幕外"不弹出"的问题。
+    var wrapper = document.createElement("div");
+    wrapper.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:5000;text-align:center;pointer-events:none";
     var t = document.createElement("div");
     t.textContent = msg;
     var bg = (variant === "gray") ? "rgba(96,96,96,.95)" : "rgba(26,58,108,.92)";
-    t.style.cssText = "position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:5000;" +
+    t.style.cssText = "display:inline-block;margin-top:16px;" +
       "background:" + bg + ";color:#fff;padding:8px 18px;border-radius:6px;font-size:13px;" +
-      "box-shadow:0 2px 10px rgba(0,0,0,.3);font-family:'宋体',SimSun,serif;letter-spacing:1px;";
-    (document.body || document.documentElement).appendChild(t);
+      "box-shadow:0 2px 10px rgba(0,0,0,.3);font-family:'宋体',SimSun,serif;letter-spacing:1px;" +
+      "pointer-events:auto";
+    wrapper.appendChild(t);
+    (document.body || document.documentElement).appendChild(wrapper);
     setTimeout(function () {
-      t.style.transition = "opacity .6s"; t.style.opacity = "0";
-      setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 600);
+      wrapper.style.transition = "opacity .6s"; wrapper.style.opacity = "0";
+      setTimeout(function () { if (wrapper.parentNode) wrapper.parentNode.removeChild(wrapper); }, 600);
     }, 2600);
   }
 
