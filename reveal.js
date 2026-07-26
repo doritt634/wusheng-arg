@@ -277,9 +277,20 @@
 
   function onKey(e){
     if(e.ctrlKey || e.metaKey || e.altKey) return;
-    var ae = document.activeElement;
-    if(ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA')) return;
+    if(e.isComposing) return;                       // 输入法组合态忽略（此时 key 可能为 'Process'）
     if(!e.key || e.key.toLowerCase() !== KEY) return;
+    // 焦点停在输入框（如刚在搜索框搜完名字）时仍允许按 R：只要正文选区与矛盾点相交即处理，
+    // 解决“搜完名字后焦点仍在搜索框、选中矛盾句按 R 被无声吞掉、要按很多次”的问题；
+    // 若焦点在输入框且无正文矛盾点选区（纯打字），则忽略，避免误触。
+    var ae = document.activeElement;
+    var inField = ae && (ae.tagName === 'INPUT' || ae.tagName === 'TEXTAREA' || ae.isContentEditable);
+    if(inField){
+      var sel = window.getSelection();
+      if(!sel || sel.isCollapsed || sel.rangeCount === 0 ||
+         !selectionIntersectsAnomaly(sel.getRangeAt(0))){
+        return;
+      }
+    }
     catchFromSelection(false);
   }
 
