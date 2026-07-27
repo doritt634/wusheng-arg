@@ -329,9 +329,23 @@ function openChat(){
   if(!restoreChat()){
     botSay('家长您好，我是无生中学招生办的贾老师。2015届招生报名正在进行，您有什么想了解的？');
   }
+  injectLastChance();
 }
 function closeChat(){
   document.getElementById('chatModal').classList.remove('show');
+}
+function injectLastChance(){
+  if(!hasKey() || !hasAllFrags()) return;
+  var log = document.getElementById('chatLog');
+  if(log.querySelector('[data-special="last-chance"]')) return;
+  var row = document.createElement('div'); row.className = 'chat-row teacher';
+  row.setAttribute('data-special', 'last-chance');
+  var av = document.createElement('div'); av.className = 'av'; av.textContent = '贾';
+  var b = document.createElement('div'); b.className = 'bubble';
+  b.textContent = '你还有什么想问我的吗？这是最后一次机会。';
+  row.appendChild(av); row.appendChild(b); log.appendChild(row);
+  log.scrollTop = log.scrollHeight;
+  saveChat();
 }
 function appendRow(role, text){
   var log = document.getElementById('chatLog');
