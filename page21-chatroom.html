@@ -547,7 +547,12 @@ a:hover{color:#c93a3a;text-decoration:underline}
       var vals = [];
       for(var n = 0; n < inputs.length; n++){ vals.push(inputs[n].value.replace(/[^a-zA-Z0-9]/g, '')); }
       var ok = false;
-      if(idx === 1){
+      if(idx === 0){
+        // 口令1：第一个框固定为 19880218，第二个框可以是 20060609 或 20050905
+        var first = vals[0] || '';
+        var second = vals[1] || '';
+        ok = (first === '19880218') && (second === '20060609' || second === '20050905');
+      } else if(idx === 1){
         // 口令2：前两个框答案可互换（人物姓名顺序不限），第三个固定为事件时间 20051008
         var third = vals[2] || '';
         var pair = [vals[0], vals[1]].sort().join('|');
